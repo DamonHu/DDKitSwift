@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'ZXKitSwift'
 s.swift_version = '5.0'
-s.version = '0.0.11'
+s.version = '0.0.1'
 s.license= { :type => "Apache-2.0 License", :file => "LICENSE" }
 s.summary = 'ZXKitSwift'
 s.homepage = 'https://github.com/ZXKitCode/ZXKitSwift'
