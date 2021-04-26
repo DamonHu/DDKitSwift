@@ -12,7 +12,7 @@ import Foundation
 import ZXKitLogger
 #endif
 
-extension ZXKit {
+public extension ZXKit {
     static func registPlugin() {
         #if canImport(ZXKitLogger)
         ZXNormalLog("init")
