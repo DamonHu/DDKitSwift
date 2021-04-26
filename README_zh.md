@@ -4,21 +4,62 @@
 
 > 天地不仁，以万物为刍狗
 
-因为之前开发的调试框架比较分散，所以希望可以通过一个通用的框架，类似于插件的结构去组合不同的调试工具。该工具是为了高效的定位解决问题，而不是追求大而全，所以iOS端私有函数、禁用的接口等影响App Store上线的功能，默认都不会提供。
+因为之前开发的调试框架比较分散，所以希望可以通过一个通用的框架，通过插件的结构去组合不同的调试工具。该工具是为了高效的定位解决问题，而不是追求大而全，所以iOS端私有函数、禁用的接口等影响App Store上线的功能，默认都不会提供。
 
 当然您也可以指定自定义插件安装，自定义插件可能会调用iOS系统的禁用函数导致审核被拒，集成之前请确认一下哦~
 
+## 集成ZXKit
 
+1、使用cocoapods集成之后即可使用默认功能
+
+```
+pod 'ZXKitSwift'
+```
+
+## 使用ZXKit
+
+2、导入头文件
+
+```
+import ZXKitSwift
+```
+
+3、注册工具
+
+```
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        ZXKit.registPlugin()
+        return true
+    }
+```
+4、显示工具列表
+
+```
+ZXKit.show()
+```
+5、隐藏工具弹窗
+
+```
+ZXKit.hide()
+```
+6、关闭工具弹窗
+
+```
+ZXKit.close()
+```
 
 ## 默认功能
 
-- [ ] log日志
+- [x] log日志
 - [ ] 网络ping检测
 - [ ] FPS检测
 
 ## 自定义插件
 
-如果需要开发自定义插件，只需要实现`ZXKitPluginProtocol`即可。实现的方式很简单，可以参考该文章
+使用自定义插件只需要集成对应的库即可使用
+
+如果需要开发自定义插件，只需要实现`ZXKitPluginProtocol`即可。实现的方式可以查看[ZXKitCode/core](https://github.com/ZXKitCode/core)的说明文档
 
 ## License
 
