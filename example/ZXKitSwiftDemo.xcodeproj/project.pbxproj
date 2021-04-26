@@ -3,19 +3,24 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1F72E25717249384C11B095 /* Pods_ZXKitSwiftDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A767151B9C6DDEB6B3719F /* Pods_ZXKitSwiftDemo.framework */; };
 		E4AC956826366601001FC322 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC956726366601001FC322 /* AppDelegate.swift */; };
 		E4AC956A26366601001FC322 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC956926366601001FC322 /* SceneDelegate.swift */; };
 		E4AC956C26366601001FC322 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC956B26366601001FC322 /* ViewController.swift */; };
 		E4AC956F26366601001FC322 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4AC956D26366601001FC322 /* Main.storyboard */; };
 		E4AC957126366603001FC322 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4AC957026366603001FC322 /* Assets.xcassets */; };
 		E4AC957426366603001FC322 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4AC957226366603001FC322 /* LaunchScreen.storyboard */; };
+		E4AC958A26366ED9001FC322 /* ZXKit+launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC958926366ED9001FC322 /* ZXKit+launch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06FDB78D5BA77D653878B150 /* Pods-ZXKitSwiftDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitSwiftDemo.release.xcconfig"; path = "Target Support Files/Pods-ZXKitSwiftDemo/Pods-ZXKitSwiftDemo.release.xcconfig"; sourceTree = "<group>"; };
+		4688CA0396801C5EDAD970FA /* Pods-ZXKitSwiftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZXKitSwiftDemo.debug.xcconfig"; path = "Target Support Files/Pods-ZXKitSwiftDemo/Pods-ZXKitSwiftDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		D2A767151B9C6DDEB6B3719F /* Pods_ZXKitSwiftDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZXKitSwiftDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4AC956426366601001FC322 /* ZXKitSwiftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXKitSwiftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4AC956726366601001FC322 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E4AC956926366601001FC322 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +29,7 @@
 		E4AC957026366603001FC322 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E4AC957326366603001FC322 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E4AC957526366603001FC322 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E4AC958926366ED9001FC322 /* ZXKit+launch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ZXKit+launch.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +37,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1F72E25717249384C11B095 /* Pods_ZXKitSwiftDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		74F5CD9E0655F87FBA2EFD07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D2A767151B9C6DDEB6B3719F /* Pods_ZXKitSwiftDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D1EDA1241A4B54723FCE664C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4688CA0396801C5EDAD970FA /* Pods-ZXKitSwiftDemo.debug.xcconfig */,
+				06FDB78D5BA77D653878B150 /* Pods-ZXKitSwiftDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E4AC955B26366600001FC322 = {
 			isa = PBXGroup;
 			children = (
 				E4AC956626366601001FC322 /* ZXKitSwiftDemo */,
 				E4AC956526366601001FC322 /* Products */,
+				D1EDA1241A4B54723FCE664C /* Pods */,
+				74F5CD9E0655F87FBA2EFD07 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,6 +82,7 @@
 		E4AC956626366601001FC322 /* ZXKitSwiftDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E4AC958826366ED9001FC322 /* pod */,
 				E4AC956726366601001FC322 /* AppDelegate.swift */,
 				E4AC956926366601001FC322 /* SceneDelegate.swift */,
 				E4AC956B26366601001FC322 /* ViewController.swift */,
@@ -67,6 +94,15 @@
 			path = ZXKitSwiftDemo;
 			sourceTree = "<group>";
 		};
+		E4AC958826366ED9001FC322 /* pod */ = {
+			isa = PBXGroup;
+			children = (
+				E4AC958926366ED9001FC322 /* ZXKit+launch.swift */,
+			);
+			name = pod;
+			path = ../../pod;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +110,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E4AC957826366603001FC322 /* Build configuration list for PBXNativeTarget "ZXKitSwiftDemo" */;
 			buildPhases = (
+				32D1514A540B934B504713A3 /* [CP] Check Pods Manifest.lock */,
 				E4AC956026366600001FC322 /* Sources */,
 				E4AC956126366600001FC322 /* Frameworks */,
 				E4AC956226366600001FC322 /* Resources */,
+				35ED0A2EC97A275653A523B7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,12 +170,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		32D1514A540B934B504713A3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZXKitSwiftDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		35ED0A2EC97A275653A523B7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ZXKitSwiftDemo/Pods-ZXKitSwiftDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ZXKitSwiftDemo/Pods-ZXKitSwiftDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZXKitSwiftDemo/Pods-ZXKitSwiftDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E4AC956026366600001FC322 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				E4AC956C26366601001FC322 /* ViewController.swift in Sources */,
+				E4AC958A26366ED9001FC322 /* ZXKit+launch.swift in Sources */,
 				E4AC956826366601001FC322 /* AppDelegate.swift in Sources */,
 				E4AC956A26366601001FC322 /* SceneDelegate.swift in Sources */,
 			);
@@ -283,6 +364,7 @@
 		};
 		E4AC957926366603001FC322 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4688CA0396801C5EDAD970FA /* Pods-ZXKitSwiftDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -301,6 +383,7 @@
 		};
 		E4AC957A26366603001FC322 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06FDB78D5BA77D653878B150 /* Pods-ZXKitSwiftDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
