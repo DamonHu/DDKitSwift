@@ -60,13 +60,21 @@ ZXKit.close()
 
 ## Default function
 
-- [x] log
+- [x] log ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
 - [ ] network ping test
 - [ ] FPS display
 
-## Custom plugin
+## Custom plug-in install
 
-To use a custom plug-in, you only need to integrate the corresponding library to use
+`ZXKitSwift` is a collection of pre-installed default functions. `ZXKit` also supports the use of custom plug-ins. You only need to enter the corresponding library and install the `ZXKit` version.
+
+For example, `ZXKitCode/logger`, you can only install `ZXKit `The version can be automatically displayed in the function list.
+
+```
+pod'ZXKitCore/zxkit'
+```
+
+## Custom plugin develop
 
 If you need to develop a custom plug-in, you only need to implement `ZXKitPluginProtocol`. The way to achieve this can be found in the documentation of [ZXKitCode/core](https://github.com/ZXKitCode/core)
 

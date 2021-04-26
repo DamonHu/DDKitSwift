@@ -51,13 +51,20 @@ ZXKit.close()
 
 ## 默认功能
 
-- [x] log日志
+- [x] log日志 ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
 - [ ] 网络ping检测
 - [ ] FPS检测
 
-## 自定义插件
+## 自定义插件接入
 
-使用自定义插件只需要集成对应的库即可使用
+`ZXKitSwift`是已经预装默认功能的集合， `ZXKit`还支持使用自定义插件接入，只需要进入对应的库安装`ZXKit`版本即可，例如`ZXKitCode/logger`，可以只安装`ZXKit`版本即可自动在功能列表里面显示。
+
+```
+pod'ZXKitCore/zxkit'
+```
+
+## 自定义插件开发
+
 
 如果需要开发自定义插件，只需要实现`ZXKitPluginProtocol`即可。实现的方式可以查看[ZXKitCode/core](https://github.com/ZXKitCode/core)的说明文档
 
