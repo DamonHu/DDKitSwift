@@ -52,6 +52,20 @@ After that, you can register the plug-in, you only need to register once globall
 
 After cocoapods is released and online, when the user opens `ZXKit`, your plug-in will appear on the debug collection page
 
+## 5. More configurations
+
+### 5.1、get floate button
+
+```
+ZXKit.floatButton
+```
+
+### 5.2、reset Float Button
+
+```
+ZXKit.resetFloatButton()
+```
+
 ## 2、NSNotification
 
 `ZXKitCore` provides the following message notifications, you can get the frame display, hide, close, and register new plug-in timing by binding the following notifications

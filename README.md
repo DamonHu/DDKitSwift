@@ -62,7 +62,7 @@ ZXKit.close()
 
 - [x] log ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
 - [ ] network ping test
-- [ ] FPS display
+- [x] FPS display ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
 
 ## Custom plug-in install
 

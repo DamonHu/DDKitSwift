@@ -53,7 +53,7 @@ ZXKit.close()
 
 - [x] log日志 ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
 - [ ] 网络ping检测
-- [ ] FPS检测
+- [x] FPS检测 ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
 
 ## 自定义插件接入
 

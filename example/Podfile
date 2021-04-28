@@ -6,5 +6,6 @@ target 'ZXKitSwiftDemo' do
   use_frameworks!
 
   # Pods for ZXKitSwiftDemo
-  pod 'ZXKitSwift'
+  pod 'ZXKitLogger/zxkit'
+  pod 'ZXKitFPS/zxkit'
 end

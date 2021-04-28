@@ -25,21 +25,28 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>ZXKitLogger-ZXKitLogger.xcscheme</key>
+		<key>ZXKitFPS-ZXKitFPS.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>ZXKitLogger.xcscheme</key>
+		<key>ZXKitFPS.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>ZXKitSwift.xcscheme</key>
+		<key>ZXKitLogger-ZXKitLogger.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>ZXKitLogger.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -51,7 +58,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>7</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>

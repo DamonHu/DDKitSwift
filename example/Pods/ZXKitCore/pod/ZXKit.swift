@@ -18,6 +18,20 @@ public class ZXKit: NSObject {
     private static var window: ZXKitWindow?
     private static var floatWindow: ZXKitFloatWindow?
     static var pluginList = [[ZXKitPluginProtocol](), [ZXKitPluginProtocol](), [ZXKitPluginProtocol]()]
+    
+    public static var floatButton: UIButton? {
+        return self.floatWindow?.mButton
+    }
+
+    public static func resetFloatButton() {
+        self.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+        self.floatButton?.setTitle(NSLocalizedString("Z", comment: ""), for: UIControl.State.normal)
+        self.floatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        self.floatButton?.layer.borderColor = UIColor.zx.color(hexValue: 0xffffff).cgColor
+        self.floatButton?.zx.addLayerShadow(color: UIColor.zx.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
+        self.floatButton?.layer.borderWidth = 4.0
+        self.floatButton?.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+    }
 
     public static func regist(plugin: ZXKitPluginProtocol) {
         NotificationCenter.default.post(name: .ZXKitPluginRegist, object: plugin)

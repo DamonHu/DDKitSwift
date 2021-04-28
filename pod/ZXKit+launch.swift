@@ -11,11 +11,17 @@ import Foundation
 #if canImport(ZXKitLogger)
 import ZXKitLogger
 #endif
+#if canImport(ZXKitFPS)
+import ZXKitFPS
+#endif
 
 public extension ZXKit {
     static func registPlugin() {
         #if canImport(ZXKitLogger)
-        ZXNormalLog("init")
+        ZXKitLogger.registZXKit()
+        #endif
+        #if canImport(ZXKitFPS)
+        ZXKitFPS().registZXKitPlugin()
         #endif
     }
 }
