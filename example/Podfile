@@ -8,4 +8,5 @@ target 'ZXKitSwiftDemo' do
   # Pods for ZXKitSwiftDemo
   pod 'ZXKitLogger/zxkit'
   pod 'ZXKitFPS/zxkit'
+  pod 'HDPingTools/zxkit'
 end
