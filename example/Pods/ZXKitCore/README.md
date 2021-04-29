@@ -22,10 +22,14 @@ pod 'ZXKitCore/core'
 
 ## 2. Implement the agreement
 
-Declare an object and follow the `ZXKitPluginProtocol` protocol. Respectively return the corresponding icon, plug-in name, plug-in type grouping, and startup function
+Declare an object and follow the `ZXKitPluginProtocol` protocol. Respectively return the unique ID of the plug-in, the corresponding icon, plug-in name, plug-in type grouping, and startup function
 
 ```
 extension PluginDemo: ZXKitPluginProtocol {
+    var pluginIdentifier: String {
+        return "com.zxkit.pluginDemo"
+    }
+    
     var pluginIcon: UIImage? {
         return UIImage(named: "zxkit")
     }
@@ -46,7 +50,7 @@ extension PluginDemo: ZXKitPluginProtocol {
 
 ## 3. Register the plug-in
 
-After that, you can register the plug-in, you only need to register once globally, and multiple registrations will cause repeated display
+After that, you can register the plug-in, you only need to register once globally
 
 ## 4. Done
 
@@ -66,19 +70,33 @@ ZXKit.floatButton
 ZXKit.resetFloatButton()
 ```
 
+### 5.3、Display textField
+
+```
+ZXKit.showInput { (text) in
+	print(text)
+}
+```
+
+### 5.4、get textField
+
+```
+ZXKit.textField
+```
+
 ## 2、NSNotification
 
 `ZXKitCore` provides the following message notifications, you can get the frame display, hide, close, and register new plug-in timing by binding the following notifications
 
 ```
 //new plug-in regist
-NSNotification.Name. ZXKitPluginRegist
+NSNotification.Name.ZXKitPluginRegist
 //show
-NSNotification.Name. ZXKitShow
+NSNotification.Name.ZXKitShow
 //hide
-NSNotification.Name. ZXKitHide
+NSNotification.Name.ZXKitHide
 //close
-NSNotification.Name. ZXKitClose
+NSNotification.Name.ZXKitClose
 ```
 
 ## Default installation

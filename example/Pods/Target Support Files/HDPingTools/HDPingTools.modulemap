@@ -1,0 +1,6 @@
+framework module HDPingTools {
+  umbrella header "HDPingTools-umbrella.h"
+
+  export *
+  module * { export * }
+}

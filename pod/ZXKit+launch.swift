@@ -14,6 +14,9 @@ import ZXKitLogger
 #if canImport(ZXKitFPS)
 import ZXKitFPS
 #endif
+#if canImport(HDPingTools)
+import HDPingTools
+#endif
 
 public extension ZXKit {
     static func registPlugin() {
@@ -22,6 +25,9 @@ public extension ZXKit {
         #endif
         #if canImport(ZXKitFPS)
         ZXKitFPS().registZXKitPlugin()
+        #endif
+        #if canImport(HDPingTools)
+        HDPingTools(hostName: nil).registZXKitPlugin()
         #endif
     }
 }

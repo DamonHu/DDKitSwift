@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-ZXKitSwiftDemo/Pods-ZXKitSwiftDemo-frameworks.sh
+${BUILT_PRODUCTS_DIR}/HDPingTools/HDPingTools.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitCore/ZXKitCore.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework

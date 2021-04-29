@@ -23,6 +23,10 @@ extension ZXKitFPS {
 
 //ZXKitPlugin
 extension ZXKitFPS: ZXKitPluginProtocol {
+    public var pluginIdentifier: String {
+        return "com.zxkit.zxkitFPS"
+    }
+    
     public var pluginIcon: UIImage? {
         return UIImageHDBoundle(named: "logo")
     }

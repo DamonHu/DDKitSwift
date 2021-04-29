@@ -23,6 +23,11 @@ public class ZXKit: NSObject {
         return self.floatWindow?.mButton
     }
 
+    public static var textField: UITextField? {
+        return self.window?.mTextField
+    }
+
+
     public static func resetFloatButton() {
         self.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
         self.floatButton?.setTitle(NSLocalizedString("Z", comment: ""), for: UIControl.State.normal)
@@ -35,13 +40,19 @@ public class ZXKit: NSObject {
 
     public static func regist(plugin: ZXKitPluginProtocol) {
         NotificationCenter.default.post(name: .ZXKitPluginRegist, object: plugin)
+        var index = 0
         switch plugin.pluginType {
             case .ui:
-                self.pluginList[0].append(plugin)
+                index = 0
             case .data:
-                self.pluginList[1].append(plugin)
+                index = 1
             case .other:
-                self.pluginList[2].append(plugin)
+                index = 2
+        }
+        if !self.pluginList[index].contains(where: { (tPlugin) -> Bool in
+            return tPlugin.pluginIdentifier == plugin.pluginIdentifier
+        }) {
+            self.pluginList[index].append(plugin)
         }
         if let window = self.window, !window.isHidden {
             DispatchQueue.main.async {
@@ -52,8 +63,8 @@ public class ZXKit: NSObject {
 
     public static func show() {
         NotificationCenter.default.post(name: .ZXKitShow, object: nil)
-        self.floatWindow?.isHidden = true
         DispatchQueue.main.async {
+            self.floatWindow?.isHidden = true
             if let window = self.window {
                 window.isHidden = false
             } else {
@@ -103,5 +114,10 @@ public class ZXKit: NSObject {
             self.window?.isHidden = true
             self.floatWindow?.isHidden = true
         }
+    }
+
+    public static func showInput(complete: ((String)->Void)?) {
+        ZXKit.show()
+        self.window?.showInput(complete: complete)
     }
 }

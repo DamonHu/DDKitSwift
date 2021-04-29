@@ -23,9 +23,9 @@ class ZXKitPluginCollectionViewCell: UICollectionViewCell {
         self.layer.borderColor = UIColor.zx.color(hexValue: 0xd8e3e7).cgColor
         self.contentView.addSubview(mImageView)
         mImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
+            $0.top.equalToSuperview().offset(13)
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(46)
+            $0.width.height.equalTo(44)
         }
 
         self.contentView.addSubview(mTitleLabel)
