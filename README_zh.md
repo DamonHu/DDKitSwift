@@ -52,7 +52,7 @@ ZXKit.close()
 ## 默认功能
 
 - [x] log日志 ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
-- [ ] 网络ping检测
+- [x] 网络ping检测 ☞ [DamonHu/HDPingTools](https://github.com/DamonHu/HDPingTools)
 - [x] FPS检测 ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
 
 ## 自定义插件接入
