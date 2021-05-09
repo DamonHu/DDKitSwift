@@ -1,5 +1,7 @@
 # ZXKit
 
+![](./readmeResource/zxkit.png)
+
 [中文文档](./README_zh.md)
 
 `ZXKitSwift` is a development and debugging tool integrated with iOS platform, named after my favorite novel "Zhu Xian". `ZXKitCore` is the supporting framework of `ZXKitSwift`, which is mainly used by developers of `ZXKitSwift`.
