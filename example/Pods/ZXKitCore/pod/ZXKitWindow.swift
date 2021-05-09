@@ -126,8 +126,14 @@ extension ZXKitWindow: UICollectionViewDelegate,UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let plugin = ZXKit.pluginList[indexPath.section][indexPath.item]
-        ZXKit.hide()
-        plugin.start()
+        if plugin.isRunning {
+            plugin.stop()
+            self.reloadData()
+        } else {
+            plugin.start()
+            self.reloadData()
+        }
+
     }
 }
 
@@ -135,6 +141,7 @@ extension ZXKitWindow: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let complete = self.inputComplete {
             complete(textField.text ?? "")
+            self.reloadData()
         }
     }
 

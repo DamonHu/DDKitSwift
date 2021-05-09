@@ -63,6 +63,20 @@ public var stopWhenError = false                            //stop Ping when an 
 public private(set) var isPing = false				//you can judge whether there is a ping task in progress
 ```
 
+### 5、Support display in ZXKit
+
+This function supports ZXKit display, if you need to display, you can use
+
+```
+pod 'HDPingTools/zxkit'
+```
+
+Register the plug-in to display it in `ZXKit`
+
+```
+ZXKit.regist(plugin: pingTools)
+```
+
 
 **Note: if the website or connected router is set to prohibit Ping, an error will be reported when pinging. You need to remove the restriction before you can use it normally**
 
@@ -117,5 +131,21 @@ public var debugLog = true                                  //是否开启日志
 public var stopWhenError = false                            //遇到错误停止ping
 public private(set) var isPing = false				//可以判断当前是否有ping任务在进行中
 ```
+
+### 5、可支持在ZXKit显示
+
+该功能支持ZXKit显示，如果需要展示，可以使用
+
+```
+pod 'HDPingTools/zxkit'
+```
+
+注册插件即可在`ZXKit`中显示
+
+```
+ZXKit.regist(plugin: pingTools)
+```
+
+
 
 **注意：网站或者连接的路由器如果设置了禁止ping，那么ping的时候会报错，需要解除该限制才可以正常使用**

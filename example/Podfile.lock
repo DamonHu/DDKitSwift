@@ -1,24 +1,24 @@
 PODS:
-  - HDPingTools/core (1.1.5)
-  - HDPingTools/zxkit (1.1.5):
+  - HDPingTools/core (1.1.7)
+  - HDPingTools/zxkit (1.1.7):
     - HDPingTools/core
     - ZXKitCore/core
     - ZXKitLogger/zxkit
   - SnapKit (5.0.1)
-  - ZXKitCore/core (0.0.19):
+  - ZXKitCore/core (0.1.2):
     - SnapKit
     - ZXKitUtil
-  - ZXKitFPS (0.0.4):
-    - ZXKitFPS/core (= 0.0.4)
-  - ZXKitFPS/core (0.0.4)
-  - ZXKitFPS/zxkit (0.0.4):
+  - ZXKitFPS (0.0.5):
+    - ZXKitFPS/core (= 0.0.5)
+  - ZXKitFPS/core (0.0.5)
+  - ZXKitFPS/zxkit (0.0.5):
     - ZXKitCore/core
     - ZXKitFPS/core
-  - ZXKitLogger/core (2.5.6):
+  - ZXKitLogger/core (2.5.7):
     - ZXKitCore/core
     - ZXKitFPS
     - ZXKitUtil
-  - ZXKitLogger/zxkit (2.5.6):
+  - ZXKitLogger/zxkit (2.5.7):
     - ZXKitCore/core
     - ZXKitLogger/core
   - ZXKitUtil (0.0.8):
@@ -40,11 +40,11 @@ SPEC REPOS:
     - ZXKitUtil
 
 SPEC CHECKSUMS:
-  HDPingTools: 973469074a616905b280fcc896eadc60f740fa26
+  HDPingTools: a63e1f4f6a47199bbb45d94768372aad02289fcb
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  ZXKitCore: 3e1611355f06455071a4d3598ff606a011165a63
-  ZXKitFPS: 9d6d437cfd63c9a21baa1095329005ea4b8057a9
-  ZXKitLogger: 7030e440179d465d4e69bd820a1106f03afc7a5b
+  ZXKitCore: ab0b63ed08189d3d5067a6c5286d4c07c821e0ef
+  ZXKitFPS: 4af1789e55750cfeb5153a42be5845ed008ce729
+  ZXKitLogger: f3bd821c91fdecf7c41a38004f18ca95e6e13c58
   ZXKitUtil: 3e4847994fbea5751bdef7e6bda6ff40a60b3493
 
 PODFILE CHECKSUM: faf8e1ca2b8673a849fd67043af17967c66d162d

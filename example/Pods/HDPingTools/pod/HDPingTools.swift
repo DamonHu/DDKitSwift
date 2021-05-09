@@ -7,6 +7,9 @@
 
 import Foundation
 import UIKit
+#if canImport(ZXKitCore)
+import ZXKitCore
+#endif
 
 public typealias PingComplete = ((_ response: HDPingResponse?, _ error: Error?) -> Void)
 
@@ -50,6 +53,8 @@ open class HDPingTools: NSObject {
     public var debugLog = true                                  //是否开启日志输出
     public var stopWhenError = false                            //遇到错误停止ping
     public private(set) var isPing = false
+    var isPluginRunning = false
+    
     public var hostName: String? {
         get {
             return pinger.hostName
@@ -97,7 +102,7 @@ open class HDPingTools: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(_didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
-    public convenience init(url: URL? = nil) {
+    public convenience init(url: URL?) {
         self.init(hostName: url?.host)
     }
 
@@ -112,6 +117,7 @@ open class HDPingTools: NSObject {
         self.complete = complete
         self.pinger.addressStyle = pingType
         self.pinger.start()
+        self.isPluginRunning = true
 
         if interval.second > 0 {
             sendTimer = Timer(timeInterval: interval.second, repeats: true, block: { [weak self] (_) in
@@ -124,10 +130,17 @@ open class HDPingTools: NSObject {
     }
 
     public func stop() {
+        self.isPluginRunning = false
         self._complete()
         //停止发送ping
         sendTimer?.invalidate()
         sendTimer = nil
+        
+        #if canImport(ZXKitCore)
+        ZXKit.resetFloatButton()
+        ZXKit.textField?.placeholder = self.hostName ?? "www.apple.com"
+        ZXKit.textField?.text = self.hostName
+        #endif
     }
 }
 

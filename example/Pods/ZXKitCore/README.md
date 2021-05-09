@@ -25,6 +25,10 @@ pod 'ZXKitCore/core'
 Declare an object and follow the `ZXKitPluginProtocol` protocol. Respectively return the unique ID of the plug-in, the corresponding icon, plug-in name, plug-in type grouping, and startup function
 
 ```
+class PluginDemo: NSObject {
+    var isPluginRunning = true
+}
+
 extension PluginDemo: ZXKitPluginProtocol {
     var pluginIdentifier: String {
         return "com.zxkit.pluginDemo"
@@ -44,6 +48,16 @@ extension PluginDemo: ZXKitPluginProtocol {
 
     func start() {
         print("start plugin")
+        isPluginRunning = true
+    }
+    
+    var isRunning: Bool {
+        return isPluginRunning
+    }
+
+    func stop() {
+        print("plugin stop running")
+        isPluginRunning = false
     }
 }
 ```

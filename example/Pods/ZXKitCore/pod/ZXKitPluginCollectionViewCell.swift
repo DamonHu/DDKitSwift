@@ -27,7 +27,12 @@ class ZXKitPluginCollectionViewCell: UICollectionViewCell {
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(44)
         }
-
+        self.contentView.addSubview(mStatusView)
+        mStatusView.snp.makeConstraints {
+            $0.left.equalTo(mImageView.snp.right).offset(-5)
+            $0.top.equalTo(mImageView).offset(-5)
+            $0.width.height.equalTo(10)
+        }
         self.contentView.addSubview(mTitleLabel)
         mTitleLabel.snp.makeConstraints {
             $0.left.equalToSuperview().offset(10)
@@ -39,6 +44,7 @@ class ZXKitPluginCollectionViewCell: UICollectionViewCell {
     func updateUI(plugin: ZXKitPluginProtocol) {
         mImageView.image = plugin.pluginIcon
         mTitleLabel.text = plugin.pluginTitle
+        mStatusView.isHidden = !plugin.isRunning
     }
 
     //MARK: UI
@@ -57,5 +63,14 @@ class ZXKitPluginCollectionViewCell: UICollectionViewCell {
         tLabel.font = .systemFont(ofSize: 13, weight: .medium)
         tLabel.textColor = UIColor.zx.color(hexValue: 0x666666)
         return tLabel
+    }()
+
+    lazy var mStatusView: UIView = {
+        let tView = UIView()
+        tView.isHidden = true
+        tView.backgroundColor = UIColor.zx.color(hexValue: 0x81b214)
+        tView.layer.masksToBounds = true
+        tView.layer.cornerRadius = 5
+        return tView
     }()
 }

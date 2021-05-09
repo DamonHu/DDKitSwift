@@ -41,33 +41,34 @@ extension HDPingTools: ZXKitPluginProtocol {
     }
 
     public func start() {
-        self.stop()
-        ZXKit.resetFloatButton()
-        ZXKit.textField?.placeholder = "baidu.com"
-        ZXKit.textField?.text = "baidu.com"
+        ZXKit.textField?.placeholder = self.hostName ?? "www.apple.com"
+        ZXKit.textField?.text = self.hostName
         ZXKit.showInput { [weak self] (url) in
             guard let self = self else { return }
             self.hostName = url
+            ZXKit.hide()
             ZXKitLogger.show()
-            if !self.isPing {
-                self.start(pingType: .any, interval: .second(2)) { (response, error) in
-                    if let error = error {
-                        ZXErrorLog(error.localizedDescription)
-                    } else if let response = response {
-                        let time = Int(response.responseTime.second * 1000)
-                        ZXNormalLog("ping: \(response.pingAddressIP) sent \(response.responseBytes) data bytes, response:  \(time)ms")
-                        ZXKit.floatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                        ZXKit.floatButton?.setTitle("\(time)ms", for: .normal)
-                        if time >= 100 {
-                            ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
-                        } else if (time >= 50 && time < 100) {
-                            ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
-                        } else {
-                            ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-                        }
+            self.start(pingType: .any, interval: .second(2)) { (response, error) in
+                if let error = error {
+                    ZXErrorLog(error.localizedDescription)
+                } else if let response = response {
+                    let time = Int(response.responseTime.second * 1000)
+                    ZXNormalLog("ping: \(response.pingAddressIP) sent \(response.responseBytes) data bytes, response:  \(time)ms")
+                    ZXKit.floatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+                    ZXKit.floatButton?.setTitle("\(time)ms", for: .normal)
+                    if time >= 100 {
+                        ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
+                    } else if (time >= 50 && time < 100) {
+                        ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
+                    } else {
+                        ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
                     }
                 }
             }
         }
+    }
+    
+    public var isRunning: Bool {
+        return self.isPluginRunning
     }
 }
