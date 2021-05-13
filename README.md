@@ -97,7 +97,7 @@ ZXKit.regist(plugin: ZXFileBrowser.shared())
 - [x] log ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
 - [x] network ping test  ☞ [DamonHu/HDPingTools](https://github.com/DamonHu/HDPingTools)
 - [x] FPS display ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
-- [ ] 沙盒文件浏览
+- [x] Sandbox FileBrowser ☞ [ZXKitCode/ZXFileBrowser](https://github.com/ZXKitCode/ZXFileBrowser)
 
 ## preview
 
