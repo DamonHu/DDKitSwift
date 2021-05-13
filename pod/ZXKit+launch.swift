@@ -17,6 +17,9 @@ import ZXKitFPS
 #if canImport(HDPingTools)
 import HDPingTools
 #endif
+#if canImport(ZXFileBrowser)
+import ZXFileBrowser
+#endif
 
 public extension ZXKit {
     static func registPlugin() {
@@ -28,6 +31,9 @@ public extension ZXKit {
         #endif
         #if canImport(HDPingTools)
         HDPingTools(hostName: nil).registZXKitPlugin()
+        #endif
+        #if canImport(ZXFileBrowser)
+        ZXKit.regist(plugin: ZXFileBrowser.shared())
         #endif
     }
 }

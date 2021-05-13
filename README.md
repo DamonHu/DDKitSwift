@@ -99,6 +99,9 @@ ZXKit.regist(plugin: ZXFileBrowser.shared())
 - [x] FPS display ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
 - [ ] 沙盒文件浏览
 
+## preview
+
+![](./readmeResource/preview.gif)
 
 ## Custom plugin develop
 

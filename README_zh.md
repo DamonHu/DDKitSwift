@@ -94,6 +94,9 @@ ZXKit.regist(plugin: ZXFileBrowser.shared())
 - [x] FPS检测 ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
 - [ ] 沙盒文件浏览
 
+## 项目预览
+
+![](./readmeResource/preview.gif)
 
 ## 自定义插件开发
 
