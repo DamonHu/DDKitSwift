@@ -4,7 +4,7 @@
 
 [中文文档](./README_zh.md)
 
-`ZXKitSwift` is a development and debugging tool integrated with iOS platform, named after my favorite novel "Zhu Xian". `ZXKitCore` is the supporting framework of `ZXKitSwift`, which is mainly used by developers of `ZXKitSwift`.
+`ZXKit` is a debugging tool framework integrated on the iOS side, named after my favorite novel "Zhu Xian".
 
 > 天地不仁，以万物为刍狗
 > 
@@ -18,9 +18,9 @@ Of course, you can also specify a custom plug-in to install. The custom plug-in 
 
 ## Integrate ZXKit
 
-1、 You can use the default functions after using cocoapods integration
+1、 cocoapods
 
-```
+```ruby
 pod 'ZXKitSwift'
 ```
 
@@ -28,53 +28,77 @@ pod 'ZXKitSwift'
 
 2、 Import the header file
 
-```
+```swift
 import ZXKitSwift
 ```
 
 3、registPlugin
 
-```
+```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        ZXKit.registPlugin()
-        return true
-    }
+	
+	//注册所有内置插件
+	ZXKit.registPlugin()
+	
+	return true
+}
 ```
 
 4、Display the list of tools
 
-```
+```swift
 ZXKit.show()
 ```
 
 5、hide the list of tools
 
-```
+```swift
 ZXKit.hide()
 ```
 
 6、close ZXKit
 
-```
+```swift
 ZXKit.close()
 ```
+
+## advanced operation
+
+The advanced operation provides a way for personalized plug-in access, and it is still very simple to use, and there are more steps to register yourself than the direct default integration.
+
+For example, the access and registration of the following multiple plug-ins
+
+```
+//log plugin
+pod 'ZXKitLogger/zxkit'
+//regist plugin
+ZXKitLogger.registZXKit()
+
+//ping plugin
+pod 'HDPingTools/zxkit'
+//regist
+ZXKit.regist(plugin: pingTools)
+
+//FPS plugin
+pod 'ZXKitFPS/zxkit'
+//regist
+let fps = ZXKitFPS()
+fps.registZXKitPlugin()
+
+//file browser plugin
+pod 'ZXFileBrowser/zxkit'
+//regist
+ZXKit.regist(plugin: ZXFileBrowser.shared())
+```
+
 
 ## Default function
 
 - [x] log ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
 - [x] network ping test  ☞ [DamonHu/HDPingTools](https://github.com/DamonHu/HDPingTools)
 - [x] FPS display ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
+- [ ] 沙盒文件浏览
 
-## Custom plug-in install
-
-`ZXKitSwift` is a collection of pre-installed default functions. `ZXKit` also supports the use of custom plug-ins. You only need to enter the corresponding library and install the `ZXKit` version.
-
-For example, `ZXKitCode/logger`, you can only install `ZXKit `The version can be automatically displayed in the function list.
-
-```
-pod'ZXKitCore/zxkit'
-```
 
 ## Custom plugin develop
 
