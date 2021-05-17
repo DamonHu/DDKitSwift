@@ -5,7 +5,9 @@
 
 The iOS sandbox file browser can view, copy, move, delete files and other operations.
 
-This project is a built-in function plug-in of [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift), it only needs to integrate `ZXKitSwift` and it can be used without configuration. You can also integrate it separately and use it as an independent function.
+This project is a built-in function plug-in of [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift), and it can also be integrated separately and used as an independent function.
+
+**If you have integrated `ZXKitSwift`, the file browser will be automatically displayed in the plug-in list, so there is no need to repeat the integration.**
 
 
 ## Independent integration
@@ -19,20 +21,28 @@ pod 'ZXFileBrowser'
 ### Use
 
 ```swift
-ZXFileBrowser.shared().start()
+ZXFileBrowser.shared.start()
 ```
 
 ## Support `ZXKit`
 
-If you need to support `ZXKit`, you can use cocoapods to quickly integrate it, and then register to use it in the list display
+**If you have integrated `ZXKitSwift`, the file browser will be automatically displayed in the plug-in list, so there is no need to repeat the integration.**
+
+If you need to support `ZXKit`, you can use cocoapods to quickly integrate it
 
 ```ruby
 pod 'ZXFileBrowser/zxkit'
 ```
 
+then register to `ZXKit` in `AppDelegate`
+
 ```swift
-//ZXKit registration
-ZXKit.regist(plugin: ZXFileBrowser.shared())
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+	ZXKit.regist(plugin: ZXFileBrowser.shared)
+	
+	return true
+}
 ```
 
 ## Preview
