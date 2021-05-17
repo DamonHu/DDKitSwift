@@ -33,7 +33,7 @@ public extension ZXKit {
         HDPingTools(hostName: nil).registZXKitPlugin()
         #endif
         #if canImport(ZXFileBrowser)
-        ZXKit.regist(plugin: ZXFileBrowser.shared())
+        ZXKit.regist(plugin: ZXFileBrowser.shared)
         #endif
     }
 }
