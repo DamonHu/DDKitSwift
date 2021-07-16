@@ -71,26 +71,30 @@ ZXKitLogger.show()
 The font colors of the three output methods are different, and the corresponding types of printLog are different.
 
 ```
-ZXDebugLog(log)	//the log will not be written to the window, only output in xcode
+printLog(log)	//the log will not be written to the window, only output in xcode
 
-ZXNormalLog (log) // Log's textColor is green
+printInfo(log) // Log's textColor is green
 
-ZXWarnLog (log) // log's textColor is yellow
+printWarn(log) // log's textColor is yellow
 
-ZXErrorLog (log) // Log's textColor is red
+printError(log) // Log's textColor is red
 
-ZXPrivacyLog (log) // Output of encrypted data, the specific encryption method is described in the following encryption
+printPrivacy(log) // Output of encrypted data, the specific encryption method is described in the following encryption
 ```
 
 Output format
 
 ```
-13: 45: 00.153> [
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
+10:33:00.457  >   ✅✅[File:ViewController.swift]:[Line:69:[Function:onClickButton()]]-Log:
+[
+  "1111111",
+  "22222222",
+  "sdjkhfsjkdfjkhsdhjfk",
+  "3333sjdhgfhjg"
 ]
+
+10:33:00.458  >   🖤🖤[File:ViewController.swift]:[Line:53:[Function:onClickButton()]]-Log:
+测试输出，不会写入悬浮窗
 ```
 
 ## III. more settings
@@ -160,7 +164,17 @@ ZXKitLogger.deleteLogFile()
 ZXKitLogger.logExpiryDay = 0
 ```
 
-### 10、Get the array of logs. You can specify the date
+### 10、storageLevels
+
+The included log level will be stored in the database. By default, the debug level is not stored
+
+```
+
+ZXKitLogger.storageLevels = [.info, .warn, .error, .privacy]
+
+```
+
+### 11、Get the array of logs. You can specify the date
 
 ```
 //today
@@ -235,12 +249,12 @@ If there is sensitive information that you don't want users to see when debuggin
 ZXKitLogger.privacyLogPassword = "12345678901234561234567890123456"
 
 // 2, output encrypted content
-HDPrivacyLog ("This is test data 222 for encrypted data")
+printPrivacy("This is test data 222 for encrypted data")
 ```
 
 ### 4.2 Decrypt the contents of the display window
 
-After the setting, the display in the display window is `This content is encrypted, please view it after decryption`, enter the set encryption password and click decrypt to display the normal encrypted content.
+After the setting, the display in the display window is `This content is encrypted, please view it after decryption`, enter the set encryption password and click decrypt to display the info encrypted content.
 
 ### 4.1. Decrypting shared files
 
@@ -267,7 +281,7 @@ Here are a few online sites recommended, you can also Google it by yourself
 
 ## V. Other instructions
 
-1. For the convenience of viewing, it is divided into three types: normal, warning and error. It corresponds to three different colors for easy viewing.
+1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
 2. Click the corresponding cell to copy the output log directly to the system clipboard.
 3. Share the system share that is called. Which software you can share depends on which software is installed on your phone.
 

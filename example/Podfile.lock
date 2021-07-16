@@ -5,13 +5,13 @@ PODS:
     - ZXKitCore/core
     - ZXKitLogger/zxkit
   - SnapKit (5.0.1)
-  - ZXFileBrowser/core (0.0.5):
+  - ZXFileBrowser/core (1.1.1):
     - SnapKit
     - ZXKitUtil
-  - ZXFileBrowser/zxkit (0.0.5):
+  - ZXFileBrowser/zxkit (1.1.1):
     - ZXFileBrowser/core
     - ZXKitCore/core
-  - ZXKitCore/core (0.1.3):
+  - ZXKitCore/core (0.1.5):
     - SnapKit
     - ZXKitUtil
   - ZXKitFPS (0.0.5):
@@ -20,22 +20,29 @@ PODS:
   - ZXKitFPS/zxkit (0.0.5):
     - ZXKitCore/core
     - ZXKitFPS/core
-  - ZXKitLogger/core (2.5.9):
+  - ZXKitLogger/core (2.6.4):
     - SnapKit
     - ZXKitFPS
     - ZXKitUtil
-  - ZXKitLogger/zxkit (2.5.9):
+  - ZXKitLogger/zxkit (2.6.4):
     - ZXKitCore/core
     - ZXKitLogger/core
-  - ZXKitUtil (0.1.0):
-    - ZXKitUtil/core (= 0.1.0)
-  - ZXKitUtil/core (0.1.0)
+  - ZXKitUtil (3.0.1):
+    - ZXKitUtil/core (= 3.0.1)
+  - ZXKitUtil/core (3.0.1)
+  - ZXUserDefaultManager/core (0.0.2):
+    - SnapKit
+    - ZXKitUtil
+  - ZXUserDefaultManager/zxkit (0.0.2):
+    - ZXKitCore/core
+    - ZXUserDefaultManager/core
 
 DEPENDENCIES:
   - HDPingTools/zxkit
   - ZXFileBrowser/zxkit
   - ZXKitFPS/zxkit
   - ZXKitLogger/zxkit
+  - ZXUserDefaultManager/zxkit
 
 SPEC REPOS:
   trunk:
@@ -46,16 +53,18 @@ SPEC REPOS:
     - ZXKitFPS
     - ZXKitLogger
     - ZXKitUtil
+    - ZXUserDefaultManager
 
 SPEC CHECKSUMS:
   HDPingTools: a63e1f4f6a47199bbb45d94768372aad02289fcb
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  ZXFileBrowser: ca67fd6fe6fae9aa8943e103e4b1c79a3a44f505
-  ZXKitCore: 84e9f5a1ea1efb2710c8ceabd4f4860bd91fcf7d
+  ZXFileBrowser: c8943dba4d7c459a1cbe6245517f1714241d5f99
+  ZXKitCore: 51a3cdf16252e8e023c7bcc6d52b3d251faaed3c
   ZXKitFPS: 4af1789e55750cfeb5153a42be5845ed008ce729
-  ZXKitLogger: 06d447a6894eca87c4aa58926ac333f63d357c4b
-  ZXKitUtil: a374e2c80d5274c5e2d97f42bad5597a8812be89
+  ZXKitLogger: beed80e5f93b8bd59cab8771ef414b5988a553fb
+  ZXKitUtil: 7f8782b19f1696fe259d07f4048196be5f2ea6b7
+  ZXUserDefaultManager: 8f7948aa7a7cced268c8b14ad2284e6954728f7f
 
-PODFILE CHECKSUM: 72ec2d619048d1527cacf4757dbc63c85d349e01
+PODFILE CHECKSUM: 8c9dfca3d31092f7049edf59a085057ef57411c5
 
 COCOAPODS: 1.9.1

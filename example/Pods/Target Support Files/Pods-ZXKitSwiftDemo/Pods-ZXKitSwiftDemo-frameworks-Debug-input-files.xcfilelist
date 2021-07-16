@@ -6,3 +6,4 @@ ${BUILT_PRODUCTS_DIR}/ZXKitCore/ZXKitCore.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitLogger/ZXKitLogger.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework
+${BUILT_PRODUCTS_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework

@@ -9,13 +9,6 @@
 import Foundation
 import ZXKitCore
 
-func UIImageHDBoundle(named: String?) -> UIImage? {
-    guard let name = named else { return nil }
-    guard let bundlePath = Bundle(for: ZXKitLogger.self).path(forResource: "ZXKitLogger", ofType: "bundle") else { return nil }
-    let bundle = Bundle(path: bundlePath)
-    return UIImage(named: name, in: bundle, compatibleWith: nil)
-}
-
 //ZXKitPlugin
 extension ZXKitLogger: ZXKitPluginProtocol {
     public var pluginIdentifier: String {
@@ -27,7 +20,7 @@ extension ZXKitLogger: ZXKitPluginProtocol {
     }
 
     public var pluginTitle: String {
-        return NSLocalizedString("Logger", comment: "")
+        return "Logger".ZXLocaleString
     }
 
     public var pluginType: ZXKitPluginType {
@@ -44,7 +37,6 @@ extension ZXKitLogger: ZXKitPluginProtocol {
     }
 
     public func stop() {
-        ZXWarnLog(NSLocalizedString("System basic plug-in cannot be stopped", comment: ""))
         ZXKit.hide()
         ZXKitLogger.show()
     }

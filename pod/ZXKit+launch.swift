@@ -20,6 +20,9 @@ import HDPingTools
 #if canImport(ZXFileBrowser)
 import ZXFileBrowser
 #endif
+#if canImport(ZXUserDefaultManager)
+import ZXUserDefaultManager
+#endif
 
 public extension ZXKit {
     static func registPlugin() {
@@ -34,6 +37,9 @@ public extension ZXKit {
         #endif
         #if canImport(ZXFileBrowser)
         ZXKit.regist(plugin: ZXFileBrowser.shared)
+        #endif
+        #if canImport(ZXUserDefaultManager)
+        ZXKit.regist(plugin: ZXUserDefaultManager.shared)
         #endif
     }
 }

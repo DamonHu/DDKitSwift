@@ -204,6 +204,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitLogger/ZXKitLogger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/HDPingTools/HDPingTools.framework"
@@ -213,6 +214,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitLogger/ZXKitLogger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

@@ -5,7 +5,7 @@
 
 The iOS sandbox file browser can view, copy, move, delete files and other operations.
 
-This project is a built-in function plug-in of [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift), and it can also be integrated separately and used as an independent function.
+This project is a built-in function plug-in of [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift), and it can also be integrated separately and used as an independent function. Use `quick look` framework to preview and long press to display more operations
 
 **If you have integrated `ZXKitSwift`, the file browser will be automatically displayed in the plug-in list, so there is no need to repeat the integration.**
 
@@ -22,6 +22,12 @@ pod 'ZXFileBrowser'
 
 ```swift
 ZXFileBrowser.shared.start()
+```
+
+you can get the file type of the specified path by this function
+
+```swift
+ZXFileBrowser.shared.getFileType(filePath: path)
 ```
 
 ## Support `ZXKit`
@@ -47,8 +53,13 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 ## Preview
 
-![](./preview.gif)
+|File List|File Type Icon|
+|----|----|
+|![](./preview/demo2.png)|![](./preview/demo1.png)|
 
+Function example
+
+![](./preview/preview.gif)
 
 ## License
 

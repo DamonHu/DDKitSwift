@@ -10,4 +10,5 @@ target 'ZXKitSwiftDemo' do
   pod 'ZXKitFPS/zxkit'
   pod 'HDPingTools/zxkit'
   pod 'ZXFileBrowser/zxkit'
+  pod 'ZXUserDefaultManager/zxkit'
 end

@@ -98,6 +98,7 @@ ZXKit.regist(plugin: ZXFileBrowser.shared())
 - [x] network ping test  ☞ [DamonHu/HDPingTools](https://github.com/DamonHu/HDPingTools)
 - [x] FPS display ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
 - [x] Sandbox FileBrowser ☞ [ZXKitCode/ZXFileBrowser](https://github.com/ZXKitCode/ZXFileBrowser)
+- [x] UserDefault data manager ☞ [ZXKitCode/ZXFileBrowser](https://github.com/ZXKitCode/ZXUserDefaultManager)
 
 ## preview
 
