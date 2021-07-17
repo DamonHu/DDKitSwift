@@ -5,7 +5,7 @@ PODS:
     - ZXKitCore/core
     - ZXKitLogger/zxkit
   - netfox (1.19.0)
-  - netfox-zxkit (0.0.2):
+  - netfox-zxkit (0.0.5):
     - netfox
     - ZXKitCore
   - SnapKit (5.0.1)
@@ -67,7 +67,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   HDPingTools: a63e1f4f6a47199bbb45d94768372aad02289fcb
   netfox: efeec1d23406df6cd605212f09a40957bb5654eb
-  netfox-zxkit: 0c77def815dc5f5d9cdc8fee30c0389b6fad3013
+  netfox-zxkit: 6aa0280f84df04fdbfebdc935dc45c687b9d7529
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   ZXFileBrowser: c8943dba4d7c459a1cbe6245517f1714241d5f99
   ZXKitCore: 51a3cdf16252e8e023c7bcc6d52b3d251faaed3c
