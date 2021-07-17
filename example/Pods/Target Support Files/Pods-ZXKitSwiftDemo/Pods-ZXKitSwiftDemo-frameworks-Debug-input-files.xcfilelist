@@ -7,3 +7,5 @@ ${BUILT_PRODUCTS_DIR}/ZXKitFPS/ZXKitFPS.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitLogger/ZXKitLogger.framework
 ${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework
 ${BUILT_PRODUCTS_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework
+${BUILT_PRODUCTS_DIR}/netfox/netfox.framework
+${BUILT_PRODUCTS_DIR}/netfox-zxkit/netfox_zxkit.framework

@@ -1,12 +1,14 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/HDPingTools" "${PODS_CONFIGURATION_BUILD_DIR}/SnapKit" "${PODS_CONFIGURATION_BUILD_DIR}/ZXFileBrowser" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitCore" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitFPS" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitLogger" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitUtil" "${PODS_CONFIGURATION_BUILD_DIR}/ZXUserDefaultManager"
+CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/HDPingTools" "${PODS_CONFIGURATION_BUILD_DIR}/SnapKit" "${PODS_CONFIGURATION_BUILD_DIR}/ZXFileBrowser" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitCore" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitFPS" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitLogger" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitUtil" "${PODS_CONFIGURATION_BUILD_DIR}/ZXUserDefaultManager" "${PODS_CONFIGURATION_BUILD_DIR}/netfox" "${PODS_CONFIGURATION_BUILD_DIR}/netfox-zxkit"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/HDPingTools/HDPingTools.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SnapKit/SnapKit.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXFileBrowser/ZXFileBrowser.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitCore/ZXKitCore.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitFPS/ZXKitFPS.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitLogger/ZXKitLogger.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitUtil/ZXKitUtil.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/HDPingTools/HDPingTools.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SnapKit/SnapKit.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXFileBrowser/ZXFileBrowser.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitCore/ZXKitCore.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitFPS/ZXKitFPS.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitLogger/ZXKitLogger.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXKitUtil/ZXKitUtil.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/netfox-zxkit/netfox_zxkit.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/netfox/netfox.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_LDFLAGS = $(inherited) -l"sqlite3" -framework "Foundation" -framework "HDPingTools" -framework "SnapKit" -framework "ZXFileBrowser" -framework "ZXKitCore" -framework "ZXKitFPS" -framework "ZXKitLogger" -framework "ZXKitUtil" -framework "ZXUserDefaultManager"
+OTHER_LDFLAGS = $(inherited) -l"sqlite3" -framework "Foundation" -framework "HDPingTools" -framework "SnapKit" -framework "ZXFileBrowser" -framework "ZXKitCore" -framework "ZXKitFPS" -framework "ZXKitLogger" -framework "ZXKitUtil" -framework "ZXUserDefaultManager" -framework "netfox" -framework "netfox_zxkit"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
 PODS_ROOT = ${SRCROOT}/Pods
+PODS_XCFRAMEWORKS_BUILD_DIR = $(PODS_CONFIGURATION_BUILD_DIR)/XCFrameworkIntermediates
 USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

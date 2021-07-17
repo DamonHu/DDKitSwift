@@ -22,7 +22,7 @@ extension ZXUserDefaultManager: ZXKitPluginProtocol {
     }
 
     public var pluginType: ZXKitPluginType {
-        return .other
+        return .data
     }
 
     public var isRunning: Bool {

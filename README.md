@@ -99,6 +99,8 @@ ZXKit.regist(plugin: ZXFileBrowser.shared())
 - [x] FPS display ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
 - [x] Sandbox FileBrowser ☞ [ZXKitCode/ZXFileBrowser](https://github.com/ZXKitCode/ZXFileBrowser)
 - [x] UserDefault data manager ☞ [ZXKitCode/ZXUserDefaultManager](https://github.com/ZXKitCode/ZXUserDefaultManager)
+- [x] network record ☞ [ZXKitCode/netfox-zxkit](https://github.com/ZXKitCode/netfox-zxkit)
+
 
 ## preview
 

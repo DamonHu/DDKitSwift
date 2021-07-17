@@ -24,6 +24,10 @@ import ZXFileBrowser
 import ZXUserDefaultManager
 #endif
 
+#if canImport(netfox_zxkit)
+import netfox_zxkit
+#endif
+
 public extension ZXKit {
     static func registPlugin() {
         #if canImport(ZXKitLogger)
@@ -40,6 +44,9 @@ public extension ZXKit {
         #endif
         #if canImport(ZXUserDefaultManager)
         ZXKit.regist(plugin: ZXUserDefaultManager.shared)
+        #endif
+        #if canImport(netfox_zxkit)
+        ZXKit.regist(plugin: NetFoxZXKit())
         #endif
     }
 }

@@ -4,6 +4,10 @@ PODS:
     - HDPingTools/core
     - ZXKitCore/core
     - ZXKitLogger/zxkit
+  - netfox (1.19.0)
+  - netfox-zxkit (0.0.2):
+    - netfox
+    - ZXKitCore
   - SnapKit (5.0.1)
   - ZXFileBrowser/core (1.1.1):
     - SnapKit
@@ -11,6 +15,8 @@ PODS:
   - ZXFileBrowser/zxkit (1.1.1):
     - ZXFileBrowser/core
     - ZXKitCore/core
+  - ZXKitCore (0.1.5):
+    - ZXKitCore/core (= 0.1.5)
   - ZXKitCore/core (0.1.5):
     - SnapKit
     - ZXKitUtil
@@ -30,15 +36,16 @@ PODS:
   - ZXKitUtil (3.0.1):
     - ZXKitUtil/core (= 3.0.1)
   - ZXKitUtil/core (3.0.1)
-  - ZXUserDefaultManager/core (0.0.2):
+  - ZXUserDefaultManager/core (0.0.3):
     - SnapKit
     - ZXKitUtil
-  - ZXUserDefaultManager/zxkit (0.0.2):
+  - ZXUserDefaultManager/zxkit (0.0.3):
     - ZXKitCore/core
     - ZXUserDefaultManager/core
 
 DEPENDENCIES:
   - HDPingTools/zxkit
+  - netfox-zxkit
   - ZXFileBrowser/zxkit
   - ZXKitFPS/zxkit
   - ZXKitLogger/zxkit
@@ -47,6 +54,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - HDPingTools
+    - netfox
+    - netfox-zxkit
     - SnapKit
     - ZXFileBrowser
     - ZXKitCore
@@ -57,14 +66,16 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   HDPingTools: a63e1f4f6a47199bbb45d94768372aad02289fcb
+  netfox: efeec1d23406df6cd605212f09a40957bb5654eb
+  netfox-zxkit: 0c77def815dc5f5d9cdc8fee30c0389b6fad3013
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   ZXFileBrowser: c8943dba4d7c459a1cbe6245517f1714241d5f99
   ZXKitCore: 51a3cdf16252e8e023c7bcc6d52b3d251faaed3c
   ZXKitFPS: 4af1789e55750cfeb5153a42be5845ed008ce729
   ZXKitLogger: beed80e5f93b8bd59cab8771ef414b5988a553fb
   ZXKitUtil: 7f8782b19f1696fe259d07f4048196be5f2ea6b7
-  ZXUserDefaultManager: 8f7948aa7a7cced268c8b14ad2284e6954728f7f
+  ZXUserDefaultManager: 7ab55135d88cc34094c83bf34f7454e3f3a11160
 
-PODFILE CHECKSUM: 8c9dfca3d31092f7049edf59a085057ef57411c5
+PODFILE CHECKSUM: 05fb152d42fc9b24e4d36c3bccd3bdc70b273e0c
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1
