@@ -52,7 +52,7 @@ ZXKit.hide()
 ZXKit.close()
 ```
 
-## Zxkitswift built-in plug-in function
+## ZXKitSwift built-in plug-in function
 
 ![](./readmeResource/zxkitSwift_en.jpg)
 
