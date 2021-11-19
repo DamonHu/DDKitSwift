@@ -1,20 +1,10 @@
-# ZXKit
+# ZXKitSwift
 
 ![](./readmeResource/zxkit.png)
 
 [中文文档](./README_zh.md)
 
-`ZXKit` is a debugging tool framework integrated on the iOS side, named after my favorite novel "Zhu Xian".
-
-> 天地不仁，以万物为刍狗
-> 
-> The world is not benevolent, and everything is a dog
-
-Because the debugging frameworks developed before are relatively scattered, it is hoped that a common framework can be used to combine different debugging tools through the structure of the plug-in.
-
-This tool is for efficient positioning and solving of problems, rather than pursuing big and comprehensive. Therefore, iOS-side private functions, disabled interfaces and other functions that affect the launch of the App Store are not provided by default.
-
-Of course, you can also specify a custom plug-in to install. The custom plug-in may call the disable function of the iOS system and cause the review to be rejected. Please confirm before integration~
+`ZXKitSwift` is a collection of debugging tools for iOS platform. If you want to continue integrating other [ZXKitCore](https://github.com/ZXKitCode/core) Plugins, please check the development documentation of `ZXKitCore`.
 
 ## Integrate ZXKit
 
@@ -32,12 +22,12 @@ pod 'ZXKitSwift'
 import ZXKitSwift
 ```
 
-3、registPlugin
+3、Register all built-in plug-ins
 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-	//注册所有内置插件
+	//Register all built-in plug-ins
 	ZXKit.registPlugin()
 	
 	return true
@@ -62,37 +52,9 @@ ZXKit.hide()
 ZXKit.close()
 ```
 
-## advanced operation
+## Zxkitswift built-in plug-in function
 
-The advanced operation provides a way for personalized plug-in access, and it is still very simple to use, and there are more steps to register yourself than the direct default integration.
-
-For example, the access and registration of the following multiple plug-ins
-
-```
-//log plugin
-pod 'ZXKitLogger/zxkit'
-//regist plugin
-ZXKitLogger.registZXKit()
-
-//ping plugin
-pod 'HDPingTools/zxkit'
-//regist
-ZXKit.regist(plugin: pingTools)
-
-//FPS plugin
-pod 'ZXKitFPS/zxkit'
-//regist
-let fps = ZXKitFPS()
-fps.registZXKitPlugin()
-
-//file browser plugin
-pod 'ZXFileBrowser/zxkit'
-//regist
-ZXKit.regist(plugin: ZXFileBrowser.shared())
-```
-
-
-## Default function
+![](./readmeResource/zxkitSwift_en.jpg)
 
 - [x] log ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
 - [x] network ping test  ☞ [DamonHu/HDPingTools](https://github.com/DamonHu/HDPingTools)
@@ -106,9 +68,6 @@ ZXKit.regist(plugin: ZXFileBrowser.shared())
 
 ![](./readmeResource/preview.gif)
 
-## Custom plugin develop
-
-If you need to develop a custom plug-in, you only need to implement `ZXKitPluginProtocol`. The way to achieve this can be found in the documentation of [ZXKitCode/core](https://github.com/ZXKitCode/core)
 
 ## License
 
