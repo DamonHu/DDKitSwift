@@ -16,12 +16,6 @@ func UIImageHDBoundle(named: String?) -> UIImage? {
     return UIImage(named: name, in: bundle, compatibleWith: nil)
 }
 
-extension HDPingTools {
-    public func registZXKitPlugin() {
-        ZXKit.regist(plugin: self)
-    }
-}
-
 //ZXKitPlugin
 extension HDPingTools: ZXKitPluginProtocol {
     public var pluginIdentifier: String {

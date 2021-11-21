@@ -31,13 +31,13 @@ import netfox_zxkit
 public extension ZXKit {
     static func registPlugin() {
         #if canImport(ZXKitLogger)
-        ZXKitLogger.registZXKit()
+        ZXKit.regist(plugin: ZXKitLogger.shared)
         #endif
         #if canImport(ZXKitFPS)
-        ZXKitFPS().registZXKitPlugin()
+        ZXKit.regist(plugin: ZXKitFPS())
         #endif
         #if canImport(HDPingTools)
-        HDPingTools(hostName: nil).registZXKitPlugin()
+        ZXKit.regist(plugin: HDPingTools())
         #endif
         #if canImport(ZXFileBrowser)
         ZXKit.regist(plugin: ZXFileBrowser.shared)

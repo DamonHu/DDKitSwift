@@ -15,12 +15,6 @@ func UIImageHDBoundle(named: String?) -> UIImage? {
     return UIImage(named: name, in: bundle, compatibleWith: nil)
 }
 
-extension ZXKitFPS {
-    public func registZXKitPlugin() {
-        ZXKit.regist(plugin: self)
-    }
-}
-
 //ZXKitPlugin
 extension ZXKitFPS: ZXKitPluginProtocol {
     public var pluginIdentifier: String {

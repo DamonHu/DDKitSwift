@@ -65,16 +65,23 @@ public private(set) var isPing = false				//you can judge whether there is a pin
 
 ### 5、Support display in ZXKit
 
+**The plug-in has been integrated in [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift) by default, if you have already integrated `ZXKitSwift`, there is no need to repeat the integration**
+
 This function supports ZXKit display, if you need to display, you can use
 
 ```
 pod 'HDPingTools/zxkit'
 ```
 
-Register the plug-in to display it in `ZXKit`
+Register the plug-in to `ZXKit` in `AppDelegate`
 
 ```
-ZXKit.regist(plugin: pingTools)
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+	ZXKit.regist(plugin: HDPingTools())
+	
+	return true
+}
 ```
 
 
@@ -134,16 +141,24 @@ public private(set) var isPing = false				//可以判断当前是否有ping任�
 
 ### 5、可支持在ZXKit显示
 
+**该插件已经默认集成在[ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift)中，如果您已经集成了`ZXKitSwift`，无需重复集成**
+
 该功能支持ZXKit显示，如果需要展示，可以使用
 
 ```
 pod 'HDPingTools/zxkit'
 ```
 
-注册插件即可在`ZXKit`中显示
+之后可在`AppDelegate`的启动函数中注册到`ZXKit`即可
 
 ```
-ZXKit.regist(plugin: pingTools)
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+	ZXKit.regist(plugin: HDPingTools())
+	
+	return true
+}
+
 ```
 
 

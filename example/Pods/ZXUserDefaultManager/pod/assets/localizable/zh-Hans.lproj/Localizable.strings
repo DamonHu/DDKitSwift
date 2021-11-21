@@ -15,6 +15,6 @@
 "cancel" = "取消";
 "paste here" = "粘贴到此处";
 "move here" = "移动到此处";
-"UserDefaultManager" = "UserDefault管理";
+"UserDefaultManager" = "UserDefault数据管理";
 "Hash value of the file" = "文件的hash值";
 "save" = "保存";

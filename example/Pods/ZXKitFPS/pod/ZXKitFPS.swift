@@ -22,6 +22,9 @@ open class ZXKitFPS {
     public init() {}
 
     public func start(success: ((Int) -> Void)?) {
+        if self.isRunning {
+            self.stop()
+        }
         isRunning = true
         self.complete = success
         self.displayLink = CADisplayLink(target: self, selector: #selector(tick(link:)))
@@ -32,6 +35,8 @@ open class ZXKitFPS {
         #if canImport(ZXKitCore)
         ZXKit.resetFloatButton()
         #endif
+        lastTime = 0
+        count = 0
         isRunning = false
         self.displayLink?.invalidate()
     }

@@ -2,6 +2,10 @@
 
 [中文文档](./README_zh.md)
 
+该项目由[HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)更新升级而来
+
+Upgraded from [HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)
+
 iOS端将输出日志log悬浮显示在屏幕上，可以生成日志文件分享，便于在真机没有连接xcode的情况下调试信息。可以分享、筛选log等操作。使用SQLite存储日志信息，支持系统分享和屏幕FPS显示
 
 The iOS terminal will display the output log suspended on the screen, which can generate log file sharing, and debug information when the real machine is not connected to Xcode. You can share, filter logs and other operations. Use SQLite to store log information, support system sharing and screen FPS display
@@ -9,8 +13,6 @@ The iOS terminal will display the output log suspended on the screen, which can 
 
 ## Introduction to English
 
-
-Project address: [https://github.com/DamonHu/HDWindowLoggerSwift](https://github.com/DamonHu/HDWindowLoggerSwift)
 
 In addition to displaying on the screen, you can set whether to automatically scroll the log for debugging, or you can share the output log to WeChat, twitter, etc. for offline viewing. At the same time, you can search for output content, Sensitive content can be encrypted with a password, and shared files are also encrypted, and can be decrypted online with a password.
 
@@ -85,16 +87,23 @@ printPrivacy(log) // Output of encrypted data, the specific encryption method is
 Output format
 
 ```
-10:33:00.457  >   ✅✅[File:ViewController.swift]:[Line:69:[Function:onClickButton()]]-Log:
-[
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
-]
+2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+警告提示
 
-10:33:00.458  >   🖤🖤[File:ViewController.swift]:[Line:53:[Function:onClickButton()]]-Log:
-测试输出，不会写入悬浮窗
+2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+错误出现
+
+2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+{
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
+}
+
+2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
+测试输出，默认不会写入数据库
 ```
 
 ## III. more settings
@@ -105,16 +114,48 @@ Output format
 ZXKitLogger.isFullLogOut = true
 ```
 
-If set to output all debugging information, the output format is as follows, including the output file, the number of lines called, and the function called
+If it is set to `true`, the output format is as follows, including the output file, the number of lines called, and the function name
 
 ```
-13: 51: 38.498> [File: ViewController.swift]: [Line: 41: [Function: onClickButton ()]]-Log:
-[
-  "1111111",
-  "22222222",
-  "sdjkhfsjkdfjkhsdhjfk",
-  "3333sjdhgfhjg"
-]
+2021-08-11 10:07:28.378 ---- ⚠️⚠️ ---- File: ViewController.swift -- Line: 82 -- Function:ViewController.swift.onClickButton() ----
+警告提示
+
+2021-08-11 10:07:28.380 ---- ❌❌ ---- File: ViewController.swift -- Line: 84 -- Function:ViewController.swift.onClickButton() ----
+错误出现
+
+2021-08-11 10:07:28.381 ---- ⛔️⛔️ ---- File: ViewController.swift -- Line: 86 -- Function:ViewController.swift.onClickButton() ----
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+2021-08-11 10:07:28.383 ---- ✅✅ ---- File: ViewController.swift -- Line: 89 -- Function:ViewController.swift.onClickButton() ----
+{
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰",
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬"
+}
+
+2021-08-11 10:07:28.388 ---- 💜💜 ---- File: ViewController.swift -- Line: 76 -- Function:ViewController.swift.onClickButton() ----
+测试输出，默认不会写入数据库
+```
+
+If it is set to `false`, the output format is as follows
+
+```
+2021-08-11 10:10:33.309 ---- ⚠️⚠️ ---- 
+警告提示
+
+2021-08-11 10:10:33.310 ---- ❌❌ ---- 
+错误出现
+
+2021-08-11 10:10:33.312 ---- ⛔️⛔️ ---- 
+AAuKjIm5hC2jiPqz7OKHAngWspeACyWZufDguqdOcugituhWV8jnbr/6SHYoK0/9
+
+2021-08-11 10:10:33.318 ---- ✅✅ ---- 
+{
+  "hhhhhhh" : "撒旦法是打发斯蒂芬是打发斯蒂芬",
+  "77777" : "数据库的复健科花见花开会尽快圣诞节开发和金黄色的费四大皆空回复就开始和豆腐是砍价的回复斯柯达金凤凰"
+}
+
+2021-08-11 10:10:33.323 ---- 💜💜 ---- 
+测试输出，默认不会写入数据库
 ```
 
 ### 2、 Whether to output content synchronously in the debug bar at the bottom of xcode
@@ -158,10 +199,10 @@ ZXKitLogger.maxDisplayCount = 100
 ZXKitLogger.deleteLogFile()
 ```
 
-### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, the default is 7 days
+### 9、 The validity period of the local log file (days), the local log beyond the validity period will be deleted, 0 is no validity period, default is 30 days
 
 ```
-ZXKitLogger.logExpiryDay = 0
+ZXKitLogger.logExpiryDay = 30
 ```
 
 ### 10、storageLevels
@@ -207,6 +248,31 @@ if let enumer = FileManager.default.enumerator(atPath: dbFolder.path) {
 }
 ```
 
+### 12. Directly display log sharing window
+
+If you don't want users to see the log output window, but just let them share the log, you can call
+
+```
+ZXKitLogger.showShare()
+```
+
+### 13、Display log upload, select window and button
+
+If you want users to upload DB files, in addition to traversing by themselves, we also provide a shortcut scheme. Like sharing, call
+
+```
+ZXKitLogger.showUpload()
+```
+
+The upload option will appears. The callback determined after the user selects is in `uploadcomplete`. You can implement the callback, for example
+
+```
+ZXKitLogger.uploadComplete = { file in
+     print(file)
+     //Process upload
+}
+```
+
 ### LogContent protocol
 
 If you want to customize the output content, you can integrate and use this type of `LogContent` protocol. For example, you can print the `URL` type to output only its` path`. You can directly set the returned `logStringValue`.
@@ -234,7 +300,7 @@ Then register to 'zxkit' in `AppDelegate`
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-	ZXKitLogger.registZXKit()
+	ZXKit.regist(plugin: ZXKitLogger.shared)
 	
 	return true
 }
@@ -279,11 +345,12 @@ Here are a few online sites recommended, you can also Google it by yourself
 * [http://tools.bugscaner.com/cryptoaes/](http://tools.bugscaner.com/cryptoaes/)
 * [http://tool.chacuo.net/cryptaes](http://tool.chacuo.net/cryptaes)
 
-## V. Other instructions
+## V. Other Tips
 
 1. For the convenience of viewing, it is divided into three types: info, warning and error. It corresponds to three different colors for easy viewing.
 2. Click the corresponding cell to copy the output log directly to the system clipboard.
 3. Share the system share that is called. Which software you can share depends on which software is installed on your phone.
+4. The shared log file can be viewed in any text editor. When viewed in 'vscode', the code will be highlighted
 
 ## License
 

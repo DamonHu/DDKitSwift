@@ -113,19 +113,59 @@ public func ZXPrivacyLog(_ log:Any ..., file:String = #file, funcName:String = #
 
 ///log的输出
 public class ZXKitLogger {
+    public static let shared = ZXKitLogger()
     public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var storageLevels: ZXKitLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
-    //解密隐私数据的密码，默认为空不加密
-    public static var privacyLogPassword = "" {
-        willSet {
-            assert(newValue.count == kCCKeySizeAES256, "The password requires 32 characters".ZXLocaleString)
-        }
-    }
-    public static var logExpiryDay = 7        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为7天
+    public static var logExpiryDay = 30        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
     public static var maxDisplayCount = 100       //屏幕最大的显示数量，适量即可，0为不限制
     public static var userID = "0"             //为不同用户创建的独立的日志库
-    public static var isShowFPS = true {
+    public static var isShowFPS = true         //是否显示屏幕FPS状态
+    public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
+    /*隐私数据采用AESCBC加密
+     *需要设置密码privacyLogPassword
+     *初始向量privacyLogIv
+     *结果编码类型可以选择base64和hex编码
+     **/
+    public static var privacyLogPassword = "12345678901234561234567890123456"
+    public static var privacyLogIv = "abcdefghijklmnop"
+    public static var privacyResultEncodeType = ZXKitUtilEncodeType.hex
+
+    //MARK: Private
+    private let mFPSTools = ZXKitFPS()
+    private lazy var loggerWindow: ZXKitLoggerWindow? = {
+        var window: ZXKitLoggerWindow?
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    window = ZXKitLoggerWindow(windowScene: windowScene)
+                }
+            }
+        }
+        if window == nil {
+            window = ZXKitLoggerWindow(frame: CGRect.zero)
+        }
+        return window
+    }()
+    private lazy var pickerWindow: ZXKitLoggerPickerWindow? = {
+        var window: ZXKitLoggerPickerWindow?
+        if #available(iOS 13.0, *) {
+            for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
+                if windowScene.activationState == .foregroundActive {
+                    window = ZXKitLoggerPickerWindow(windowScene: windowScene)
+                }
+            }
+        }
+        if window == nil {
+            window = ZXKitLoggerPickerWindow(frame: CGRect.zero)
+        }
+        return window
+    }()
+    private var floatWindow: ZXKitLoggerFloatWindow?
+    var isPasswordCorrect: Bool = false
+    private let logQueue = DispatchQueue(label:"com.ZXKitLogger.logQueue", qos:.utility, attributes:.concurrent)
+    //是否显示屏幕FPS状态
+    private static var _isShowFPS = true {
         willSet {
             if newValue {
                 shared.mFPSTools.start { (fps) in
@@ -150,15 +190,8 @@ public class ZXKitLogger {
                 }
             }
         }
-    }            //是否显示屏幕FPS状态
-    //MARK: Private
-    private let mFPSTools = ZXKitFPS()
-    private var loggerWindow: ZXKitLoggerWindow?
-    private var floatWindow: ZXKitLoggerFloatWindow?
-    var isPasswordCorrect: Bool = false
-    static let shared = ZXKitLogger()
+    }
 
-    private let logQueue = DispatchQueue(label:"com.HDWindowLogger.logQueue", qos:.utility, attributes:.concurrent)
     //log的Public函数
     /// 根据日志的输出类型去输出相应的日志，不同日志类型颜色不一样
     /// - Parameter log: 日志内容
@@ -170,7 +203,7 @@ public class ZXKitLogger {
             loggerItem.mCreateDate = Date()
 
             let fileName = (file as NSString).lastPathComponent;
-            loggerItem.mLogDebugContent = "[File:\(fileName)]:[Line:\(lineNum):[Function:\(funcName)]]-Log:"
+            loggerItem.mLogDebugContent = "File: \(fileName) -- Line: \(lineNum) -- Function:\(fileName).\(funcName) ----"
             loggerItem.mLogContent = log
 
             if self.isSyncConsole {
@@ -215,20 +248,8 @@ public class ZXKitLogger {
     public class func show() {
         DispatchQueue.main.async {
             self.shared.floatWindow?.isHidden = true
-            if self.shared.loggerWindow == nil {
-                if #available(iOS 13.0, *) {
-                    for windowScene:UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
-                        if windowScene.activationState == .foregroundActive {
-                            self.shared.loggerWindow = ZXKitLoggerWindow(windowScene: windowScene)
-                        }
-                    }
-                }
-                if self.shared.loggerWindow == nil {
-                    self.shared.loggerWindow = ZXKitLoggerWindow(frame: CGRect.zero)
-                }
-            }
             self.shared.loggerWindow?.isHidden = false
-            self.isShowFPS = true
+            self._isShowFPS = false
         }
     }
     
@@ -236,6 +257,7 @@ public class ZXKitLogger {
     public class func hide() {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
+            self.shared.pickerWindow?.isHidden = true
             #if canImport(ZXKitCore)
 //            ZXWarnLog(NSLocalizedString("The float button already exists", comment: ""))
             #else
@@ -256,6 +278,9 @@ public class ZXKitLogger {
                 }
                 self.shared.floatWindow?.isHidden = false
             }
+            if self.isShowFPS {
+                self._isShowFPS = true
+            }
             #endif
         }
     }
@@ -265,6 +290,8 @@ public class ZXKitLogger {
         DispatchQueue.main.async {
             self.shared.loggerWindow?.isHidden = true
             self.shared.floatWindow?.isHidden = true
+            self.shared.pickerWindow?.isHidden = true
+            self._isShowFPS = false
         }
     }
 
@@ -282,6 +309,19 @@ public class ZXKitLogger {
                 }
             }
         }
+    }
+
+
+    ///显示分享弹窗
+    public class func showShare(isCloseWhenComplete: Bool = true) {
+        self.shared.pickerWindow?.isHidden = false
+        self.shared.pickerWindow?.showPicker(pickType: .share, isCloseWhenComplete: isCloseWhenComplete)
+    }
+
+    ///显示上传弹窗
+    public class func showUpload(isCloseWhenComplete: Bool = true) {
+        self.shared.pickerWindow?.isHidden = false
+        self.shared.pickerWindow?.showPicker(pickType: .upload, isCloseWhenComplete: isCloseWhenComplete)
     }
 
     //MARK: init
@@ -308,7 +348,7 @@ private extension ZXKitLogger {
                     if file.hasSuffix(".db") {
                         //截取日期
                         let index2 = file.startIndex
-                        let index3 = file.index(file.startIndex, offsetBy: 9)
+                        let index3 = file.index(index2, offsetBy: 9)
                         let dateString = file[index2...index3]
                         let fileDate = dateFormatter.date(from: String(dateString))
                         if let fileDate = fileDate {

@@ -18,7 +18,7 @@ extension ZXUserDefaultManager: ZXKitPluginProtocol {
     }
 
     public var pluginTitle: String {
-        return "ZXUserDefaultManager".ZXLocaleString
+        return "UserDefaultManager".ZXLocaleString
     }
 
     public var pluginType: ZXKitPluginType {
