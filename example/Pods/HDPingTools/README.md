@@ -6,8 +6,9 @@ This is an iOS platform for Ping tools, using swift language development. Suppor
 
 ### [Document for English](#english) | [中文文档](#chinese)
 
-![the ScreenShot 日志截图预览](./screenshot.png)
-
+| log | iPhone X状态栏 statusBar |  状态栏 statusBar |
+|----|----|----|
+|![the ScreenShot 日志截图预览](./screenshot.png)|![the ScreenShot 状态栏](./screenshot1.jpg)|![the ScreenShot 状态栏](./screenshot2.jpg)
 
 ## introduce
 
@@ -61,6 +62,7 @@ public var timeout: HDPingTimeInterval = .millisecond(1000)  //user defined time
 public var debugLog = true                                  //enable log output
 public var stopWhenError = false                            //stop Ping when an error is encountered
 public private(set) var isPing = false				//you can judge whether there is a ping task in progress
+public var showNetworkActivityIndicator: NetworkActivityIndicatorStatus = .auto              //Whether to display in the status bar
 ```
 
 ### 5、Support display in ZXKit
@@ -137,6 +139,7 @@ public var timeout: HDPingTimeInterval = .millisecond(1000)  //自定义超时�
 public var debugLog = true                                  //是否开启日志输出
 public var stopWhenError = false                            //遇到错误停止ping
 public private(set) var isPing = false				//可以判断当前是否有ping任务在进行中
+public var showNetworkActivityIndicator: NetworkActivityIndicatorStatus = .auto              //是否在状态栏显示
 ```
 
 ### 5、可支持在ZXKit显示

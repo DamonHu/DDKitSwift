@@ -24,9 +24,9 @@ The project uses' SQLite 'efficient storage, only records data during the backgr
 
 
 
-|mobile preview|Xcode preview|share & FPS|
-|----|----|----|
-|![](./readmeResources/mobile_preview.png)|![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
+|preview|share & FPS|
+|----|----|
+|![](./readmeResources/mobile_preview.png)<br/>Xcode Preview<br/>![](./readmeResources/xcode_preview.png)|![](./readmeResources/share_preview.png)|
 
 ![](./readmeResources/preview.png)
 
@@ -73,9 +73,9 @@ ZXKitLogger.show()
 The font colors of the three output methods are different, and the corresponding types of printLog are different.
 
 ```
-printLog(log)	//the log will not be written to the window, only output in xcode
+printDebug(log)	//the log will not be written to the window, only output in xcode
 
-printInfo(log) // Log's textColor is green
+printLog(log) // Log's textColor is green
 
 printWarn(log) // log's textColor is yellow
 

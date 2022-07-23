@@ -25,6 +25,12 @@ public struct HDPingResponse {
     public var responseBytes: Int = 0
 }
 
+public enum NetworkActivityIndicatorStatus {
+    case auto       //自动显示
+    case always     //一直显示
+    case none       //不显示
+}
+
 public enum HDPingTimeInterval {
     case second(_ interval: TimeInterval)       //秒
     case millisecond(_ interval: TimeInterval)  //毫秒
@@ -48,11 +54,12 @@ struct HDPingItem {
 }
 
 open class HDPingTools: NSObject {
-
     public var timeout: HDPingTimeInterval = .millisecond(1000)  //自定义超时时间，默认1000毫秒，设置为0则一直等待
     public var debugLog = true                                  //是否开启日志输出
     public var stopWhenError = false                            //遇到错误停止ping
     public private(set) var isPing = false
+    public var showNetworkActivityIndicator: NetworkActivityIndicatorStatus = .auto              //是否在状态栏显示
+
     var isPluginRunning = false
     
     public var hostName: String? {
@@ -68,7 +75,6 @@ open class HDPingTools: NSObject {
             pinger = SimplePing(hostName: host)
             pinger.delegate = self
             if isPing {
-                self.stop()
                 self.start(pingType: oldPinger.addressStyle, interval: self.pingInterval, complete: self.complete)
             }
         }
@@ -96,10 +102,6 @@ open class HDPingTools: NSObject {
         pinger = SimplePing(hostName: host)
         super.init()
         pinger.delegate = self
-        //切到后台
-        NotificationCenter.default.addObserver(self, selector: #selector(_didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        //切到前台
-        NotificationCenter.default.addObserver(self, selector: #selector(_didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     public convenience init(url: URL?) {
@@ -112,7 +114,41 @@ open class HDPingTools: NSObject {
     ///   - interval: 是否重复定时ping
     ///   - complete: 请求的回调
     public func start(pingType: SimplePingAddressStyle = .any, interval: HDPingTimeInterval = .second(0), complete: PingComplete? = nil) {
-        self.stop()
+        //移除消息订阅
+        NotificationCenter.default.removeObserver(self)
+        //切到后台
+        NotificationCenter.default.addObserver(self, selector: #selector(_didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        //切到前台
+        NotificationCenter.default.addObserver(self, selector: #selector(_didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        //开始请求
+        self._start(pingType: pingType, interval: interval, complete: complete)
+    }
+
+    //结束ping
+    public func stop() {
+        //移除消息订阅
+        NotificationCenter.default.removeObserver(self)
+        //移除顶部状态栏显示
+        if self.showNetworkActivityIndicator == .auto || self.showNetworkActivityIndicator == .none {
+            HDPingNetworkActivityIndicator.shared.isHidden = true
+        } else {
+            HDPingNetworkActivityIndicator.shared.isHidden = false
+        }
+        //结束状态
+        self._stop()
+    }
+}
+
+private extension HDPingTools {
+    /// 开始ping请求
+    func _start(pingType: SimplePingAddressStyle = .any, interval: HDPingTimeInterval = .second(0), complete: PingComplete? = nil) {
+        self._stop()
+        if self.showNetworkActivityIndicator == .auto || self.showNetworkActivityIndicator == .always {
+            HDPingNetworkActivityIndicator.shared.isHidden = false
+        } else {
+            HDPingNetworkActivityIndicator.shared.isHidden = true
+        }
+
         self.pingInterval = interval
         self.complete = complete
         self.pinger.addressStyle = pingType
@@ -122,32 +158,30 @@ open class HDPingTools: NSObject {
         if interval.second > 0 {
             sendTimer = Timer(timeInterval: interval.second, repeats: true, block: { [weak self] (_) in
                 guard let self = self else { return }
-                self.start(pingType: pingType, interval: interval, complete: complete)
+                self._start(pingType: pingType, interval: interval, complete: complete)
             })
             //循环发送
             RunLoop.main.add(sendTimer!, forMode: .common)
         }
     }
 
-    public func stop() {
-        self.isPluginRunning = false
+    func _stop() {
         self._complete()
         //停止发送ping
         sendTimer?.invalidate()
         sendTimer = nil
-        
+
         #if canImport(ZXKitCore)
         ZXKit.resetFloatButton()
         ZXKit.textField?.placeholder = self.hostName ?? "www.apple.com"
         ZXKit.textField?.text = self.hostName
         #endif
     }
-}
 
-private extension HDPingTools {
     //ping完成一次之后的清理，ping成功或失败均会调用
     func _complete() {
         self.pinger.stop()
+        self.isPluginRunning = false
         self.isPing = false
         lastSendItem = nil
         lastReciveItem = nil
@@ -161,7 +195,7 @@ private extension HDPingTools {
         if debugLog {
             print("didEnterBackground: stop ping")
         }
-        self.stop()
+        self._stop()
     }
 
     @objc func _didBecomeActive() {
@@ -231,6 +265,7 @@ extension HDPingTools: SimplePingDelegate {
         if debugLog {
             print("ping failed: ", self.shortErrorFromError(error: error as NSError))
         }
+        HDPingNetworkActivityIndicator.shared.update(time: 460)
         if let complete = self.complete {
             complete(nil, HDPingError.requestError)
         }
@@ -238,7 +273,7 @@ extension HDPingTools: SimplePingDelegate {
         self._complete()
         //停止ping
         if stopWhenError {
-            self.stop()
+            self._stop()
         }
     }
 
@@ -255,6 +290,7 @@ extension HDPingTools: SimplePingDelegate {
             checkTimer = Timer(timeInterval: timeout.second, repeats: false, block: { [weak self] (_) in
                 guard let self = self else { return }
                 if self.lastSendItem?.sequence != self.lastReciveItem?.sequence {
+                    HDPingNetworkActivityIndicator.shared.update(time: 460)
                     //超时
                     if let complete = self.complete {
                         complete(nil, HDPingError.timeout)
@@ -263,7 +299,7 @@ extension HDPingTools: SimplePingDelegate {
                     self._complete()
                     //停止ping
                     if self.stopWhenError {
-                        self.stop()
+                        self._stop()
                     }
                 }
             })
@@ -276,6 +312,7 @@ extension HDPingTools: SimplePingDelegate {
         if debugLog {
             print("ping send error: ", sequenceNumber, self.shortErrorFromError(error: error as NSError))
         }
+        HDPingNetworkActivityIndicator.shared.update(time: 460)
         if let complete = self.complete {
             complete(nil, HDPingError.receiveError)
         }
@@ -283,7 +320,7 @@ extension HDPingTools: SimplePingDelegate {
         self._complete()
         //停止ping
         if self.stopWhenError {
-            self.stop()
+            self._stop()
         }
     }
 
@@ -293,6 +330,7 @@ extension HDPingTools: SimplePingDelegate {
             if debugLog {
                 print("\(packet.count) bytes from \(pingAddressIP): icmp_seq=\(sequenceNumber) time=\(time)ms")
             }
+            HDPingNetworkActivityIndicator.shared.update(time: Int(time))
             if let complete = self.complete {
                 let response = HDPingResponse(pingAddressIP: pingAddressIP, responseTime: .millisecond(time), responseBytes: packet.count)
                 complete(response, nil)
@@ -311,7 +349,7 @@ extension HDPingTools: SimplePingDelegate {
         self._complete()
         //停止ping
         if self.stopWhenError {
-            self.stop()
+            self._stop()
         }
     }
 }

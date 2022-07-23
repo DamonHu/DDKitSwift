@@ -7,52 +7,55 @@
 
 import Foundation
 
-private let _sharedInstance = NFXHTTPModelManager()
 
-final class NFXHTTPModelManager: NSObject
-{
-    static let sharedInstance = NFXHTTPModelManager()
-    fileprivate var models = [NFXHTTPModel]()
-    private let syncQueue = DispatchQueue(label: "NFXSyncQueue")
+final class NFXHTTPModelManager: NSObject {
     
-    func add(_ obj: NFXHTTPModel)
-    {
-        syncQueue.async {
+    static let shared = NFXHTTPModelManager()
+    
+    let publisher = Publisher<[NFXHTTPModel]>()
+       
+    /// Not thread safe. Use only from main thread/queue
+    private(set) var models = [NFXHTTPModel]() {
+        didSet {
+            notifySubscribers()
+        }
+    }
+    
+    /// Not thread safe. Use only from main thread/queue
+    var filters = [Bool](repeating: true, count: HTTPModelShortType.allCases.count) {
+        didSet {
+            notifySubscribers()
+        }
+    }
+    
+    /// Not thread safe. Use only from main thread/queue
+    var filteredModels: [NFXHTTPModel] {
+        let filteredTypes = getCachedFilterTypes()
+        return models.filter { filteredTypes.contains($0.shortType) }
+    }
+    
+    /// Thread safe
+    func add(_ obj: NFXHTTPModel) {
+        DispatchQueue.main.async {
             self.models.insert(obj, at: 0)
-            NotificationCenter.default.post(name: NSNotification.Name.NFXAddedModel, object: obj)
         }
     }
     
-    func clear()
-    {
-        syncQueue.async {
-            self.models.removeAll()
-            NotificationCenter.default.post(name: NSNotification.Name.NFXClearedModels, object: nil)
+    /// Not thread safe. Use only from main thread/queue
+    func clear() {
+        models.removeAll()
+    }
+    
+    private func getCachedFilterTypes() -> [HTTPModelShortType] {
+        return filters
+            .enumerated()
+            .compactMap { $1 ? HTTPModelShortType.allCases[$0] : nil }
+    }
+    
+    private func notifySubscribers() {
+        if publisher.hasSubscribers {
+            publisher(filteredModels)
         }
     }
     
-    func getModels() -> [NFXHTTPModel]
-    {        
-        var predicates = [NSPredicate]()
-        
-        let filterValues = NFX.sharedInstance().getCachedFilters()
-        let filterNames = HTTPModelShortType.allValues
-        
-        var index = 0
-        for filterValue in filterValues {
-            if filterValue {
-                let filterName = filterNames[index].rawValue
-                let predicate = NSPredicate(format: "shortType == '\(filterName)'")
-                predicates.append(predicate)
-
-            }
-            index += 1
-        }
-
-        let searchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
-        
-        let array = (self.models as NSArray).filtered(using: searchPredicate)
-        
-        return array as! [NFXHTTPModel]
-    }
 }

@@ -41,13 +41,15 @@ class ZXKitLoggerPickerWindow: UIWindow {
     //MARK: UI
     private lazy var mContentBGView: UIView = {
         let mContentBGView = UIView()
-        mContentBGView.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.6)
+        mContentBGView.translatesAutoresizingMaskIntoConstraints = false
+        mContentBGView.backgroundColor = UIColor.zx.color(hexValue: 0x272d55)
         return mContentBGView
     }()
     
     private lazy var mPickerBGView: UIView = {
         let tView = UIView()
-        tView.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tView.translatesAutoresizingMaskIntoConstraints = false
+        tView.backgroundColor = UIColor.zx.color(hexValue: 0x272d55)
         tView.layer.masksToBounds = true
         tView.layer.borderColor = UIColor(red: 57.0/255.0, green: 74.0/255.0, blue: 81.0/255.0, alpha: 1.0).cgColor
         tView.layer.borderWidth = 1.0
@@ -56,13 +58,16 @@ class ZXKitLoggerPickerWindow: UIWindow {
 
     private lazy var mPickerTipLabel: UILabel = {
         let tipLabel = UILabel()
+        tipLabel.translatesAutoresizingMaskIntoConstraints = false
         tipLabel.text = "Please select the log to share".ZXLocaleString
         tipLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        tipLabel.textColor = UIColor.zx.color(hexValue: 0xffffff)
         return tipLabel
     }()
     
     private lazy var mPickerView: UIPickerView = {
         let tPicker = UIPickerView()
+        tPicker.translatesAutoresizingMaskIntoConstraints = false
         tPicker.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         tPicker.isUserInteractionEnabled = true
         tPicker.dataSource = self
@@ -72,30 +77,39 @@ class ZXKitLoggerPickerWindow: UIWindow {
     
     private lazy var mToolBar: UIToolbar = {
         let tToolBar = UIToolbar()
+        tToolBar.translatesAutoresizingMaskIntoConstraints = false
         tToolBar.barStyle = .default
         return tToolBar
     }()
 }
 
 extension ZXKitLoggerPickerWindow {
-    func showPicker(pickType: PickerType, isCloseWhenComplete: Bool) {
+    func showPicker(pickType: PickerType, date: Date?, isCloseWhenComplete: Bool) {
         self.pickerType = pickType
         self.isCloseWhenComplete = isCloseWhenComplete
-        self.mFileDateNameList = [String]()
-        let path = HDSqliteTools.shared.getDBFolder()
-        //数据库目录
-        if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
-            while let file = enumer.nextObject() {
-                if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
-                    self.mFileDateNameList.append(file.lastPathComponent)
+        if let date = date {
+            //指定日期
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            self.mShareFileName = dateFormatter.string(from: date) + ".db"
+            self._confirmPicker()
+        } else {
+            self.mFileDateNameList = [String]()
+            let path = HDSqliteTools.shared.getDBFolder()
+            //数据库目录
+            if let enumer = FileManager.default.enumerator(at: path, includingPropertiesForKeys: [URLResourceKey.nameKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
+                while let file = enumer.nextObject() {
+                    if let file: URL = file as? URL, file.lastPathComponent.hasSuffix(".db") {
+                        self.mFileDateNameList.append(file.lastPathComponent)
+                    }
                 }
             }
-        }
 
-        //倒序，最后的放前面
-        self.mFileDateNameList = self.mFileDateNameList.sorted().reversed()
-        self.mPickerView.reloadAllComponents()
-        self.mShareFileName = self.mFileDateNameList.first ?? ""
+            //倒序，最后的放前面
+            self.mFileDateNameList = self.mFileDateNameList.sorted().reversed()
+            self.mPickerView.reloadAllComponents()
+            self.mShareFileName = self.mFileDateNameList.first ?? ""
+        }
     }
 }
 
@@ -107,31 +121,30 @@ private extension ZXKitLoggerPickerWindow {
     }
     
     private func _createUI() {
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 350)
+        guard let view = self.rootViewController?.view else { return }
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 420)
         self.rootViewController?.view.addSubview(self.mContentBGView)
-        self.mContentBGView.snp.makeConstraints { (make) in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
-        }
+        self.mContentBGView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        self.mContentBGView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        self.mContentBGView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.mContentBGView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+
         self.mContentBGView.addSubview(self.mPickerBGView)
-        self.mPickerBGView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mContentBGView)
-            make.left.right.bottom.equalTo(self.mContentBGView)
-        }
+        self.mPickerBGView.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor).isActive = true
+        self.mPickerBGView.bottomAnchor.constraint(equalTo: self.mContentBGView.bottomAnchor).isActive = true
+        self.mPickerBGView.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
+        self.mPickerBGView.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
 
         self.mPickerBGView.addSubview(mPickerTipLabel)
-        mPickerTipLabel.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
-            make.height.equalTo(40)
-        }
+        mPickerTipLabel.centerXAnchor.constraint(equalTo: self.mContentBGView.centerXAnchor).isActive = true
+        mPickerTipLabel.topAnchor.constraint(equalTo: self.mContentBGView.topAnchor, constant: 20).isActive = true
+        mPickerTipLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
         self.mPickerBGView.addSubview(self.mToolBar)
-        self.mToolBar.snp.makeConstraints { (make) in
-            make.top.equalTo(mPickerTipLabel.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(40)
-        }
+        self.mToolBar.topAnchor.constraint(equalTo: mPickerTipLabel.bottomAnchor).isActive = true
+        self.mToolBar.leftAnchor.constraint(equalTo: mPickerBGView.leftAnchor).isActive = true
+        self.mToolBar.rightAnchor.constraint(equalTo: mPickerBGView.rightAnchor).isActive = true
+        self.mToolBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.mToolBar.layoutIfNeeded()
 
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(_closePicker))
@@ -140,10 +153,10 @@ private extension ZXKitLoggerPickerWindow {
         self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
 
         self.mPickerBGView.addSubview(self.mPickerView)
-        self.mPickerView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.mToolBar.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
-        }
+        self.mPickerView.topAnchor.constraint(equalTo: self.mToolBar.bottomAnchor).isActive = true
+        self.mPickerView.leftAnchor.constraint(equalTo: self.mPickerBGView.leftAnchor).isActive = true
+        self.mPickerView.rightAnchor.constraint(equalTo: self.mPickerBGView.rightAnchor).isActive = true
+        self.mPickerView.bottomAnchor.constraint(equalTo: self.mPickerBGView.bottomAnchor).isActive = true
     }
     
     @objc private func _closePicker() {
