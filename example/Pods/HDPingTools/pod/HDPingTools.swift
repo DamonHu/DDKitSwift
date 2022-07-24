@@ -58,9 +58,9 @@ open class HDPingTools: NSObject {
     public var debugLog = true                                  //是否开启日志输出
     public var stopWhenError = false                            //遇到错误停止ping
     public private(set) var isPing = false
+    public var isRunning: Bool = false
     public var showNetworkActivityIndicator: NetworkActivityIndicatorStatus = .auto              //是否在状态栏显示
-
-    var isPluginRunning = false
+    
     
     public var hostName: String? {
         get {
@@ -153,7 +153,7 @@ private extension HDPingTools {
         self.complete = complete
         self.pinger.addressStyle = pingType
         self.pinger.start()
-        self.isPluginRunning = true
+        self.isRunning = true
 
         if interval.second > 0 {
             sendTimer = Timer(timeInterval: interval.second, repeats: true, block: { [weak self] (_) in
@@ -170,18 +170,12 @@ private extension HDPingTools {
         //停止发送ping
         sendTimer?.invalidate()
         sendTimer = nil
-
-        #if canImport(ZXKitCore)
-        ZXKit.resetFloatButton()
-        ZXKit.textField?.placeholder = self.hostName ?? "www.apple.com"
-        ZXKit.textField?.text = self.hostName
-        #endif
+        self.isRunning = false
     }
 
     //ping完成一次之后的清理，ping成功或失败均会调用
     func _complete() {
         self.pinger.stop()
-        self.isPluginRunning = false
         self.isPing = false
         lastSendItem = nil
         lastReciveItem = nil

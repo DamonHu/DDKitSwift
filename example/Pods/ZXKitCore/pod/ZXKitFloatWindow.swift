@@ -29,7 +29,7 @@ class ZXKitFloatWindow: UIWindow {
 
     lazy var mButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+        button.backgroundColor = ZXKit.UIConfig.floatButtonColor
         button.setTitle("Z".ZXLocaleString, for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         button.layer.borderColor = UIColor.zx.color(hexValue: 0xffffff).cgColor
@@ -38,14 +38,25 @@ class ZXKitFloatWindow: UIWindow {
         button.addTarget(self, action: #selector(_show), for: UIControl.Event.touchUpInside)
         button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
 
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(p_touchMove(p:)))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(_touchMove(p:)))
         button.addGestureRecognizer(pan)
         return button
     }()
 }
 
-private extension ZXKitFloatWindow {
+extension ZXKitFloatWindow {
+    func resetFloatButton() {
+        mButton.backgroundColor = ZXKit.UIConfig.floatButtonColor
+        mButton.setTitle("Z".ZXLocaleString, for: UIControl.State.normal)
+        mButton.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        mButton.layer.borderColor = UIColor.zx.color(hexValue: 0xffffff).cgColor
+        mButton.zx.addLayerShadow(color: UIColor.zx.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
+        mButton.layer.borderWidth = 4.0
+        mButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+    }
+}
 
+private extension ZXKitFloatWindow {
     func _initVC() {
         self.rootViewController = UIViewController()
         self.windowLevel =  UIWindow.Level.alert
@@ -67,7 +78,7 @@ private extension ZXKitFloatWindow {
         }
     }
 
-    @objc private func p_touchMove(p:UIPanGestureRecognizer) {
+    @objc func _touchMove(p:UIPanGestureRecognizer) {
         guard let window = ZXKitUtil.shared.getCurrentNormalWindow() else { return }
         let panPoint = p.location(in: window)
         //跟随手指拖拽

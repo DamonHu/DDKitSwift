@@ -2,15 +2,13 @@
 
 [中文文档](./README_zh.md)
 
-`ZXKitSwift` is a development and debugging tool integrated with iOS platform, named after my favorite novel "Zhu Xian". `ZXKitCore` is the supporting framework of `ZXKitSwift`, which is mainly used by developers of `ZXKitSwift`.
+`ZXKitCore` is the supporting framework of zxkit plug-ins. It provides plug-in display, management and other functions. You can quickly develop and display zxkit plug-ins by implementing the `ZXKitPluginProtocol`. This document provides plug-in development tutorials and use tutorials, which developers can view as needed.
 
 > 天地不仁，以万物为刍狗
 > 
 > The world is not benevolent, and everything is a dog
 
-## 1、Add plugin for ZXKit
-
-If you need to develop a custom plug-in, you only need to implement `ZXKitPluginProtocol`. The way of implementation is very simple.
+## Develop a ZXKit plugin
 
 ## 1. Import the core file
 
@@ -20,9 +18,9 @@ Project import `ZXKitCore`, you can use cocoapods to quickly import core files
 pod 'ZXKitCore/core'
 ```
 
-## 2. Implement the agreement
+## 2. Implement the protocol
 
-Declare an object and follow the `ZXKitPluginProtocol` protocol. Respectively return the unique ID of the plug-in, the corresponding icon, plug-in name, plug-in type grouping, and startup function
+Declare an object and follow the `ZXKitPluginProtocol` protocol.
 
 ```
 class PluginDemo: NSObject {
@@ -30,6 +28,7 @@ class PluginDemo: NSObject {
 }
 
 extension PluginDemo: ZXKitPluginProtocol {
+	 //Unique identification
     var pluginIdentifier: String {
         return "com.zxkit.pluginDemo"
     }
@@ -62,29 +61,34 @@ extension PluginDemo: ZXKitPluginProtocol {
 }
 ```
 
-## 3. Register the plug-in
+### 3. Register the plug-in
 
 After that, you can register the plug-in, you only need to register once globally
 
-## 4. Done
+
+```
+ZXKit.regist(plugin: PluginDemo())
+```
+
+### 4. Done
 
 After cocoapods is released and online, when the user opens `ZXKit`, your plug-in will appear on the debug collection page
 
-## 5. More configurations
+### 5. More configurations
 
-### 5.1、get floate button
+#### 5.1、get floate button
 
 ```
 ZXKit.floatButton
 ```
 
-### 5.2、reset Float Button
+#### 5.2、reset Float Button
 
 ```
 ZXKit.resetFloatButton()
 ```
 
-### 5.3、Display textField
+#### 5.3、Display textField
 
 ```
 ZXKit.showInput { (text) in
@@ -92,13 +96,13 @@ ZXKit.showInput { (text) in
 }
 ```
 
-### 5.4、get textField
+#### 5.4、get textField
 
 ```
 ZXKit.textField
 ```
 
-## 2、NSNotification
+### NSNotification
 
 `ZXKitCore` provides the following message notifications, you can get the frame display, hide, close, and register new plug-in timing by binding the following notifications
 
@@ -113,9 +117,42 @@ NSNotification.Name.ZXKitHide
 NSNotification.Name.ZXKitClose
 ```
 
-## Default installation
+## Install and use a zxkit plugin
 
-We will collect excellent debugging libraries from time to time. When users execute the installation of `ZXKitSwift`, they will be installed by default. If you want to include the plug-in in the default integrated library of `ZXKitSwift`, first confirm that you are not using the `iOS` private functions and other illegal factors that affect the App Store listing, and then you can download it in [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift) just notify us
+The zxkit plug-in is easy to use. For example, install the log plugin `ZXKitLogger`.
+
+### install it
+
+```
+pod 'ZXKitLogger/zxkit'
+```
+### regist it
+
+```
+ZXKit.regist(plugin: ZXKitLogger.shared)
+```
+
+### open the plugin list
+
+```
+ZXKit.show()
+```
+
+### hide the plugin list
+
+```
+ZXKit.hide()
+```
+
+### close the plugin list
+
+```
+ZXKit.close()
+```
+
+## ZXKitSwift
+
+We have released a cocoaPods library named [ZXKitSwift](https://github.com/ZXKitCode/ZXKitSwift), which is a tool library that integrates multiple ZXKit-plugins。It can help you quickly use multiple debugging functions
 
 ## License
 

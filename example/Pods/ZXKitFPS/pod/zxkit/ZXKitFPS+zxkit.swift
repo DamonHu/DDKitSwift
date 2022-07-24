@@ -36,15 +36,13 @@ extension ZXKitFPS: ZXKitPluginProtocol {
     public func start() {
         ZXKit.hide()
         self.start { (fps) in
-            ZXKit.floatButton?.setTitle("\(fps)FPS", for: UIControl.State.normal)
-            ZXKit.floatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+            var backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
             if fps >= 55 {
-                ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+                backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
             } else if (fps >= 50 && fps < 55) {
-                ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
-            } else {
-                ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
+                backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
             }
+            ZXKit.updateFloatButton(title: "\(fps)FPS", titleColor: UIColor.zx.color(hexValue: 0xffffff), titleFont: UIFont.systemFont(ofSize: 13, weight: .bold), backgroundColor: backgroundColor)
         }
     }
 }

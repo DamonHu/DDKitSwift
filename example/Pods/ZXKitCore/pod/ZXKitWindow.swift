@@ -50,7 +50,7 @@ class ZXKitWindow: UIWindow {
     lazy var mInputBGView: UIView = {
         let tView = UIView()
         tView.isHidden = true
-        tView.backgroundColor = UIColor.zx.color(hexValue: 0x000000, alpha: 0.7)
+        tView.backgroundColor = ZXKit.UIConfig.inputBackgroundColor
         let tap = UITapGestureRecognizer(target: self, action: #selector(_endTextField))
         tView.addGestureRecognizer(tap)
         return tView
@@ -60,7 +60,7 @@ class ZXKitWindow: UIWindow {
         let tTextField = UITextField()
         tTextField.leftViewMode = .always
         tTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 14, height: 10))
-        tTextField.backgroundColor = UIColor.zx.color(hexValue: 0xffffff, alpha: 0.8)
+        tTextField.backgroundColor = ZXKit.UIConfig.textFieldBackgroundColor
         tTextField.font = .systemFont(ofSize: 14)
         tTextField.placeholder = "input text".ZXLocaleString
         tTextField.clearButtonMode = .always
@@ -76,7 +76,7 @@ class ZXKitWindow: UIWindow {
         tButton.addTarget(self, action: #selector(_endTextField), for: .touchUpInside)
         tButton.setTitle("confirm".ZXLocaleString, for: .normal)
         tButton.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
-        tButton.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+        tButton.backgroundColor = ZXKit.UIConfig.inputButtonBackgroundColor
         tButton.layer.borderWidth = 1.0
         tButton.layer.borderColor = UIColor.zx.color(hexValue: 0xcccccc).cgColor
         return tButton
@@ -153,7 +153,7 @@ extension ZXKitWindow: UITextFieldDelegate {
 private extension ZXKitWindow {
 
     func _initVC() {
-        self.backgroundColor = UIColor.zx.color(hexValue: 0xfcecdd, alpha: 0.93)
+        self.backgroundColor = ZXKit.UIConfig.collectionViewBackgroundColor
         let rootViewController = UIViewController()
 
         let navigation = UINavigationController(rootViewController: rootViewController)

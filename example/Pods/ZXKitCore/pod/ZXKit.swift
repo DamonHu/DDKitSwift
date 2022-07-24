@@ -24,30 +24,18 @@ public extension NSNotification.Name {
 }
 
 public class ZXKit: NSObject {
+    public static var UIConfig = ZXKitUIConfig()
+    
     private static var window: ZXKitWindow?
     private static var floatWindow: ZXKitFloatWindow?
+    private static var floatChangeTimer: Timer?     //悬浮按钮的修改
+    private static var isFloatChange = false          //悬浮按钮是否在修改
+    private static var changeQueue = [(String, UIColor, UIFont, UIColor)]() //悬浮按钮修改的队列
     static var pluginList = [[ZXKitPluginProtocol](), [ZXKitPluginProtocol](), [ZXKitPluginProtocol]()]
-    
-    public static var floatButton: UIButton? {
-        return self.floatWindow?.mButton
-    }
+}
 
-    public static var textField: UITextField? {
-        return self.window?.mTextField
-    }
-
-
-    public static func resetFloatButton() {
-        self.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
-        self.floatButton?.setTitle("Z".ZXLocaleString, for: UIControl.State.normal)
-        self.floatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .bold)
-        self.floatButton?.layer.borderColor = UIColor.zx.color(hexValue: 0xffffff).cgColor
-        self.floatButton?.zx.addLayerShadow(color: UIColor.zx.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
-        self.floatButton?.layer.borderWidth = 4.0
-        self.floatButton?.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-    }
-
-    public static func regist(plugin: ZXKitPluginProtocol) {
+public extension ZXKit {
+    static func regist(plugin: ZXKitPluginProtocol) {
         var index = 0
         switch plugin.pluginType {
             case .ui:
@@ -70,7 +58,7 @@ public class ZXKit: NSObject {
         NotificationCenter.default.post(name: .ZXKitPluginRegist, object: self.pluginList)
     }
 
-    public static func show() {
+    static func show() {
         NotificationCenter.default.post(name: .ZXKitShow, object: nil)
         DispatchQueue.main.async {
             self.floatWindow?.isHidden = true
@@ -94,7 +82,7 @@ public class ZXKit: NSObject {
         }
     }
 
-    public static func hide() {
+    static func hide() {
         NotificationCenter.default.post(name: .ZXKitHide, object: nil)
         DispatchQueue.main.async {
             self.window?.isHidden = true
@@ -118,16 +106,53 @@ public class ZXKit: NSObject {
         }
     }
 
-    public static func close() {
+    static func close() {
         NotificationCenter.default.post(name: .ZXKitClose, object: nil)
         DispatchQueue.main.async {
             self.window?.isHidden = true
             self.floatWindow?.isHidden = true
         }
     }
+    
+    static func updateFloatButton(title: String, titleColor: UIColor = UIColor.zx.color(hexValue: 0xffffff), titleFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold), backgroundColor: UIColor = UIColor.zx.color(hexValue: 0x5dae8b) ) {
+        if let last = self.changeQueue.last, last.0 == title, last.1.cgColor == titleColor.cgColor, last.2 == titleFont, last.3.cgColor == backgroundColor.cgColor {
+            //如果和最后一次重复就不再添加
+            return
+        }
+        self.changeQueue.append((title, titleColor, titleFont, backgroundColor))
+        if self.isFloatChange {
+            return
+        }
+        if let button = self.floatWindow?.mButton {
+            self.floatChangeTimer?.invalidate()
+            self.floatChangeTimer = Timer(timeInterval: 2, repeats: true, block: { _ in
+                DispatchQueue.main.async {
+                    if self.changeQueue.isEmpty {
+                        //队列已循环完毕
+                        self.floatWindow?.resetFloatButton()
+                        self.isFloatChange = false
+                        self.floatChangeTimer?.invalidate()
+                        self.floatChangeTimer = nil
+                    } else {
+                        self.isFloatChange = true
+                        let config = self.changeQueue.first!
+                        button.setTitle(config.0, for: .normal)
+                        button.setTitleColor(config.1, for: .normal)
+                        button.titleLabel?.font = config.2
+                        button.backgroundColor = config.3
+                        self.changeQueue.removeFirst()
+                    }
+                }
+            })
+            RunLoop.main.add(self.floatChangeTimer!, forMode: .common)
+            self.floatChangeTimer?.fire()
+        }
+    }
 
-    public static func showInput(complete: ((String)->Void)?) {
+    static func showInput(placeholder: String?, text: String?, complete: ((String)->Void)?) {
         ZXKit.show()
+        self.window?.mTextField.placeholder = placeholder
+        self.window?.mTextField.text = text
         self.window?.showInput(complete: complete)
     }
 }

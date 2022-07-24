@@ -54,8 +54,12 @@ extension ZXDataTableViewCell {
 
         let attributedString = NSMutableAttributedString(string: "Key: \(model.key)\n\n")
         attributedString.setAttributes([NSAttributedString.Key.foregroundColor : UIColor.zx.color(hexValue: 0xFF616D), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold)], range: NSRange(location: 0, length: 4))
-
-        let valueAttributedString = NSMutableAttributedString(string: "Value: \(model.value)")
+        
+        var value = "\(model.value)"
+        if model.value is Bool {
+            value = (model.value as! Bool) ? "true" : "false"
+        }
+        let valueAttributedString = NSMutableAttributedString(string: "Value: \(value)")
         valueAttributedString.setAttributes([NSAttributedString.Key.foregroundColor : UIColor.zx.color(hexValue: 0x5D8233), NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold)], range: NSRange(location: 0, length: 7))
         attributedString.append(valueAttributedString)
         mTitleLabel.attributedText = attributedString

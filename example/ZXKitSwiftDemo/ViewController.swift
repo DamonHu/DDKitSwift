@@ -17,8 +17,10 @@ class ViewController: UIViewController {
 
     func createUI() {
         self.view.backgroundColor = UIColor.white
-        let button = UIButton(frame: CGRect(x: 100, y: UIScreen.main.bounds.size.height - 100, width: 100, height: 100))
-        button.backgroundColor = UIColor.red
+        let button = UIButton(frame: CGRect(x: (UIScreen.main.bounds.size.width - 100)/2.0, y: UIScreen.main.bounds.size.height - 200, width: 100, height: 40))
+        button.setTitle("打开工具", for: .normal)
+        button.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
+        button.backgroundColor = UIColor.blue
         self.view.addSubview(button)
         button.addTarget(self, action: #selector(_click), for: .touchUpInside)
     }

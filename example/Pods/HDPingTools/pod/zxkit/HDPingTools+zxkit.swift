@@ -35,9 +35,11 @@ extension HDPingTools: ZXKitPluginProtocol {
     }
 
     public func start() {
-        ZXKit.textField?.placeholder = self.hostName ?? "www.apple.com"
-        ZXKit.textField?.text = self.hostName
-        ZXKit.showInput { [weak self] (url) in
+        if self.isRunning {
+            self.stop()
+            return
+        }
+        ZXKit.showInput(placeholder: self.hostName ?? "www.apple.com", text: self.hostName) { [weak self] (url) in
             guard let self = self else { return }
             self.hostName = url
             ZXKit.hide()
@@ -48,21 +50,16 @@ extension HDPingTools: ZXKitPluginProtocol {
                 } else if let response = response {
                     let time = Int(response.responseTime.second * 1000)
                     printInfo("ping: \(response.pingAddressIP) sent \(response.responseBytes) data bytes, response:  \(time)ms")
-                    ZXKit.floatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-                    ZXKit.floatButton?.setTitle("\(time)ms", for: .normal)
+                    
+                    var backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
                     if time >= 100 {
-                        ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
+                        backgroundColor = UIColor.zx.color(hexValue: 0xaa2b1d)
                     } else if (time >= 50 && time < 100) {
-                        ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
-                    } else {
-                        ZXKit.floatButton?.backgroundColor = UIColor.zx.color(hexValue: 0x5dae8b)
+                        backgroundColor = UIColor.zx.color(hexValue: 0xf0a500)
                     }
+                    ZXKit.updateFloatButton(title: "\(time)ms", titleColor: UIColor.zx.color(hexValue: 0xffffff), titleFont: UIFont.systemFont(ofSize: 13, weight: .bold), backgroundColor: backgroundColor)
                 }
             }
         }
-    }
-    
-    public var isRunning: Bool {
-        return self.isPluginRunning
     }
 }

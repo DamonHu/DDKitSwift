@@ -11,7 +11,7 @@ import ZXKitUtil
 
 class ZXUserDefaultEditVC: UIViewController {
     private var model: ZXDataCellModel
-
+    
     init(model: ZXDataCellModel) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
@@ -20,7 +20,6 @@ class ZXUserDefaultEditVC: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +44,13 @@ class ZXUserDefaultEditVC: UIViewController {
         segment.addTarget(self, action: #selector(_changeType), for: .valueChanged)
         return segment
     }()
+    
+    lazy var mValueSegment: UISegmentedControl = {
+        let segment = UISegmentedControl(items: ["true", "false"])
+        segment.isHidden = true
+        return segment
+    }()
+    
     lazy var mTextView: UITextView = {
         let textView = UITextView()
         textView.font = .systemFont(ofSize: 14)
@@ -56,11 +62,10 @@ class ZXUserDefaultEditVC: UIViewController {
 }
 
 extension ZXUserDefaultEditVC {
-
     @objc func _rightBarItemClick() {
         switch self.mSegment.selectedSegmentIndex {
             case 0:
-                UserDefaults.standard.set(mTextView.text.boolValue, forKey: model.key)
+                UserDefaults.standard.set(mValueSegment.selectedSegmentIndex == 0 ? true : false, forKey: model.key)
             case 1:
                 UserDefaults.standard.set(Double(String(mTextView.text)) ?? 0, forKey: model.key)
             case 2:
@@ -90,11 +95,17 @@ extension ZXUserDefaultEditVC {
             make.top.equalTo(mTitleLabel.snp.bottom).offset(30)
             make.height.equalTo(34)
         }
+        
+        self.view.addSubview(mValueSegment)
+        mValueSegment.snp.makeConstraints { make in
+            make.left.right.equalTo(mSegment)
+            make.top.equalTo(mSegment.snp.bottom).offset(10)
+            make.height.equalTo(40)
+        }
 
         self.view.addSubview(mTextView)
         mTextView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
+            make.left.right.equalTo(mSegment)
             make.top.equalTo(mSegment.snp.bottom).offset(10)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
@@ -111,24 +122,27 @@ extension ZXUserDefaultEditVC {
         } else if (model.value is NSArray || model.value is NSDictionary) {
             mSegment.selectedSegmentIndex = 3
         }
-        if JSONSerialization.isValidJSONObject(model.value), let jsonData = try? JSONSerialization.data(withJSONObject: model.value, options: .prettyPrinted) {
-            mTextView.text = String(data: jsonData, encoding: .utf8)
-        } else {
-            mTextView.text = "\(model.value)"
-        }
+        self._changeType()
     }
 
     @objc func _changeType() {
+        mValueSegment.isHidden = true
+        mTextView.isHidden = false
+        mTextView.resignFirstResponder()
         switch self.mSegment.selectedSegmentIndex {
             case 0:
-                mTextView.text = "\(model.value)".boolValue ? "true" : "false"
+                mValueSegment.isHidden = false
+                mTextView.isHidden = true
+                mValueSegment.selectedSegmentIndex = "\(model.value)".boolValue ? 0 : 1
             case 1:
+                mTextView.keyboardType = .decimalPad
                 if model.value is NSNumber {
                     mTextView.text = "\(model.value)"
                 } else {
                     mTextView.text = "\(Double("\(model.value)") ?? 0)"
                 }
             default:
+                mTextView.keyboardType = .default
                 if JSONSerialization.isValidJSONObject(model.value), let jsonData = try? JSONSerialization.data(withJSONObject: model.value, options: .prettyPrinted) {
                     mTextView.text = String(data: jsonData, encoding: .utf8)
                 } else {
