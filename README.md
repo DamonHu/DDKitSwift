@@ -54,12 +54,12 @@ ZXKit.close()
 
 ![](./readmeResource/zxkitSwift.jpg)
 
-- [x] log日志 ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
+- [x] log日志 ☞ [DamonHu/logger](https://github.com/DamonHu/logger)
 - [x] 网络ping检测 ☞ [DamonHu/HDPingTools](https://github.com/DamonHu/HDPingTools)
-- [x] FPS检测 ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
-- [x] 沙盒文件浏览 ☞ [ZXKitCode/ZXFileBrowser](https://github.com/ZXKitCode/ZXFileBrowser)
-- [x] UserDefault数据管理 ☞ [ZXKitCode/ZXUserDefaultManager](https://github.com/ZXKitCode/ZXUserDefaultManager)
-- [x] 网络请求拦截查看 ☞ [ZXKitCode/netfox-zxkit](https://github.com/ZXKitCode/netfox-zxkit)
+- [x] FPS检测 ☞ [DamonHu/FPS](https://github.com/DamonHu/FPS)
+- [x] 沙盒文件浏览 ☞ [DamonHu/ZXFileBrowser](https://github.com/DamonHu/ZXFileBrowser)
+- [x] UserDefault数据管理 ☞ [DamonHu/ZXUserDefaultManager](https://github.com/DamonHu/ZXUserDefaultManager)
+- [x] 网络请求拦截查看 ☞ [DamonHu/netfox-zxkit](https://github.com/DamonHu/netfox-zxkit)
 
 ## 效果预览
 

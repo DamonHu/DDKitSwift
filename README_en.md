@@ -58,12 +58,12 @@ ZXKit.close()
 
 ![](./readmeResource/zxkitSwift_en.jpg)
 
-- [x] log ☞ [ZXKitCode/logger](https://github.com/ZXKitCode/logger)
+- [x] log ☞ [DamonHu/logger](https://github.com/DamonHu/logger)
 - [x] network ping test  ☞ [DamonHu/HDPingTools](https://github.com/DamonHu/HDPingTools)
-- [x] FPS display ☞ [ZXKitCode/FPS](https://github.com/ZXKitCode/FPS)
-- [x] Sandbox FileBrowser ☞ [ZXKitCode/ZXFileBrowser](https://github.com/ZXKitCode/ZXFileBrowser)
-- [x] UserDefault data manager ☞ [ZXKitCode/ZXUserDefaultManager](https://github.com/ZXKitCode/ZXUserDefaultManager)
-- [x] network record ☞ [ZXKitCode/netfox-zxkit](https://github.com/ZXKitCode/netfox-zxkit)
+- [x] FPS display ☞ [DamonHu/FPS](https://github.com/DamonHu/FPS)
+- [x] Sandbox FileBrowser ☞ [DamonHu/ZXFileBrowser](https://github.com/DamonHu/ZXFileBrowser)
+- [x] UserDefault data manager ☞ [DamonHu/ZXUserDefaultManager](https://github.com/DamonHu/ZXUserDefaultManager)
+- [x] network record ☞ [DamonHu/netfox-zxkit](https://github.com/DamonHu/netfox-zxkit)
 
 
 ## preview
