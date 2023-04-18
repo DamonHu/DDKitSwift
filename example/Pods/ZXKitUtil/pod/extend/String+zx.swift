@@ -33,7 +33,22 @@ public extension ZXKitUtilNameSpace where T == String {
         string = String(subString)
         return string
     }
-    
+
+    ///Range转换为NSRange
+    func nsRange(from range: Range<String.Index>) -> NSRange? {
+        guard let from = range.lowerBound.samePosition(in: object.utf16), let to = range.upperBound.samePosition(in: object.utf16) else { return nil }
+        return NSRange(location: object.utf16.distance(from: object.utf16.startIndex, to: from), length: object.utf16.distance(from: from, to: to))
+    }
+
+    ///NSRange转换为Range
+    func range(from nsRange: NSRange) -> Range<String.Index>? {
+        guard let from16 = object.utf16.index(object.utf16.startIndex, offsetBy: nsRange.location, limitedBy: object.utf16.endIndex),
+              let to16 = object.utf16.index(from16, offsetBy: nsRange.length,limitedBy: object.utf16.endIndex),
+              let from = String.Index(from16, within: object),
+              let to = String.Index(to16, within: object) else { return nil }
+        return from ..< to
+    }
+
     ///unicode转中文
     func unicodeDecode() -> String {
         let tempStr1 = object.replacingOccurrences(of: "\\u", with: "\\U")

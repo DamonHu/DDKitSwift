@@ -1,0 +1,6 @@
+framework module userDefaultManager_zxkit {
+  umbrella header "userDefaultManager-zxkit-umbrella.h"
+
+  export *
+  module * { export * }
+}

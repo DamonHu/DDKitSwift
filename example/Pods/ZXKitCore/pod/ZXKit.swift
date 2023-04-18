@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import ZXKitUtil
+import ZXKitLogger
 
 extension String{
     var ZXLocaleString: String {
@@ -16,6 +18,13 @@ extension String{
     }
 }
 
+func UIImageHDBoundle(named: String?) -> UIImage? {
+    guard let name = named else { return nil }
+    guard let bundlePath = Bundle(for: ZXKit.self).path(forResource: "ZXKitCore", ofType: "bundle") else { return UIImage(named: name) }
+    guard let bundle = Bundle(path: bundlePath) else { return UIImage(named: name) }
+    return UIImage(named: name, in: bundle, compatibleWith: nil)
+}
+
 public extension NSNotification.Name {
     static let ZXKitPluginRegist = NSNotification.Name("ZXKitPluginRegist")
     static let ZXKitShow = NSNotification.Name("ZXKitShow")
@@ -23,19 +32,29 @@ public extension NSNotification.Name {
     static let ZXKitClose = NSNotification.Name("ZXKitClose")
 }
 
+public enum DisplayMode {
+    case none
+    case input(placeholder: String?, text: String?, endEdit: ((String)->Void)?)
+}
+
 public class ZXKit: NSObject {
     public static var UIConfig = ZXKitUIConfig()
-    
+    public static let DebugFolderPath = ZXKitUtil.shared.createFileDirectory(in: .caches, directoryName: "zxkit")
+
+    //MARK: Private
+    private static var hasConfig = false
     private static var window: ZXKitWindow?
-    private static var floatWindow: ZXKitFloatWindow?
+    internal static var floatWindow: ZXKitFloatWindow?
     private static var floatChangeTimer: Timer?     //悬浮按钮的修改
-    private static var isFloatChange = false          //悬浮按钮是否在修改
-    private static var changeQueue = [(String, UIColor, UIFont, UIColor)]() //悬浮按钮修改的队列
+    private static var changeQueue = [(ZXKitButtonConfig, ZXKitPluginProtocol)]() //悬浮按钮修改的队列
     static var pluginList = [[ZXKitPluginProtocol](), [ZXKitPluginProtocol](), [ZXKitPluginProtocol]()]
 }
 
 public extension ZXKit {
     static func regist(plugin: ZXKitPluginProtocol) {
+        if !hasConfig {
+            self._initConfig()
+        }
         var index = 0
         switch plugin.pluginType {
             case .ui:
@@ -49,6 +68,7 @@ public extension ZXKit {
             return tPlugin.pluginIdentifier == plugin.pluginIdentifier
         }) {
             self.pluginList[index].append(plugin)
+            plugin.didRegist()
         }
         if let window = self.window, !window.isHidden {
             DispatchQueue.main.async {
@@ -58,7 +78,10 @@ public extension ZXKit {
         NotificationCenter.default.post(name: .ZXKitPluginRegist, object: self.pluginList)
     }
 
-    static func show() {
+    static func show(_ mode: DisplayMode = .none) {
+        if !hasConfig {
+            self._initConfig()
+        }
         NotificationCenter.default.post(name: .ZXKitShow, object: nil)
         DispatchQueue.main.async {
             self.floatWindow?.isHidden = true
@@ -78,6 +101,13 @@ public extension ZXKit {
                 }
                 self.window?.isHidden = false
                 self.window?.reloadData()
+            }
+            //显示mode
+            switch mode {
+                case .none:
+                    break
+                case .input(let placeholder, let text, let endEdit):
+                    self.window?.showInput(placeholder: placeholder, text: text, complete: endEdit)
             }
         }
     }
@@ -103,6 +133,12 @@ public extension ZXKit {
                 }
                 self.floatWindow?.isHidden = false
             }
+            let count = ZXKitLogger.getItemCount(type: .error)
+            if count == 0 {
+                self.floatWindow?.setBadge(value: nil, index: 3)
+            } else {
+                self.floatWindow?.setBadge(value: "\(count)", index: 3)
+            }
         }
     }
 
@@ -111,48 +147,52 @@ public extension ZXKit {
         DispatchQueue.main.async {
             self.window?.isHidden = true
             self.floatWindow?.isHidden = true
+            self.floatWindow?.menuButtonType = .default
+            self.floatChangeTimer?.invalidate()
+            self.floatChangeTimer = nil
         }
     }
     
-    static func updateFloatButton(title: String, titleColor: UIColor = UIColor.zx.color(hexValue: 0xffffff), titleFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold), backgroundColor: UIColor = UIColor.zx.color(hexValue: 0x5dae8b) ) {
-        if let last = self.changeQueue.last, last.0 == title, last.1.cgColor == titleColor.cgColor, last.2 == titleFont, last.3.cgColor == backgroundColor.cgColor {
+    static func updateFloatButton(config: ZXKitButtonConfig, plugin: ZXKitPluginProtocol) {
+        if let last = self.changeQueue.last, last.0 == config, last.1.pluginIdentifier == plugin.pluginIdentifier {
             //如果和最后一次重复就不再添加
             return
         }
-        self.changeQueue.append((title, titleColor, titleFont, backgroundColor))
-        if self.isFloatChange {
+        self.changeQueue.append((config, plugin))
+        //更新
+        self._floatButtonChange()
+    }
+}
+
+private extension ZXKit {
+    static func _initConfig() {
+        if hasConfig {
             return
         }
-        if let button = self.floatWindow?.mButton {
-            self.floatChangeTimer?.invalidate()
-            self.floatChangeTimer = Timer(timeInterval: 2, repeats: true, block: { _ in
-                DispatchQueue.main.async {
-                    if self.changeQueue.isEmpty {
-                        //队列已循环完毕
-                        self.floatWindow?.resetFloatButton()
-                        self.isFloatChange = false
-                        self.floatChangeTimer?.invalidate()
-                        self.floatChangeTimer = nil
-                    } else {
-                        self.isFloatChange = true
-                        let config = self.changeQueue.first!
-                        button.setTitle(config.0, for: .normal)
-                        button.setTitleColor(config.1, for: .normal)
-                        button.titleLabel?.font = config.2
-                        button.backgroundColor = config.3
-                        self.changeQueue.removeFirst()
-                    }
-                }
-            })
-            RunLoop.main.add(self.floatChangeTimer!, forMode: .common)
-            self.floatChangeTimer?.fire()
-        }
+        self.hasConfig = true
+        self.regist(plugin: ZXKitLogger.shared)
     }
-
-    static func showInput(placeholder: String?, text: String?, complete: ((String)->Void)?) {
-        ZXKit.show()
-        self.window?.mTextField.placeholder = placeholder
-        self.window?.mTextField.text = text
-        self.window?.showInput(complete: complete)
+    
+    static func _floatButtonChange() {
+        guard let firstQueue = self.changeQueue.first else { return }
+        if let floatWindow = self.floatWindow {
+            if self.floatChangeTimer == nil {
+                self.floatChangeTimer = Timer(timeInterval: 2, repeats: true, block: { timer in
+                    DispatchQueue.main.async {
+                        if self.changeQueue.isEmpty {
+                            //队列已循环完毕
+                            floatWindow.menuButtonType = .default
+                            self.floatChangeTimer?.invalidate()
+                            self.floatChangeTimer = nil
+                        } else {
+                            floatWindow.menuButtonType = .info(config: firstQueue.0, image: firstQueue.1.pluginIcon)
+                            self.changeQueue.removeFirst()
+                        }
+                    }
+                })
+                RunLoop.main.add(self.floatChangeTimer!, forMode: .common)
+                self.floatChangeTimer?.fire()
+            }
+        }
     }
 }

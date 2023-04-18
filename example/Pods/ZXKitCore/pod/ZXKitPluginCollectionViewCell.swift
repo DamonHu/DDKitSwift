@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 class ZXKitPluginCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
@@ -20,25 +19,24 @@ class ZXKitPluginCollectionViewCell: UICollectionViewCell {
 
     func createUI() {
         self.layer.borderWidth = 0.5
-        self.layer.borderColor = UIColor.zx.color(hexValue: 0xd8e3e7).cgColor
+        self.layer.borderColor = UIColor.zx.color(hexValue: 0xeeeeee, alpha: 0.7).cgColor
         self.contentView.addSubview(mImageView)
-        mImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(13)
-            $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(44)
-        }
+        mImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 13).isActive = true
+        mImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
+        mImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        mImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+
         self.contentView.addSubview(mStatusView)
-        mStatusView.snp.makeConstraints {
-            $0.left.equalTo(mImageView.snp.right).offset(-5)
-            $0.top.equalTo(mImageView).offset(-5)
-            $0.width.height.equalTo(10)
-        }
+        mStatusView.topAnchor.constraint(equalTo: self.mImageView.topAnchor, constant: -5).isActive = true
+        mStatusView.leftAnchor.constraint(equalTo: self.mImageView.leftAnchor, constant: -5).isActive = true
+        mStatusView.widthAnchor.constraint(equalToConstant: 10).isActive = true
+        mStatusView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+
+
         self.contentView.addSubview(mTitleLabel)
-        mTitleLabel.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(10)
-            $0.right.equalToSuperview().offset(-10)
-            $0.top.equalTo(mImageView.snp.bottom).offset(5)
-        }
+        mTitleLabel.topAnchor.constraint(equalTo: self.mImageView.bottomAnchor, constant: 5).isActive = true
+        mTitleLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
+        mTitleLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
     }
 
     func updateUI(plugin: ZXKitPluginProtocol) {
@@ -50,14 +48,18 @@ class ZXKitPluginCollectionViewCell: UICollectionViewCell {
     //MARK: UI
     lazy var mImageView: UIImageView = {
         let tImageView = UIImageView()
+        tImageView.translatesAutoresizingMaskIntoConstraints = false
         tImageView.backgroundColor = UIColor(displayP3Red: 62.0/255.0, green: 183.0/255.0, blue: 142.0/255.0, alpha: 1.0)
         tImageView.layer.masksToBounds = true
-        tImageView.layer.cornerRadius = 10
+        tImageView.layer.cornerRadius = 22
+        tImageView.layer.borderWidth = 3
+        tImageView.layer.borderColor = UIColor.zx.color(hexValue: 0xd8e3e7).cgColor
         return tImageView
     }()
 
     lazy var mTitleLabel: UILabel = {
         let tLabel = UILabel()
+        tLabel.translatesAutoresizingMaskIntoConstraints = false
         tLabel.numberOfLines = 2
         tLabel.textAlignment = .center
         tLabel.font = .systemFont(ofSize: 13, weight: .medium)
@@ -67,6 +69,7 @@ class ZXKitPluginCollectionViewCell: UICollectionViewCell {
 
     lazy var mStatusView: UIView = {
         let tView = UIView()
+        tView.translatesAutoresizingMaskIntoConstraints = false
         tView.isHidden = true
         tView.backgroundColor = UIColor.zx.color(hexValue: 0x81b214)
         tView.layer.masksToBounds = true

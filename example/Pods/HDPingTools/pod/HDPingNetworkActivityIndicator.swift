@@ -71,7 +71,7 @@ private extension HDPingNetworkActivityIndicator {
             mLabel.topAnchor.constraint(equalTo: self.mIndicatorWindow.topAnchor).isActive = true
         } else {
             mLabel.font = UIFont.systemFont(ofSize: 12, weight: .bold)
-            mLabel.centerXAnchor.constraint(equalTo: self.mIndicatorWindow.centerXAnchor, constant: self.mIndicatorWindow.frame.size.width/4).isActive = true
+            mLabel.centerXAnchor.constraint(equalTo: self.mIndicatorWindow.centerXAnchor, constant: self.mIndicatorWindow.frame.size.width/8).isActive = true
             mLabel.centerYAnchor.constraint(equalTo: self.mIndicatorWindow.centerYAnchor).isActive = true
         }
     }

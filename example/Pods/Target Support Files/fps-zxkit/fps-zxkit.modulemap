@@ -1,0 +1,6 @@
+framework module fps_zxkit {
+  umbrella header "fps-zxkit-umbrella.h"
+
+  export *
+  module * { export * }
+}

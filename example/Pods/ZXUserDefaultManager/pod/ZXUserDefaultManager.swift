@@ -7,9 +7,6 @@
 
 import UIKit
 import ZXKitUtil
-#if canImport(ZXKitCore)
-import ZXKitCore
-#endif
 
 open class ZXUserDefaultManager: NSObject {
     private static let instance = ZXUserDefaultManager()
@@ -29,9 +26,6 @@ open class ZXUserDefaultManager: NSObject {
 
 public extension ZXUserDefaultManager {
     func start() {
-        #if canImport(ZXKitCore)
-        ZXKit.hide()
-        #endif
         self.mNavigationController.dismiss(animated: false) { [weak self] in
             guard let self = self else { return }
             ZXKitUtil.shared.getCurrentVC()?.present(self.mNavigationController, animated: true, completion: nil)

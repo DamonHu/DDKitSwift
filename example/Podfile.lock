@@ -1,61 +1,70 @@
 PODS:
-  - HDPingTools/core (1.2.10)
-  - HDPingTools/zxkit (1.2.10):
-    - HDPingTools/core
-    - ZXKitCore/core
-    - ZXKitLogger/zxkit
+  - fileBrowser-zxkit (2.0.2):
+    - ZXFileBrowser (~> 2.0)
+    - ZXKitCore (~> 2.0)
+  - fps-zxkit (2.0.1):
+    - ZXKitCore (~> 2.0)
+    - ZXKitFPS (~> 2.0)
+  - HDPingTools (2.0.0):
+    - HDPingTools/core (= 2.0.0)
+  - HDPingTools/core (2.0.0)
   - netfox (1.21.0)
-  - netfox-zxkit (0.1.0):
+  - netfox-zxkit (2.0.0):
     - netfox (= 1.21.0)
-    - ZXKitCore
+    - ZXKitCore (~> 2.0.0)
+  - ping-zxkit (2.0.1):
+    - HDPingTools (~> 2.0)
+    - ZXKitCore (~> 2.0)
   - SnapKit (5.6.0)
-  - ZXFileBrowser/core (1.1.2):
+  - SSZipArchive (2.4.3)
+  - userDefaultManager-zxkit (2.0.1):
+    - ZXKitCore (~> 2.0)
+    - ZXUserDefaultManager (~> 2.0)
+  - ZXFileBrowser (2.0.2):
+    - ZXFileBrowser/core (= 2.0.2)
+  - ZXFileBrowser/core (2.0.2):
     - SnapKit
-    - ZXKitUtil (~> 3.2.0)
-  - ZXFileBrowser/zxkit (1.1.2):
-    - ZXFileBrowser/core
-    - ZXKitCore/core
-  - ZXKitCore (0.1.8):
-    - ZXKitCore/core (= 0.1.8)
-  - ZXKitCore/core (0.1.8):
+    - ZXKitUtil (~> 4.0)
+  - ZXKitCore (2.0.4):
+    - ZXKitCore/core (= 2.0.4)
+  - ZXKitCore/core (2.0.4):
+    - SSZipArchive
+    - ZXKitLogger (~> 4.0)
+    - ZXKitUtil (~> 4.0)
+  - ZXKitFPS (2.0.0):
+    - ZXKitFPS/core (= 2.0.0)
+  - ZXKitFPS/core (2.0.0)
+  - ZXKitLogger (4.0.6):
+    - ZXKitLogger/core (= 4.0.6)
+  - ZXKitLogger/core (4.0.6):
+    - ZXKitUtil (~> 4.0)
+  - ZXKitUtil (4.0.0):
+    - ZXKitUtil/core (= 4.0.0)
+  - ZXKitUtil/core (4.0.0)
+  - ZXUserDefaultManager (2.0.1):
+    - ZXUserDefaultManager/core (= 2.0.1)
+  - ZXUserDefaultManager/core (2.0.1):
     - SnapKit
-    - ZXKitUtil
-  - ZXKitFPS (0.0.8):
-    - ZXKitFPS/core (= 0.0.8)
-  - ZXKitFPS/core (0.0.8)
-  - ZXKitFPS/zxkit (0.0.8):
-    - ZXKitCore/core
-    - ZXKitFPS/core
-  - ZXKitLogger/core (2.9.5):
-    - ZXKitFPS
-    - ZXKitUtil (~> 3.2.0)
-  - ZXKitLogger/zxkit (2.9.5):
-    - ZXKitCore/core
-    - ZXKitLogger/core
-  - ZXKitUtil (3.2.4):
-    - ZXKitUtil/core (= 3.2.4)
-  - ZXKitUtil/core (3.2.4)
-  - ZXUserDefaultManager/core (0.0.5):
-    - SnapKit
-    - ZXKitUtil
-  - ZXUserDefaultManager/zxkit (0.0.5):
-    - ZXKitCore/core
-    - ZXUserDefaultManager/core
+    - ZXKitUtil (~> 4.0)
 
 DEPENDENCIES:
-  - HDPingTools/zxkit
-  - netfox-zxkit
-  - ZXFileBrowser/zxkit
-  - ZXKitFPS/zxkit
-  - ZXKitLogger/zxkit
-  - ZXUserDefaultManager/zxkit
+  - fileBrowser-zxkit (~> 2.0)
+  - fps-zxkit (~> 2.0)
+  - netfox-zxkit (~> 2.0)
+  - ping-zxkit (~> 2.0)
+  - userDefaultManager-zxkit (~> 2.0)
 
 SPEC REPOS:
   trunk:
+    - fileBrowser-zxkit
+    - fps-zxkit
     - HDPingTools
     - netfox
     - netfox-zxkit
+    - ping-zxkit
     - SnapKit
+    - SSZipArchive
+    - userDefaultManager-zxkit
     - ZXFileBrowser
     - ZXKitCore
     - ZXKitFPS
@@ -64,17 +73,22 @@ SPEC REPOS:
     - ZXUserDefaultManager
 
 SPEC CHECKSUMS:
-  HDPingTools: 297bab4acbba4a7320b7d7c057641510d7d8d0c6
+  fileBrowser-zxkit: 67a27f1832031943158a533c4be6ace947241927
+  fps-zxkit: 07a3a952537755a9d3adbb7c411b1b514425453c
+  HDPingTools: 691146af29ba5bbacffbfab2b4dec3eb3f58a5af
   netfox: 9d5cc727fe7576c4c7688a2504618a156b7d44b7
-  netfox-zxkit: 7bd5386e1b1b384ac2f622c6548367980a7d7eba
+  netfox-zxkit: 3d1d1a0a6f7137287344f7f3e8954b67c6de910a
+  ping-zxkit: 67f172252e730d0cbdaae8f8e4e12ea6230083ac
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  ZXFileBrowser: 98ad617f5d193cbcef44df6063fc0d76d7d30068
-  ZXKitCore: 6a0595bfc0e9d3c82640cc77e13fd4362d885d71
-  ZXKitFPS: 23baf15d0a3f8bebf57b3c5b89c28afe9848f78b
-  ZXKitLogger: a348ec8de1183315ea069c20c72015a93d800aee
-  ZXKitUtil: f44e73f0a06f5cacecd6d138e295e0dd530eb055
-  ZXUserDefaultManager: b4fc6c408d80f02eef694f2d3c5efdeff5495b95
+  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
+  userDefaultManager-zxkit: 229dc63c174c0eca3084578584dbce9e91dc89e1
+  ZXFileBrowser: cf533463c184f71657063381bfdfec6d54a11c2b
+  ZXKitCore: 39619c392b2d527a4605f4867534277ace967de8
+  ZXKitFPS: 13503e5251d790dc5eafd6fb543d2bad1758f677
+  ZXKitLogger: a6ef61cf1476723aa5d7adab919c5f4b4a1c3de3
+  ZXKitUtil: 0d23a979cdc7a7f9df0722148a613986ef007288
+  ZXUserDefaultManager: 8cccddecc413d0592c8702c7eb759fcd68394933
 
-PODFILE CHECKSUM: 05fb152d42fc9b24e4d36c3bccd3bdc70b273e0c
+PODFILE CHECKSUM: 3675319f6f0bf88bdcba23d6ad3667d42ff87c34
 
 COCOAPODS: 1.11.2

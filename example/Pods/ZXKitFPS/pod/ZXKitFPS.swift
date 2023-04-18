@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-#if canImport(ZXKitCore)
-import ZXKitCore
-#endif
-
 open class ZXKitFPS {
     private var displayLink: CADisplayLink?     //fps显示
     private var lastTime: TimeInterval = 0

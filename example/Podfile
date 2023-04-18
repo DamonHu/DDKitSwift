@@ -6,10 +6,9 @@ target 'ZXKitSwiftDemo' do
   use_frameworks!
 
   # Pods for ZXKitSwiftDemo
-  pod 'ZXKitLogger/zxkit'
-  pod 'ZXKitFPS/zxkit'
-  pod 'HDPingTools/zxkit'
-  pod 'ZXFileBrowser/zxkit'
-  pod 'ZXUserDefaultManager/zxkit'
-  pod 'netfox-zxkit'
+  pod 'fileBrowser-zxkit', '~> 2.0'
+  pod 'userDefaultManager-zxkit', '~> 2.0'
+  pod 'ping-zxkit', '~> 2.0'
+  pod 'fps-zxkit', '~> 2.0'
+  pod 'netfox-zxkit', '~> 2.0'
 end

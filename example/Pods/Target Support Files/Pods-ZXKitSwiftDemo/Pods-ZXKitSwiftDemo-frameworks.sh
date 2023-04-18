@@ -177,6 +177,7 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/HDPingTools/HDPingTools.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXFileBrowser/ZXFileBrowser.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitCore/ZXKitCore.framework"
@@ -184,11 +185,16 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitLogger/ZXKitLogger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/fileBrowser-zxkit/fileBrowser_zxkit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/fps-zxkit/fps_zxkit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/netfox/netfox.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/netfox-zxkit/netfox_zxkit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ping-zxkit/ping_zxkit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/userDefaultManager-zxkit/userDefaultManager_zxkit.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/HDPingTools/HDPingTools.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXFileBrowser/ZXFileBrowser.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitCore/ZXKitCore.framework"
@@ -196,8 +202,12 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitLogger/ZXKitLogger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXKitUtil/ZXKitUtil.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ZXUserDefaultManager/ZXUserDefaultManager.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/fileBrowser-zxkit/fileBrowser_zxkit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/fps-zxkit/fps_zxkit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/netfox/netfox.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/netfox-zxkit/netfox_zxkit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/ping-zxkit/ping_zxkit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/userDefaultManager-zxkit/userDefaultManager_zxkit.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

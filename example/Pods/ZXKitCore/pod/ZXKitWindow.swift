@@ -36,6 +36,7 @@ class ZXKitWindow: UIWindow {
         tCollectionViewLayout.minimumInteritemSpacing = 0
         tCollectionViewLayout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: 40)
         let tCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: tCollectionViewLayout)
+        tCollectionView.translatesAutoresizingMaskIntoConstraints = false
         tCollectionView.contentInsetAdjustmentBehavior = .never
         tCollectionView.backgroundColor = UIColor.clear
         tCollectionView.dataSource = self
@@ -49,6 +50,7 @@ class ZXKitWindow: UIWindow {
 
     lazy var mInputBGView: UIView = {
         let tView = UIView()
+        tView.translatesAutoresizingMaskIntoConstraints = false
         tView.isHidden = true
         tView.backgroundColor = ZXKit.UIConfig.inputBackgroundColor
         let tap = UITapGestureRecognizer(target: self, action: #selector(_endTextField))
@@ -58,6 +60,7 @@ class ZXKitWindow: UIWindow {
 
     lazy var mTextField: UITextField = {
         let tTextField = UITextField()
+        tTextField.translatesAutoresizingMaskIntoConstraints = false
         tTextField.leftViewMode = .always
         tTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 14, height: 10))
         tTextField.backgroundColor = ZXKit.UIConfig.textFieldBackgroundColor
@@ -73,6 +76,7 @@ class ZXKitWindow: UIWindow {
 
     lazy var mButton: UIButton = {
         let tButton = UIButton(type: .custom)
+        tButton.translatesAutoresizingMaskIntoConstraints = false
         tButton.addTarget(self, action: #selector(_endTextField), for: .touchUpInside)
         tButton.setTitle("confirm".ZXLocaleString, for: .normal)
         tButton.setTitleColor(UIColor.zx.color(hexValue: 0xffffff), for: .normal)
@@ -88,8 +92,10 @@ extension ZXKitWindow {
         self.mCollectionView.reloadData()
     }
 
-    func showInput(complete: ((String)->Void)?) {
+    func showInput(placeholder: String?, text: String?, complete: ((String)->Void)?) {
         self.inputComplete = complete
+        self.mTextField.placeholder = placeholder
+        self.mTextField.text = text
         self.mInputBGView.isHidden = false
         self.mTextField.becomeFirstResponder()
     }
@@ -127,9 +133,11 @@ extension ZXKitWindow: UICollectionViewDelegate,UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let plugin = ZXKit.pluginList[indexPath.section][indexPath.item]
         if plugin.isRunning {
+            plugin.willStop()
             plugin.stop()
             self.reloadData()
         } else {
+            plugin.willStart()
             plugin.start()
             self.reloadData()
         }
@@ -161,15 +169,14 @@ private extension ZXKitWindow {
         //set title
         let view = UIView()
         let label = UILabel()
-        label.attributedText = NSAttributedString(string: "ZXKIT", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18, weight: .medium), NSAttributedString.Key.foregroundColor:UIColor.black])
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = NSAttributedString(string: "ZXKit", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18, weight: .medium), NSAttributedString.Key.foregroundColor:UIColor.black])
         view.addSubview(label)
-        label.snp.makeConstraints { (make) in
-            make.center.equalToSuperview()
-        }
+        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
         rootViewController.navigationItem.titleView = view
         //navigationBar
-        let leftBarItem = UIBarButtonItem(title: "close".ZXLocaleString, style: .plain, target: self, action: #selector(_leftBarItemClick))
-        rootViewController.navigationItem.leftBarButtonItem = leftBarItem
         let rightBarItem = UIBarButtonItem(title: "hide".ZXLocaleString, style: .plain, target: self, action: #selector(_rightBarItemClick))
         rootViewController.navigationItem.rightBarButtonItem = rightBarItem
         //
@@ -178,11 +185,10 @@ private extension ZXKitWindow {
         self.isUserInteractionEnabled = true
     }
 
-    @objc func _leftBarItemClick() {
-        ZXKit.close()
-    }
-
     @objc func _rightBarItemClick() {
+        if !self.mInputBGView.isHidden {
+            self.hideInput()
+        }
         ZXKit.hide()
     }
 
@@ -196,33 +202,29 @@ private extension ZXKitWindow {
         }
 
         rootViewController.view.addSubview(mCollectionView)
-        mCollectionView.snp.makeConstraints {
-            $0.left.right.equalToSuperview()
-            $0.top.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.top)
-            $0.bottom.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.bottom)
-        }
+        mCollectionView.leftAnchor.constraint(equalTo: rootViewController.view.leftAnchor).isActive = true
+        mCollectionView.rightAnchor.constraint(equalTo: rootViewController.view.rightAnchor).isActive = true
+        mCollectionView.topAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        mCollectionView.bottomAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+
 
         rootViewController.view.addSubview(mInputBGView)
-        mInputBGView.snp.makeConstraints {
-            $0.left.right.equalToSuperview()
-            $0.top.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.top)
-            $0.bottom.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.bottom)
-        }
+        mInputBGView.leftAnchor.constraint(equalTo: rootViewController.view.leftAnchor).isActive = true
+        mInputBGView.rightAnchor.constraint(equalTo: rootViewController.view.rightAnchor).isActive = true
+        mInputBGView.topAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        mInputBGView.bottomAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+
 
         mInputBGView.addSubview(mTextField)
-        mTextField.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.width.equalTo(UIScreen.main.bounds.width*2.0/3.0)
-            $0.top.equalTo(rootViewController.view.safeAreaLayoutGuide.snp.top)
-            $0.height.equalTo(38)
-        }
+        mTextField.leftAnchor.constraint(equalTo: mInputBGView.leftAnchor).isActive = true
+        mTextField.topAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        mTextField.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width*2.0/3.0).isActive = true
+        mTextField.heightAnchor.constraint(equalToConstant: 38).isActive = true
 
         mInputBGView.addSubview(mButton)
-        mButton.snp.makeConstraints {
-            $0.left.equalTo(mTextField.snp.right)
-            $0.right.equalToSuperview()
-            $0.top.equalTo(mTextField)
-            $0.height.equalTo(38)
-        }
+        mButton.leftAnchor.constraint(equalTo: mTextField.rightAnchor).isActive = true
+        mButton.rightAnchor.constraint(equalTo: mInputBGView.rightAnchor).isActive = true
+        mButton.topAnchor.constraint(equalTo: mTextField.topAnchor).isActive = true
+        mButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
     }
 }

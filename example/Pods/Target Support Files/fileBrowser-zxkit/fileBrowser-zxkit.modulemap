@@ -1,0 +1,6 @@
+framework module fileBrowser_zxkit {
+  umbrella header "fileBrowser-zxkit-umbrella.h"
+
+  export *
+  module * { export * }
+}

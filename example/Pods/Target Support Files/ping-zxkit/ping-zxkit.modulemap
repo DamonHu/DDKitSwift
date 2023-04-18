@@ -1,0 +1,6 @@
+framework module ping_zxkit {
+  umbrella header "ping-zxkit-umbrella.h"
+
+  export *
+  module * { export * }
+}
