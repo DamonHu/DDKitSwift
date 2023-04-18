@@ -8,31 +8,31 @@
 import Foundation
 @_exported import ZXKitCore
 
-#if canImport(ZXKitLogger)
-import ZXKitLogger
-#endif
-#if canImport(ZXKitFPS)
+
+#if canImport(fps_zxkit)
 import ZXKitFPS
+import fps_zxkit
 #endif
-#if canImport(HDPingTools)
+#if canImport(ping_zxkit)
 import HDPingTools
+import ping_zxkit
 #endif
-#if canImport(ZXFileBrowser)
+#if canImport(fileBrowser_zxkit)
 import ZXFileBrowser
+import fileBrowser_zxkit
 #endif
-#if canImport(ZXUserDefaultManager)
+#if canImport(userDefaultManager_zxkit)
 import ZXUserDefaultManager
+import userDefaultManager_zxkit
 #endif
 
 #if canImport(netfox_zxkit)
+import netfox
 import netfox_zxkit
 #endif
 
 public extension ZXKit {
     static func registPlugin() {
-        #if canImport(ZXKitLogger)
-        ZXKit.regist(plugin: ZXKitLogger.shared)
-        #endif
         #if canImport(ZXKitFPS)
         ZXKit.regist(plugin: ZXKitFPS())
         #endif
