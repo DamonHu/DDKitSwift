@@ -1,6 +1,0 @@
-framework module ZXUserDefaultManager {
-  umbrella header "ZXUserDefaultManager-umbrella.h"
-
-  export *
-  module * { export * }
-}

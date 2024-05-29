@@ -1,6 +1,0 @@
-framework module netfox_zxkit {
-  umbrella header "netfox-zxkit-umbrella.h"
-
-  export *
-  module * { export * }
-}

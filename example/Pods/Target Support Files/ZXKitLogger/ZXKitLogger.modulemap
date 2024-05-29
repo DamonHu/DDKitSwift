@@ -1,6 +1,0 @@
-framework module ZXKitLogger {
-  umbrella header "ZXKitLogger-umbrella.h"
-
-  export *
-  module * { export * }
-}

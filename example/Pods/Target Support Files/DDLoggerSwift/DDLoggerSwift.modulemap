@@ -1,0 +1,6 @@
+framework module DDLoggerSwift {
+  umbrella header "DDLoggerSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

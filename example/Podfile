@@ -1,14 +1,12 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
-target 'ZXKitSwiftDemo' do
+target 'DDKitSwift' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for ZXKitSwiftDemo
-  pod 'fileBrowser-zxkit', '~> 2.0'
-  pod 'userDefaultManager-zxkit', '~> 2.0'
-  pod 'ping-zxkit', '~> 2.0'
-  pod 'fps-zxkit', '~> 2.0'
-  pod 'netfox-zxkit', '~> 2.0'
+  # Pods for DDKitSwift
+  pod 'DDUtils/ui', '~> 5.0.0'
+  pod 'DDUtils/utils', '~> 5.0.0'
+  pod 'DDLoggerSwift', '~> 5.0.0'
 end

@@ -1,94 +1,29 @@
 PODS:
-  - fileBrowser-zxkit (2.0.2):
-    - ZXFileBrowser (~> 2.0)
-    - ZXKitCore (~> 2.0)
-  - fps-zxkit (2.0.1):
-    - ZXKitCore (~> 2.0)
-    - ZXKitFPS (~> 2.0)
-  - HDPingTools (2.0.0):
-    - HDPingTools/core (= 2.0.0)
-  - HDPingTools/core (2.0.0)
-  - netfox (1.21.0)
-  - netfox-zxkit (2.0.0):
-    - netfox (= 1.21.0)
-    - ZXKitCore (~> 2.0.0)
-  - ping-zxkit (2.0.1):
-    - HDPingTools (~> 2.0)
-    - ZXKitCore (~> 2.0)
-  - SnapKit (5.6.0)
-  - SSZipArchive (2.4.3)
-  - userDefaultManager-zxkit (2.0.1):
-    - ZXKitCore (~> 2.0)
-    - ZXUserDefaultManager (~> 2.0)
-  - ZXFileBrowser (2.0.2):
-    - ZXFileBrowser/core (= 2.0.2)
-  - ZXFileBrowser/core (2.0.2):
-    - SnapKit
-    - ZXKitUtil (~> 4.0)
-  - ZXKitCore (2.0.4):
-    - ZXKitCore/core (= 2.0.4)
-  - ZXKitCore/core (2.0.4):
-    - SSZipArchive
-    - ZXKitLogger (~> 4.0)
-    - ZXKitUtil (~> 4.0)
-  - ZXKitFPS (2.0.0):
-    - ZXKitFPS/core (= 2.0.0)
-  - ZXKitFPS/core (2.0.0)
-  - ZXKitLogger (4.0.6):
-    - ZXKitLogger/core (= 4.0.6)
-  - ZXKitLogger/core (4.0.6):
-    - ZXKitUtil (~> 4.0)
-  - ZXKitUtil (4.0.0):
-    - ZXKitUtil/core (= 4.0.0)
-  - ZXKitUtil/core (4.0.0)
-  - ZXUserDefaultManager (2.0.1):
-    - ZXUserDefaultManager/core (= 2.0.1)
-  - ZXUserDefaultManager/core (2.0.1):
-    - SnapKit
-    - ZXKitUtil (~> 4.0)
+  - DDLoggerSwift (5.0.0):
+    - DDLoggerSwift/core (= 5.0.0)
+  - DDLoggerSwift/core (5.0.0):
+    - DDUtils/ui (~> 5.0.0)
+    - DDUtils/utils (~> 5.0.0)
+  - DDUtils/core (5.0.2)
+  - DDUtils/ui (5.0.2):
+    - DDUtils/core
+  - DDUtils/utils (5.0.2):
+    - DDUtils/core
 
 DEPENDENCIES:
-  - fileBrowser-zxkit (~> 2.0)
-  - fps-zxkit (~> 2.0)
-  - netfox-zxkit (~> 2.0)
-  - ping-zxkit (~> 2.0)
-  - userDefaultManager-zxkit (~> 2.0)
+  - DDLoggerSwift (~> 5.0.0)
+  - DDUtils/ui (~> 5.0.0)
+  - DDUtils/utils (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
-    - fileBrowser-zxkit
-    - fps-zxkit
-    - HDPingTools
-    - netfox
-    - netfox-zxkit
-    - ping-zxkit
-    - SnapKit
-    - SSZipArchive
-    - userDefaultManager-zxkit
-    - ZXFileBrowser
-    - ZXKitCore
-    - ZXKitFPS
-    - ZXKitLogger
-    - ZXKitUtil
-    - ZXUserDefaultManager
+    - DDLoggerSwift
+    - DDUtils
 
 SPEC CHECKSUMS:
-  fileBrowser-zxkit: 67a27f1832031943158a533c4be6ace947241927
-  fps-zxkit: 07a3a952537755a9d3adbb7c411b1b514425453c
-  HDPingTools: 691146af29ba5bbacffbfab2b4dec3eb3f58a5af
-  netfox: 9d5cc727fe7576c4c7688a2504618a156b7d44b7
-  netfox-zxkit: 3d1d1a0a6f7137287344f7f3e8954b67c6de910a
-  ping-zxkit: 67f172252e730d0cbdaae8f8e4e12ea6230083ac
-  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
-  userDefaultManager-zxkit: 229dc63c174c0eca3084578584dbce9e91dc89e1
-  ZXFileBrowser: cf533463c184f71657063381bfdfec6d54a11c2b
-  ZXKitCore: 39619c392b2d527a4605f4867534277ace967de8
-  ZXKitFPS: 13503e5251d790dc5eafd6fb543d2bad1758f677
-  ZXKitLogger: a6ef61cf1476723aa5d7adab919c5f4b4a1c3de3
-  ZXKitUtil: 0d23a979cdc7a7f9df0722148a613986ef007288
-  ZXUserDefaultManager: 8cccddecc413d0592c8702c7eb759fcd68394933
+  DDLoggerSwift: 3b6e451251ae07a6614d93493b7c4e512e155950
+  DDUtils: 56b14d305b574751a3e5336717a6dfd56dd2c58c
 
-PODFILE CHECKSUM: 3675319f6f0bf88bdcba23d6ad3667d42ff87c34
+PODFILE CHECKSUM: 81b108043fd4bb6d354d22e5e5f1d4dd7787270e
 
 COCOAPODS: 1.11.2

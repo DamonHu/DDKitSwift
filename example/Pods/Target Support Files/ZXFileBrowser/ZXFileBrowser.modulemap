@@ -1,6 +1,0 @@
-framework module ZXFileBrowser {
-  umbrella header "ZXFileBrowser-umbrella.h"
-
-  export *
-  module * { export * }
-}

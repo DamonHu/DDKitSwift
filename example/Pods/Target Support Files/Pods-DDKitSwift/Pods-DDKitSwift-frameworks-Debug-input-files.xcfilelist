@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-DDKitSwift/Pods-DDKitSwift-frameworks.sh
+${BUILT_PRODUCTS_DIR}/DDLoggerSwift/DDLoggerSwift.framework
+${BUILT_PRODUCTS_DIR}/DDUtils/DDUtils.framework
