@@ -1,173 +1,104 @@
 # DDKitSwift
 
-![](https://img.shields.io/badge/CocoaPods-supported-brightgreen) ![](https://img.shields.io/badge/Swift-5.0-brightgreen) ![](https://img.shields.io/badge/License-MIT-brightgreen) ![](https://img.shields.io/badge/version-iOS11.0-brightgreen)
+![](https://img.shields.io/badge/CocoaPods-supported-brightgreen) ![](https://img.shields.io/badge/Swift-5.0-brightgreen) ![](https://img.shields.io/badge/License-MIT-brightgreen) ![](https://img.shields.io/badge/version-iOS12.0-brightgreen)
 
-### [中文文档](https://ddceo.com/blog/1306.html)
+Previously developed debugging frameworks were somewhat scattered, so the goal was to create a universal framework that could combine different debugging tools through a plugin structure. This tool is designed for efficient problem solving rather than being comprehensive. Therefore, features that might affect App Store submission, such as private iOS functions and disabled interfaces, are not provided by default.
 
-`DDKitSwift` is the supporting framework of `DDKitSwift` plug-ins, the object-oriented is the development of `DDKitSwift` plug-in. It provides plug-in display, management and other functions. You can quickly develop and display DDKitSwift plug-ins by implementing the `DDKitSwiftPluginProtocol`. This document provides plug-in development tutorials and use tutorials, which developers can view as needed.
+The previous name was `ZXKitSwift`, inspired by the novel "Zhu Xian". Due to maintenance costs for the domain and changes in the novel's ending, the name has been changed, dependencies have been removed, and updates have been made. This library is now released as DDKitSwift.
 
+### [中文文档](https://ddceo.com/blog/1307.html)
 
-## Develop a DDKitSwift plugin
+## Features List
 
-## 1. Import the core file
+The following plugins are built-in and ready to use:
 
-Project import `DDKitSwift`, you can use cocoapods to quickly import core files
+* 🐛 Log logging
+* 📶 Network ping detection
+* 📱 FPS detection
+* 📂 Sandbox file browsing
+* 📋 UserDefault data management 
+* 🌐 Network request interception and viewing 
+
+## Integrating DDKitSwift
+
+1. Use CocoaPods to select the functionalities you need. You can combine them as needed.
 
 ```
+# Required
 pod 'DDKitSwift'
+# Network monitoring (optional)
+pod 'DDKitSwift_Netfox'
+# FPS detection (optional)
+pod 'DDKitSwift_FPS'
+# Ping detection (optional)
+pod 'DDKitSwift_Ping'
+# File browsing (optional)
+pod 'DDKitSwift_FileBrowser'
+# UserDefault management (optional)
+pod 'DDKitSwift_UserDefaultManager'
 ```
 
-## 2. Implement the protocol
+## Using DDKitSwift
 
-Declare an object and follow the `DDKitSwiftPluginProtocol` protocol.
+2. Import the header files
 
 ```
-class PluginDemo: NSObject {
-    var isPluginRunning = true
-}
+import DDKitSwift
+import DDKitSwift_Netfox
+import DDKitSwift_FPS
+import DDKitSwift_Ping
+import DDKitSwift_FileBrowser
+import DDKitSwift_UserDefaultManager
+```
 
-extension PluginDemo: DDKitSwiftPluginProtocol {
-	 //Unique identification
-    var pluginIdentifier: String {
-        return "com.DDKitSwift.pluginDemo"
-    }
-    
-    var pluginIcon: UIImage? {
-        return UIImage(named: "DDKitSwift")
-    }
+3. Register the necessary components in the `AppDelegate` startup function
 
-    var pluginTitle: String {
-        return "title"
-    }
-
-    var pluginType: DDKitSwiftPluginType {
-        return .ui
-    }
-
-    func start() {
-        print("start plugin")
-        isPluginRunning = true
-    }
-    
-    var isRunning: Bool {
-        return isPluginRunning
-    }
-
-    func stop() {
-        print("plugin stop running")
-        isPluginRunning = false
-    }
+```
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+	
+	DDKitSwift.regist(plugin: DDKitSwift_Netfox())
+	DDKitSwift.regist(plugin: DDKitSwift_FPS())
+   	DDKitSwift.regist(plugin: DDKitSwift_Ping())
+   	DDKitSwift.regist(plugin: DDKitSwift_FileBrowser())
+	DDKitSwift.regist(plugin: DDKitSwift_UserDefaultManager())
+	
+	return true
 }
 ```
 
-#### Optional Protocol
-
-```
-func willStart()
-func willStop()
-```
-
-### 3. Register the plug-in
-
-After that, you can register the plug-in, you only need to register once globally
-
-
-```
-DDKitSwift.regist(plugin: PluginDemo())
-```
-
-### 4. Done
-
-After cocoapods is released and online, when the user opens `DDKitSwift`, your plug-in will appear on the debug collection page
-
-
-## 5. Custom Configuration
-
-#### 5.1、The window color and other display can be modified by modifying 'UIConfig'
-
-```
-DDKitSwift.UIConfig
-```
-
-#### 5.2、Debug folder, which will be packaged and shared during floating menu sharing
-
-```
-DDKitSwift.DebugFolderPath
-```
-
-#### 5.3、Display textField
-
-```
-DDKitSwift.show(.input(placeholder: "placeholder", text: nil, endEdit: { text in
-      print(text)
-}))
-```
-
-#### 5.4、Update floating icon
-
-```
-let config = DDKitSwiftButtonConfig(title: "test\(i)")
-DDKitSwift.updateFloatButton(config: config, plugin: PluginDemo())
-```
-
-#### 5.5、 Output debugging data to floating window
-
-```
-printError("error")
-```
-
-### NSNotification
-
-`DDKitSwift` provides the following message notifications, you can get the frame display, hide, close, and register new plug-in timing by binding the following notifications
-
-```
-//new plug-in regist
-NSNotification.Name.DDKitSwiftPluginRegist
-//show
-NSNotification.Name.DDKitSwiftShow
-//hide
-NSNotification.Name.DDKitSwiftHide
-//close
-NSNotification.Name.DDKitSwiftClose
-```
-
-## Install and use a DDKitSwift plugin
-
-The DDKitSwift plug-in is easy to use. For example, install the log plugin `DDKitSwiftLogger`.
-
-### install it
-
-```
-pod 'DDKitSwiftLogger/DDKitSwift'
-```
-### regist it
-
-```
-DDKitSwift.regist(plugin: DDKitSwiftLogger.shared)
-```
-
-### open the plugin list
+4. Show the tools list
 
 ```
 DDKitSwift.show()
 ```
 
-### hide the plugin list
+5. Hide the tools popup
 
 ```
 DDKitSwift.hide()
 ```
 
-### close the plugin list
+6. Close the tools popup
 
 ```
 DDKitSwift.close()
 ```
 
-## DDKitSwift
+## Advanced Operations
 
-We have released a cocoaPods library named [DDKitSwift](https://github.com/DamonHu/DDKitSwift), which is a tool library that integrates multiple DDKitSwift-plugins。It can help you quickly use multiple debugging functions
+Advanced operations provide a way to integrate personalized plugins. The process remains simple, with the additional step of self-registration compared to direct default integration.
 
-## License
+## Custom Plugin Integration
 
-DDKitSwift is released under the MIT license. 
+`DDKitSwift` comes with a set of pre-installed default functions and supports custom plugin integration. Simply import the corresponding library and register it in the `AppDelegate` startup function.
+
+## Project Preview
+
+![preview.gif][2]
+
+## Developing Custom Plugins
+
+If you need to develop custom plugins, implement the `DDKitSwiftPluginProtocol`. Then call the `DDKitSwift.regist(plugin: )` function to automatically load and display the plugin.
+
+  [1]: https://cdn.ddceo.com/blog/usr/uploads/2021/05/3045500571.png
+  [2]: https://cdn.ddceo.com/blog/usr/uploads/2021/05/3680650242.gif
