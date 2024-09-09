@@ -6,7 +6,7 @@ target 'DDKitSwift' do
   use_frameworks!
 
   # Pods for DDKitSwift
-  pod 'DDUtils/ui', '~> 5.0.0'
-  pod 'DDUtils/utils', '~> 5.0.0'
-  pod 'DDLoggerSwift', '~> 5.0.0'
+  pod 'DDUtils/ui', '~> 5'
+  pod 'DDUtils/utils', '~> 5'
+  pod 'DDLoggerSwift', '~> 5'
 end

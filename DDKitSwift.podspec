@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'DDKitSwift'
 s.swift_version = '5.0'
-s.version = '3.0.3'
+s.version = '3.0.4'
 s.license= { :type => "MIT", :file => "LICENSE" }
 s.summary = 'DDKitSwift is the supporting framework of ZXKitSwift, for ZXKitSwift plugin developers'
 s.homepage = 'https://github.com/DamonHu/DDKitSwift'
@@ -14,9 +14,9 @@ s.subspec 'core' do |cs|
         'DDKitSwift' => ['pod/assets/**/*']
     }
     cs.source_files = "pod/*.swift", "pod/**/*.swift"
-    cs.dependency 'DDUtils/ui', '~> 5.0.0'
-    cs.dependency 'DDUtils/utils', '~> 5.0.0'
-    cs.dependency 'DDLoggerSwift', '~> 5.0.0'
+    cs.dependency 'DDUtils/ui', '~> 5'
+    cs.dependency 'DDUtils/utils', '~> 5'
+    cs.dependency 'DDLoggerSwift', '~> 5'
 end
 s.default_subspec = "core"
 s.documentation_url = 'https://ddceo.com/blog/1306.html'

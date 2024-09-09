@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -511,11 +511,11 @@
 		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 10.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -683,38 +683,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		01D20B0FCEFEB1F0EA50C8B0D726F9B3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 39DD1BAC055289F869DA9BDAAD1BCFDA /* DDLoggerSwift.debug.xcconfig */;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/DDLoggerSwift";
-				IBSC_MODULE = DDLoggerSwift;
-				INFOPLIST_FILE = "Target Support Files/DDLoggerSwift/ResourceBundle-DDLoggerSwift-DDLoggerSwift-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_NAME = DDLoggerSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		4B44EC60F7FFEB6883107B8150D4AB0F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A51734866213A478C1C1A1113923016B /* DDLoggerSwift.release.xcconfig */;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/DDLoggerSwift";
-				IBSC_MODULE = DDLoggerSwift;
-				INFOPLIST_FILE = "Target Support Files/DDLoggerSwift/ResourceBundle-DDLoggerSwift-DDLoggerSwift-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_NAME = DDLoggerSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
 		538CC63A0329320BE316687CED3C1245 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 90F45E6C0D13EB8C3DB50F475099AA65 /* Pods-DDKitSwift.debug.xcconfig */;
@@ -749,6 +717,23 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		53C4B6643CCFF759CF7B88302687227B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39DD1BAC055289F869DA9BDAAD1BCFDA /* DDLoggerSwift.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/DDLoggerSwift";
+				IBSC_MODULE = DDLoggerSwift;
+				INFOPLIST_FILE = "Target Support Files/DDLoggerSwift/ResourceBundle-DDLoggerSwift-DDLoggerSwift-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_NAME = DDLoggerSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
 		};
@@ -1024,6 +1009,23 @@
 			};
 			name = Debug;
 		};
+		F6CAAB7E7393799639ED2A0DA3CE3307 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A51734866213A478C1C1A1113923016B /* DDLoggerSwift.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/DDLoggerSwift";
+				IBSC_MODULE = DDLoggerSwift;
+				INFOPLIST_FILE = "Target Support Files/DDLoggerSwift/ResourceBundle-DDLoggerSwift-DDLoggerSwift-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_NAME = DDLoggerSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		FC3AB8FBB6C7080EB39A2EE3F19EB3EA /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3DD7EFE051A7D320C3B5EE1AC641F43E /* DDUtils.release.xcconfig */;
@@ -1102,8 +1104,8 @@
 		F89BEC87AB2922F56BAC014BF1D96AA0 /* Build configuration list for PBXNativeTarget "DDLoggerSwift-DDLoggerSwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				01D20B0FCEFEB1F0EA50C8B0D726F9B3 /* Debug */,
-				4B44EC60F7FFEB6883107B8150D4AB0F /* Release */,
+				53C4B6643CCFF759CF7B88302687227B /* Debug */,
+				F6CAAB7E7393799639ED2A0DA3CE3307 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

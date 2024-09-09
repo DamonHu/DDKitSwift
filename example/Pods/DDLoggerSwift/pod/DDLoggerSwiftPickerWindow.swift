@@ -104,9 +104,7 @@ extension DDLoggerSwiftPickerWindow {
         self.isCloseWhenComplete = isCloseWhenComplete
         if let date = date {
             //指定日期
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            self.mShareFileName = dateFormatter.string(from: date) + ".db"
+            self.mShareFileName = DDLoggerSwift.dateFormatter.string(from: date) + ".db"
             self._confirmPicker()
         } else {
             self.mFileDateNameList = [String]()
@@ -180,7 +178,7 @@ private extension DDLoggerSwiftPickerWindow {
     
     @objc private func _confirmPicker() {
         if self.pickerType == .share {
-            let dataList = HDSqliteTools.shared.getAllLog(name: self.mShareFileName, keyword: nil).reversed().map { item in
+            let dataList = HDSqliteTools.shared.getLogs(name: self.mShareFileName, keyword: nil).reversed().map { item in
                 return item.getFullContentString()
             }
             //写入到text文件好解析

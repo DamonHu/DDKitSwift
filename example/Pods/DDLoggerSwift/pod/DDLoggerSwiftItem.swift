@@ -9,16 +9,19 @@
 import UIKit
 import DDUtils
 
+let t = Date()
+
 enum Section: CaseIterable {
     case main
 }
 ///log的内容
 public class DDLoggerSwiftItem {
     let identifier = UUID()                                 //用于hash计算
+    var databaseID: Int = 0                                 //存在database的id
     public var mLogItemType = DDLogType.debug             //log类型
     public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
     public var mLogContent: Any? = "DDLoggerSwift: Click Log To Copy"  //log的内容
-    public var mCreateDate = Date()                      //log日期
+    public var mCreateDate = t                      //log日期
     
     private var mCurrentHighlightString = ""            //当前需要高亮的字符串
     private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
@@ -45,9 +48,7 @@ public extension DDLoggerSwiftItem {
     //获取完整的输出内容
      func getFullContentString() -> String {
         //日期
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: mCreateDate)
+         let dateStr = DDLoggerSwift.dateFormatterISO8601.string(from: mCreateDate)
         //内容
         let contentString = self.getLogContent()
         //所有的内容
