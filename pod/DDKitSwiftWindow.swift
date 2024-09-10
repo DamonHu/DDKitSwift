@@ -177,19 +177,38 @@ private extension DDKitSwiftWindow {
         
         rootViewController.navigationItem.titleView = view
         //navigationBar
-        let rightBarItem = UIBarButtonItem(title: "hide".ZXLocaleString, style: .plain, target: self, action: #selector(_rightBarItemClick))
-        rootViewController.navigationItem.rightBarButtonItem = rightBarItem
+        let button = UIButton(frame: .init(x: 0, y: 0, width: 25, height: 25))
+        button.setImage(UIImage(named: "log_icon_close"), for: .normal)
+        button.addTarget(self, action: #selector(_closeBarItemClick), for: .touchUpInside)
+        NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
+        NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
+        let leftbarItem = UIBarButtonItem(customView: button)
+        
+        let button1 = UIButton(frame: .init(x: 0, y: 0, width: 25, height: 25))
+        button1.setImage(UIImage(named: "log_icon_subtract"), for: .normal)
+        button1.addTarget(self, action: #selector(_hideBarItemClick), for: .touchUpInside)
+        NSLayoutConstraint(item: button1, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
+        NSLayoutConstraint(item: button1, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 25).isActive = true
+        let leftbarItem1 = UIBarButtonItem(customView: button1)
+        rootViewController.navigationItem.leftBarButtonItems = [leftbarItem, leftbarItem1]
         //
         self.rootViewController = navigation
         self.windowLevel =  UIWindow.Level.alert
         self.isUserInteractionEnabled = true
     }
 
-    @objc func _rightBarItemClick() {
+    @objc func _hideBarItemClick() {
         if !self.mInputBGView.isHidden {
             self.hideInput()
         }
         DDKitSwift.hide()
+    }
+    
+    @objc func _closeBarItemClick() {
+        if !self.mInputBGView.isHidden {
+            self.hideInput()
+        }
+        DDKitSwift.close()
     }
 
     @objc func _endTextField() {

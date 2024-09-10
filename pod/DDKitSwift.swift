@@ -11,7 +11,7 @@ import DDLoggerSwift
 
 extension String{
     var ZXLocaleString: String {
-        guard let bundlePath = Bundle(for: DDKitSwift.self).path(forResource: "DDKitSwiftCore", ofType: "bundle") else { return NSLocalizedString(self, comment: "") }
+        guard let bundlePath = Bundle(for: DDKitSwift.self).path(forResource: "DDKitSwift", ofType: "bundle") else { return NSLocalizedString(self, comment: "") }
         guard let bundle = Bundle(path: bundlePath) else { return NSLocalizedString(self, comment: "") }
         let msg = NSLocalizedString(self, tableName: nil, bundle: bundle, value: "", comment: "")
         return msg
@@ -20,7 +20,7 @@ extension String{
 
 func UIImageHDBoundle(named: String?) -> UIImage? {
     guard let name = named else { return nil }
-    guard let bundlePath = Bundle(for: DDKitSwift.self).path(forResource: "DDKitSwiftCore", ofType: "bundle") else { return UIImage(named: name) }
+    guard let bundlePath = Bundle(for: DDKitSwift.self).path(forResource: "DDKitSwift", ofType: "bundle") else { return UIImage(named: name) }
     guard let bundle = Bundle(path: bundlePath) else { return UIImage(named: name) }
     return UIImage(named: name, in: bundle, compatibleWith: nil)
 }

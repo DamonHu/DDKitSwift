@@ -10,7 +10,7 @@ import DDUtils
 
 public struct DDKitSwiftUIConfig {
     public var floatButtonColor = UIColor.dd.color(hexValue: 0x5dae8b)     //悬浮窗按钮颜色
-    public var collectionViewBackgroundColor = UIColor.dd.color(hexValue: 0xffffff, alpha: 0.7)
+    public var collectionViewBackgroundColor = UIColor.dd.color(hexValue: 0xffffff, alpha: 0.9)
     public var collectionViewTitleColor = UIColor.dd.color(hexValue: 0xffffff)
     public var collectionViewTitleBackgroundColor = UIColor.dd.color(hexValue: 0x5dae8b)
     public var inputBackgroundColor = UIColor.dd.color(hexValue: 0x000000, alpha: 0.7)

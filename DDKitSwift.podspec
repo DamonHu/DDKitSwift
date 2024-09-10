@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'DDKitSwift'
 s.swift_version = '5.0'
-s.version = '3.0.4'
+s.version = '3.0.5'
 s.license= { :type => "MIT", :file => "LICENSE" }
 s.summary = 'DDKitSwift is the supporting framework of ZXKitSwift, for ZXKitSwift plugin developers'
 s.homepage = 'https://github.com/DamonHu/DDKitSwift'
