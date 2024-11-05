@@ -6,7 +6,7 @@ Previously developed debugging frameworks were somewhat scattered, so the goal w
 
 The previous name was `ZXKitSwift`, inspired by the novel "Zhu Xian". Due to maintenance costs for the domain and changes in the novel's ending, the name has been changed, dependencies have been removed, and updates have been made. This library is now released as DDKitSwift.
 
-### [中文文档](https://ddceo.com/blog/1307.html)
+### [中文文档](https://dongge.org/blog/1307.html)
 
 ## Features List
 
