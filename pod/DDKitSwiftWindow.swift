@@ -8,8 +8,6 @@
 import UIKit
 
 class DDKitSwiftWindow: UIWindow {
-    private var inputComplete: ((String)->Void)?
-
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
@@ -47,64 +45,11 @@ class DDKitSwiftWindow: UIWindow {
         tCollectionView.register(DDKitSwiftCollectionViewHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DDKitSwiftCollectionViewHeaderView")
         return tCollectionView
     }()
-
-    lazy var mInputBGView: UIView = {
-        let tView = UIView()
-        tView.translatesAutoresizingMaskIntoConstraints = false
-        tView.isHidden = true
-        tView.backgroundColor = DDKitSwift.UIConfig.inputBackgroundColor
-        let tap = UITapGestureRecognizer(target: self, action: #selector(_endTextField))
-        tView.addGestureRecognizer(tap)
-        return tView
-    }()
-
-    lazy var mTextField: UITextField = {
-        let tTextField = UITextField()
-        tTextField.translatesAutoresizingMaskIntoConstraints = false
-        tTextField.leftViewMode = .always
-        tTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 14, height: 10))
-        tTextField.backgroundColor = DDKitSwift.UIConfig.textFieldBackgroundColor
-        tTextField.font = .systemFont(ofSize: 14)
-        tTextField.placeholder = "input text".ZXLocaleString
-        tTextField.clearButtonMode = .always
-        tTextField.layer.borderWidth = 1.0
-        tTextField.layer.borderColor = UIColor.dd.color(hexValue: 0xcccccc).cgColor
-        tTextField.delegate = self
-        tTextField.textColor = UIColor.dd.color(hexValue: 0x333333)
-        return tTextField
-    }()
-
-    lazy var mButton: UIButton = {
-        let tButton = UIButton(type: .custom)
-        tButton.translatesAutoresizingMaskIntoConstraints = false
-        tButton.addTarget(self, action: #selector(_endTextField), for: .touchUpInside)
-        tButton.setTitle("confirm".ZXLocaleString, for: .normal)
-        tButton.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
-        tButton.backgroundColor = DDKitSwift.UIConfig.inputButtonBackgroundColor
-        tButton.layer.borderWidth = 1.0
-        tButton.layer.borderColor = UIColor.dd.color(hexValue: 0xcccccc).cgColor
-        return tButton
-    }()
 }
 
 extension DDKitSwiftWindow {
     func reloadData() {
         self.mCollectionView.reloadData()
-    }
-
-    func showInput(placeholder: String?, text: String?, complete: ((String)->Void)?) {
-        self.inputComplete = complete
-        self.mTextField.placeholder = placeholder
-        self.mTextField.text = text
-        self.mInputBGView.isHidden = false
-        self.mTextField.becomeFirstResponder()
-    }
-
-    func hideInput() {
-        self.mTextField.endEditing(true)
-        self.mInputBGView.isHidden = true
-        self.mTextField.placeholder = "input text".ZXLocaleString
-        self.mTextField.text = ""
     }
 }
 
@@ -142,19 +87,6 @@ extension DDKitSwiftWindow: UICollectionViewDelegate,UICollectionViewDataSource 
             self.reloadData()
         }
 
-    }
-}
-
-extension DDKitSwiftWindow: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if let complete = self.inputComplete {
-            complete(textField.text ?? "")
-            self.reloadData()
-        }
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return textField.resignFirstResponder()
     }
 }
 
@@ -198,21 +130,11 @@ private extension DDKitSwiftWindow {
     }
 
     @objc func _hideBarItemClick() {
-        if !self.mInputBGView.isHidden {
-            self.hideInput()
-        }
         DDKitSwift.hide()
     }
     
     @objc func _closeBarItemClick() {
-        if !self.mInputBGView.isHidden {
-            self.hideInput()
-        }
         DDKitSwift.close()
-    }
-
-    @objc func _endTextField() {
-        self.hideInput()
     }
 
     func _createUI() {
@@ -225,25 +147,5 @@ private extension DDKitSwiftWindow {
         mCollectionView.rightAnchor.constraint(equalTo: rootViewController.view.rightAnchor).isActive = true
         mCollectionView.topAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.topAnchor).isActive = true
         mCollectionView.bottomAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
-
-        rootViewController.view.addSubview(mInputBGView)
-        mInputBGView.leftAnchor.constraint(equalTo: rootViewController.view.leftAnchor).isActive = true
-        mInputBGView.rightAnchor.constraint(equalTo: rootViewController.view.rightAnchor).isActive = true
-        mInputBGView.topAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        mInputBGView.bottomAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
-
-        mInputBGView.addSubview(mTextField)
-        mTextField.leftAnchor.constraint(equalTo: mInputBGView.leftAnchor).isActive = true
-        mTextField.topAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        mTextField.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width*2.0/3.0).isActive = true
-        mTextField.heightAnchor.constraint(equalToConstant: 38).isActive = true
-
-        mInputBGView.addSubview(mButton)
-        mButton.leftAnchor.constraint(equalTo: mTextField.rightAnchor).isActive = true
-        mButton.rightAnchor.constraint(equalTo: mInputBGView.rightAnchor).isActive = true
-        mButton.topAnchor.constraint(equalTo: mTextField.topAnchor).isActive = true
-        mButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
     }
 }

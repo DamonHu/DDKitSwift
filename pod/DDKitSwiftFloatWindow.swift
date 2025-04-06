@@ -182,7 +182,7 @@ extension DDKitSwiftFloatWindow: CircleMenuDelegate {
         } else if atIndex == 2 {
             DDKitSwift.close()
         } else if atIndex == 3 {
-            DDLoggerSwift.show(filterType: .error)
+            DDLoggerSwift.show()
         }
     }
 

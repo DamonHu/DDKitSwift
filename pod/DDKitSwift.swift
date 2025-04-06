@@ -32,11 +32,6 @@ public extension NSNotification.Name {
     static let DDKitSwiftClose = NSNotification.Name("DDKitSwiftClose")
 }
 
-public enum DisplayMode {
-    case none
-    case input(placeholder: String?, text: String?, endEdit: ((String)->Void)?)
-}
-
 public class DDKitSwift: NSObject {
     public static var UIConfig = DDKitSwiftUIConfig()
     public static let DebugFolderPath = DDUtils.shared.createFileDirectory(in: .caches, directoryName: "zxkit")
@@ -78,7 +73,7 @@ public extension DDKitSwift {
         NotificationCenter.default.post(name: .DDKitSwiftPluginRegist, object: self.pluginList)
     }
 
-    static func show(_ mode: DisplayMode = .none) {
+    static func show() {
         if !hasConfig {
             self._initConfig()
         }
@@ -101,13 +96,6 @@ public extension DDKitSwift {
                 }
                 self.window?.isHidden = false
                 self.window?.reloadData()
-            }
-            //显示mode
-            switch mode {
-                case .none:
-                    break
-                case .input(let placeholder, let text, let endEdit):
-                    self.window?.showInput(placeholder: placeholder, text: text, complete: endEdit)
             }
         }
     }

@@ -34,13 +34,6 @@ class ViewController: UIViewController {
         self.view.addSubview(button)
         button.addTarget(self, action: #selector(_click), for: .touchUpInside)
 
-
-        let button2 = UIButton(frame: CGRect(x: 100, y: 200, width: 200, height: 50))
-        button2.setTitle("show input window", for: .normal)
-        button2.backgroundColor = UIColor.red
-        self.view.addSubview(button2)
-        button2.addTarget(self, action: #selector(_showInput), for: .touchUpInside)
-
         let button3 = UIButton(frame: CGRect(x: 100, y: 300, width: 200, height: 50))
         button3.setTitle("change float button", for: .normal)
         button3.backgroundColor = UIColor.red
@@ -51,12 +44,6 @@ class ViewController: UIViewController {
 
     @objc func _click() {
         DDKitSwift.show()
-    }
-
-    @objc func _showInput() {
-        DDKitSwift.show(.input(placeholder: "placeholder", text: nil, endEdit: { text in
-            print(text)
-        }))
     }
 
     @objc func _updateFloatButton() {
