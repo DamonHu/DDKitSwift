@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'DDKitSwift'
 s.swift_version = '5.0'
-s.version = '3.0.6'
+s.version = '3.1.0'
 s.license= { :type => "MIT", :file => "LICENSE" }
 s.summary = 'DDKitSwift is the supporting framework of ZXKitSwift, for ZXKitSwift plugin developers'
 s.homepage = 'https://github.com/DamonHu/DDKitSwift'
@@ -19,5 +19,5 @@ s.subspec 'core' do |cs|
     cs.dependency 'DDLoggerSwift', '~> 5'
 end
 s.default_subspec = "core"
-s.documentation_url = 'https://ddceo.com/blog/1306.html'
+s.documentation_url = 'https://dongge.org/blog/1307.html'
 end
