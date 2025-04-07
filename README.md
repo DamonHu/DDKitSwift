@@ -13,6 +13,7 @@ The previous name was `ZXKitSwift`, inspired by the novel "Zhu Xian". Due to mai
 The following plugins are built-in and ready to use:
 
 * 🐛 Log logging
+* 📡 Network Connectivity Test 
 * 📶 Network ping detection
 * 📱 FPS detection
 * 📂 Sandbox file browsing
@@ -26,6 +27,8 @@ The following plugins are built-in and ready to use:
 ```
 # Required
 pod 'DDKitSwift'
+# Ping detection (optional)
+pod 'DDKitSwift_NetCheck'
 # Network monitoring (optional)
 pod 'DDKitSwift_Netfox'
 # FPS detection (optional)
@@ -49,6 +52,7 @@ import DDKitSwift_FPS
 import DDKitSwift_Ping
 import DDKitSwift_FileBrowser
 import DDKitSwift_UserDefaultManager
+import DDKitSwift_NetCheck
 ```
 
 3. Register the necessary components in the `AppDelegate` startup function
@@ -58,7 +62,10 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 	
 	DDKitSwift.regist(plugin: DDKitSwift_Netfox())
 	DDKitSwift.regist(plugin: DDKitSwift_FPS())
-   	DDKitSwift.regist(plugin: DDKitSwift_Ping())
+	//Specify target URL
+	DDKitSwift.regist(plugin: DDKitSwift_NetCheck(url: "https://baidu.com"))
+	//Specify target URL
+   	DDKitSwift.regist(plugin: DDKitSwift_Ping(url: "https://baidu.com"))
    	DDKitSwift.regist(plugin: DDKitSwift_FileBrowser())
 	DDKitSwift.regist(plugin: DDKitSwift_UserDefaultManager())
 	
