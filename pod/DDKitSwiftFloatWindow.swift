@@ -9,11 +9,6 @@ import UIKit
 import DDUtils
 import DDLoggerSwift
 
-enum ZXFloatMenuStatus {
-    case collapsed
-    case open
-}
-
 enum ZXFloatMenuButtonType {
     case `default`
     case info(config: DDKitSwiftButtonConfig, image: UIImage?)
@@ -28,33 +23,33 @@ class DDKitSwiftFloatWindow: UIWindow {
         ("nearby-btn", UIColor(red: 1, green: 0.39, blue: 0, alpha: 1))
     ]
 
-    var menuStatus: ZXFloatMenuStatus = .collapsed {
-        didSet {
-            switch menuStatus {
-                case .collapsed:
-                    self.bounds.size.width = 60
-                    self.bounds.size.height = 60
-                case .open:
-                    self.bounds.size.width = 240
-                    self.bounds.size.height = 240
-            }
-            self._resetPosition()
-        }
-    }
+//    var menuStatus: ZXFloatMenuStatus = .collapsed {
+//        didSet {
+//            switch menuStatus {
+//                case .collapsed:
+//                    self.bounds.size.width = 60
+//                    self.bounds.size.height = 60
+//                case .open:
+//                    self.bounds.size.width = 240
+//                    self.bounds.size.height = 240
+//            }
+//            self._resetPosition()
+//        }
+//    }
 
     var menuButtonType: ZXFloatMenuButtonType = .default {
         didSet {
             switch menuButtonType {
                 case .default:
-                    mButton.mMaskView.mImageView.image = nil
-                    mButton.mMaskView.mLabel.text = nil
-                    mButton.mMaskView.mMaskView.backgroundColor = .clear
+                    mButton.setImage(UIImage(named: "zx_logo"), for: .normal)
+                    mButton.setTitle(nil, for: .normal)
+                    mButton.backgroundColor = DDKitSwift.UIConfig.floatButtonColor
                 case .info(let config, let image):
-                    mButton.mMaskView.mImageView.image = image
-                    mButton.mMaskView.mLabel.text = config.title
-                    mButton.mMaskView.mLabel.textColor = config.titleColor
-                    mButton.mMaskView.mMaskView.backgroundColor = config.backgroundColor ?? UIColor.dd.color(hexValue: 0x000000, alpha: 0.5)
-                    mButton.mMaskView.mLabel.font = config.titleFont
+                    mButton.setImage(image, for: .normal)
+                    mButton.setTitle(config.title, for: .normal)
+                    mButton.titleLabel?.font = config.titleFont
+                    mButton.setTitleColor(config.titleColor, for: .normal)
+                    mButton.backgroundColor = config.backgroundColor ?? DDKitSwift.UIConfig.floatButtonColor
             }
         }
     }
@@ -78,15 +73,9 @@ class DDKitSwiftFloatWindow: UIWindow {
         fatalError("init(coder:) has not been implemented")
     }
 
-    lazy var mButton: CircleMenu = {
-        let button = CircleMenu(
-            frame: CGRect(x: 0, y: 0, width: 60, height: 60),
-            normalIcon:"zx_logo",
-            selectedIcon:"zx_logo",
-            buttonsCount: 4,
-            duration: 1.5,
-            distance: 120)
-        button.delegate = self
+    lazy var mButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "zx_logo"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = DDKitSwift.UIConfig.floatButtonColor
         button.dd.addLayerShadow(color: UIColor.dd.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
@@ -95,12 +84,6 @@ class DDKitSwiftFloatWindow: UIWindow {
         button.addGestureRecognizer(pan)
         return button
     }()
-}
-
-extension DDKitSwiftFloatWindow {
-    func setBadge(value: String?, index: Int) {
-        self.mButton.setBadge(value: value, index: index)
-    }
 }
 
 private extension DDKitSwiftFloatWindow {
@@ -114,7 +97,6 @@ private extension DDKitSwiftFloatWindow {
         guard let rootViewController = self.rootViewController else {
             return
         }
-
         rootViewController.view.addSubview(mButton)
         mButton.centerXAnchor.constraint(equalTo: rootViewController.view.centerXAnchor).isActive = true
         mButton.centerYAnchor.constraint(equalTo: rootViewController.view.centerYAnchor).isActive = true
@@ -141,65 +123,17 @@ private extension DDKitSwiftFloatWindow {
         guard let window = DDUtils.shared.getCurrentNormalWindow() else { return }
         var x: CGFloat = 50
         if self.center.x > (window.bounds.size.width) / 2.0 {
-            switch self.menuStatus {
-                case .open:
-                    x = window.bounds.size.width - 150
-                default:
-                    x = window.bounds.size.width - 50
-            }
+            x = window.bounds.size.width - 50
         } else {
-            switch self.menuStatus {
-                case .open:
-                    x = 150
-                default:
-                    x = 50
-            }
+            x = 50
         }
         let y = min(max(130, self.center.y), window.bounds.size.height - 140)
         UIView.animate(withDuration: 0.35) {
             self.center = CGPoint(x: x, y: y)
         }
     }
-}
-
-extension DDKitSwiftFloatWindow: CircleMenuDelegate {
-    func circleMenu(_: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
-        button.backgroundColor = items[atIndex].color
-
-        button.setImage(UIImageHDBoundle(named: items[atIndex].icon), for: .normal)
-
-        // set highlited image
-        let highlightedImage = UIImageHDBoundle(named: items[atIndex].icon)?.withRenderingMode(.alwaysTemplate)
-        button.setImage(highlightedImage, for: .highlighted)
-        button.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
-    }
-
-    func circleMenu(_: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
-        if atIndex == 0 {
-            DDKitSwift.show()
-        } else if atIndex == 1 {
-            DDLoggerSwift.showShare()
-        } else if atIndex == 2 {
-            DDKitSwift.close()
-        } else if atIndex == 3 {
-            DDLoggerSwift.show()
-        }
-    }
-
-    func menuCollapsed(_ circleMenu: CircleMenu) {
-        self.menuStatus = .collapsed
-    }
-
-    func menuOpened(_ circleMenu: CircleMenu) {
-        self.menuStatus = .open
-        //计算运行中的数量
-        let count = DDKitSwift.pluginList.flatMap { $0 }.filter { plugin in
-            plugin.isRunning
-        }.count
-        if count == 0 {
-            self.setBadge(value: nil, index: 0)
-        } else {
-            self.setBadge(value: "\(count)", index: 0)
-        }
+    
+    @objc func _clickFloatButton() {
+        DDKitSwift.show()
     }
 }

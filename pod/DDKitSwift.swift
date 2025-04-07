@@ -121,12 +121,6 @@ public extension DDKitSwift {
                 }
                 self.floatWindow?.isHidden = false
             }
-            let count = DDLoggerSwift.getItemCount(type: .error)
-            if count == 0 {
-                self.floatWindow?.setBadge(value: nil, index: 3)
-            } else {
-                self.floatWindow?.setBadge(value: "\(count)", index: 3)
-            }
         }
     }
 
@@ -149,6 +143,10 @@ public extension DDKitSwift {
         self.changeQueue.append((config, plugin))
         //更新
         self._floatButtonChange()
+    }
+    
+    static func getCurrentNavigationVC() -> UINavigationController? {
+        return self.window?.currentNavVC
     }
 }
 

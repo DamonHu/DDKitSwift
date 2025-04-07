@@ -8,6 +8,8 @@
 import UIKit
 
 class DDKitSwiftWindow: UIWindow {
+    var currentNavVC: UINavigationController?
+    
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
@@ -91,13 +93,12 @@ extension DDKitSwiftWindow: UICollectionViewDelegate,UICollectionViewDataSource 
 }
 
 private extension DDKitSwiftWindow {
-
     func _initVC() {
         self.backgroundColor = DDKitSwift.UIConfig.collectionViewBackgroundColor
         let rootViewController = UIViewController()
 
-        let navigation = UINavigationController(rootViewController: rootViewController)
-        navigation.navigationBar.barTintColor = UIColor.white
+        self.currentNavVC = UINavigationController(rootViewController: rootViewController)
+        self.currentNavVC!.navigationBar.barTintColor = UIColor.white
         //set title
         let view = UIView()
         let label = UILabel()
@@ -124,7 +125,7 @@ private extension DDKitSwiftWindow {
         let leftbarItem1 = UIBarButtonItem(customView: button1)
         rootViewController.navigationItem.leftBarButtonItems = [leftbarItem, leftbarItem1]
         //
-        self.rootViewController = navigation
+        self.rootViewController = self.currentNavVC
         self.windowLevel =  UIWindow.Level.alert
         self.isUserInteractionEnabled = true
     }
