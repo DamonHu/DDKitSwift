@@ -15,28 +15,6 @@ enum ZXFloatMenuButtonType {
 }
 
 class DDKitSwiftFloatWindow: UIWindow {
-    let items: [(icon: String, color: UIColor)] = [
-        ("icon_home", UIColor(red: 0.19, green: 0.57, blue: 1, alpha: 1)),
-        ("icon_share", UIColor(red: 0.22, green: 0.74, blue: 0, alpha: 1)),
-        ("icon_close", UIColor(red: 0.96, green: 0.23, blue: 0.21, alpha: 1)),
-        ("icon_notice", UIColor(red: 0.51, green: 0.15, blue: 1, alpha: 1)),
-        ("nearby-btn", UIColor(red: 1, green: 0.39, blue: 0, alpha: 1))
-    ]
-
-//    var menuStatus: ZXFloatMenuStatus = .collapsed {
-//        didSet {
-//            switch menuStatus {
-//                case .collapsed:
-//                    self.bounds.size.width = 60
-//                    self.bounds.size.height = 60
-//                case .open:
-//                    self.bounds.size.width = 240
-//                    self.bounds.size.height = 240
-//            }
-//            self._resetPosition()
-//        }
-//    }
-
     var menuButtonType: ZXFloatMenuButtonType = .default {
         didSet {
             switch menuButtonType {
@@ -75,11 +53,11 @@ class DDKitSwiftFloatWindow: UIWindow {
 
     lazy var mButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "zx_logo"), for: .normal)
+        button.setImage(UIImageHDBoundle(named: "zx_logo"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = DDKitSwift.UIConfig.floatButtonColor
         button.dd.addLayerShadow(color: UIColor.dd.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
-
+        button.addTarget(self, action: #selector(_clickFloatButton), for: .touchUpInside)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(_touchMove(p:)))
         button.addGestureRecognizer(pan)
         return button
