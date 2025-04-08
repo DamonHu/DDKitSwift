@@ -18,7 +18,7 @@ extension PluginDemo: DDKitSwiftPluginProtocol {
     }
     
     var pluginIcon: UIImage? {
-        return UIImage(named: "zxkit")
+        return UIImage(named: "DDFileBrowser")
     }
 
     var pluginTitle: String {

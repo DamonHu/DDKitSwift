@@ -18,29 +18,33 @@ class DDKitSwiftPluginCollectionViewCell: UICollectionViewCell {
     }
 
     func createUI() {
-        self.layer.borderWidth = 0.5
-        self.layer.borderColor = UIColor.dd.color(hexValue: 0xeeeeee, alpha: 0.7).cgColor
-        self.contentView.addSubview(mIconImageView)
-        mIconImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 13).isActive = true
-        mIconImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
-        mIconImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        mIconImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.contentView.addSubview(mContentView)
+        mContentView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 13).isActive = true
+        mContentView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
+        mContentView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        mContentView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        mContentView.addSubview(mIconImageView)
+        mIconImageView.centerXAnchor.constraint(equalTo: self.mContentView.centerXAnchor).isActive = true
+        mIconImageView.centerYAnchor.constraint(equalTo: self.mContentView.centerYAnchor).isActive = true
+        mIconImageView.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        mIconImageView.heightAnchor.constraint(equalToConstant: 23).isActive = true
 
-        self.contentView.addSubview(mContentLabel)
-        mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 13).isActive = true
-        mContentLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
-        mContentLabel.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        mContentLabel.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        mContentView.addSubview(mContentLabel)
+        mContentLabel.topAnchor.constraint(equalTo: self.mContentView.topAnchor).isActive = true
+        mContentLabel.bottomAnchor.constraint(equalTo: self.mContentView.bottomAnchor).isActive = true
+        mContentLabel.leftAnchor.constraint(equalTo: self.mContentView.leftAnchor).isActive = true
+        mContentLabel.rightAnchor.constraint(equalTo: self.mContentView.rightAnchor).isActive = true
         
         self.contentView.addSubview(mStatusView)
-        mStatusView.topAnchor.constraint(equalTo: self.mIconImageView.topAnchor, constant: -5).isActive = true
-        mStatusView.leftAnchor.constraint(equalTo: self.mIconImageView.leftAnchor, constant: -5).isActive = true
+        mStatusView.topAnchor.constraint(equalTo: self.mContentView.topAnchor, constant: -2).isActive = true
+        mStatusView.leftAnchor.constraint(equalTo: self.mContentView.leftAnchor, constant: -2).isActive = true
         mStatusView.widthAnchor.constraint(equalToConstant: 10).isActive = true
         mStatusView.heightAnchor.constraint(equalToConstant: 10).isActive = true
 
 
         self.contentView.addSubview(mTitleLabel)
-        mTitleLabel.topAnchor.constraint(equalTo: self.mIconImageView.bottomAnchor, constant: 5).isActive = true
+        mTitleLabel.topAnchor.constraint(equalTo: self.mContentView.bottomAnchor, constant: 4).isActive = true
         mTitleLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
         mTitleLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
     }
@@ -49,6 +53,7 @@ class DDKitSwiftPluginCollectionViewCell: UICollectionViewCell {
         mTitleLabel.text = plugin.pluginTitle
         mStatusView.isHidden = !plugin.isRunning
         
+        self.mContentView.backgroundColor = UIColor.dd.color(hexValue: 0x171619)
         switch config {
         case .default:
             self.mContentLabel.isHidden = true
@@ -57,7 +62,7 @@ class DDKitSwiftPluginCollectionViewCell: UICollectionViewCell {
         case .text(let title, let backgroundColor):
             self.mContentLabel.isHidden = false
             self.mIconImageView.isHidden = true
-            self.mContentLabel.backgroundColor = backgroundColor
+            self.mContentView.backgroundColor = backgroundColor
             self.mContentLabel.attributedText = title
         case .image(let image):
             self.mContentLabel.isHidden = true
@@ -67,14 +72,19 @@ class DDKitSwiftPluginCollectionViewCell: UICollectionViewCell {
     }
 
     //MARK: UI
+    lazy var mContentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.dd.color(hexValue: 0x171619)
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 25
+        view.layer.borderWidth = 3.5
+        view.layer.borderColor = UIColor.dd.color(hexValue: 0xd8e3e7).cgColor
+        return view
+    }()
     lazy var mIconImageView: UIImageView = {
         let tImageView = UIImageView()
         tImageView.translatesAutoresizingMaskIntoConstraints = false
-        tImageView.backgroundColor = UIColor.dd.color(hexValue: 0x171619)
-        tImageView.layer.masksToBounds = true
-        tImageView.layer.cornerRadius = 22
-        tImageView.layer.borderWidth = 3
-        tImageView.layer.borderColor = UIColor.dd.color(hexValue: 0xd8e3e7).cgColor
         return tImageView
     }()
     
@@ -100,7 +110,7 @@ class DDKitSwiftPluginCollectionViewCell: UICollectionViewCell {
         tLabel.numberOfLines = 2
         tLabel.textAlignment = .center
         tLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        tLabel.textColor = UIColor.dd.color(hexValue: 0x666666)
+        tLabel.textColor = UIColor.dd.color(hexValue: 0x1a1a1a)
         return tLabel
     }()
 

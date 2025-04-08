@@ -17,7 +17,7 @@ extension PluginDemo3: DDKitSwiftPluginProtocol {
     }
     
     var pluginIcon: UIImage? {
-        return UIImage(named: "test2")
+        return UIImage(named: "DDUserDefaultManager")
     }
 
     var pluginTitle: String {
