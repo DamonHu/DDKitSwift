@@ -24,20 +24,20 @@ The following plugins are built-in and ready to use:
 
 1. Use CocoaPods to select the functionalities you need. You can combine them as needed.
 
+**Required**
+
 ```
-# Required
 pod 'DDKitSwift'
-# Ping detection (optional)
+```
+
+**optional:** Each feature is packaged as an independent module and can be added or removed as needed.
+
+```
 pod 'DDKitSwift_NetCheck'
-# Network monitoring (optional)
 pod 'DDKitSwift_Netfox'
-# FPS detection (optional)
 pod 'DDKitSwift_FPS'
-# Ping detection (optional)
 pod 'DDKitSwift_Ping'
-# File browsing (optional)
 pod 'DDKitSwift_FileBrowser'
-# UserDefault management (optional)
 pod 'DDKitSwift_UserDefaultManager'
 ```
 
@@ -101,11 +101,8 @@ Advanced operations provide a way to integrate personalized plugins. The process
 
 ## Project Preview
 
-![preview.gif][2]
+<img src="./preview.jpg" width=200 />
 
 ## Developing Custom Plugins
 
 If you need to develop custom plugins, implement the `DDKitSwiftPluginProtocol`. Then call the `DDKitSwift.regist(plugin: )` function to automatically load and display the plugin.
-
-  [1]: https://cdn.ddceo.com/blog/usr/uploads/2021/05/3045500571.png
-  [2]: https://cdn.ddceo.com/blog/usr/uploads/2021/05/3680650242.gif
