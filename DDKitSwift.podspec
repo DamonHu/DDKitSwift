@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 s.name = 'DDKitSwift'
 s.swift_version = '5.0'
-s.version = '4.0.1'
+s.version = '4.0.2'
 s.license= { :type => "MIT", :file => "LICENSE" }
 s.summary = 'DDKitSwift is a debugging SDK tool designed for iOS devices. It integrates a variety of practical debugging features to help developers and users identify and troubleshoot device issues.'
 s.homepage = 'https://github.com/DamonHu/DDKitSwift'

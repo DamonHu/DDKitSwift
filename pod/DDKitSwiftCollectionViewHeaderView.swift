@@ -36,7 +36,7 @@ class DDKitSwiftCollectionViewHeaderView: UICollectionViewCell {
         tLabel.translatesAutoresizingMaskIntoConstraints = false
         tLabel.numberOfLines = 2
         tLabel.textAlignment = .left
-        tLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        tLabel.font = .systemFont(ofSize: 16, weight: .medium)
         tLabel.textColor = DDKitSwift.UIConfig.collectionViewTitleColor
         return tLabel
     }()
