@@ -45,6 +45,28 @@ class HDSqliteTools {
         return newFolder
     }
     
+    //获取第一个id，以便判断是否有更多
+    func getMinLogID(name: String? = nil) -> Int {
+        let databasePath = self._getDataBasePath(name: name)
+        guard FileManager.default.fileExists(atPath: databasePath.path) else {
+            return 0
+        }
+        let queryDB = self._openDatabase(name: name)
+        let queryString = "SELECT IFNULL(MIN(id), 0) FROM DDLog"
+        
+        var queryStatement: OpaquePointer?
+        var minID: Int?
+        
+        if sqlite3_prepare_v2(queryDB, queryString, -1, &queryStatement, nil) == SQLITE_OK {
+            if sqlite3_step(queryStatement) == SQLITE_ROW {
+                minID = Int(sqlite3_column_int(queryStatement, 0))
+            }
+        }
+        
+        sqlite3_finalize(queryStatement)
+        return minID ?? 0
+    }
+    
     //批量插入数据
     func insert(logs: [DDLoggerSwiftItem]) {
         if (logs.isEmpty) {
@@ -55,18 +77,19 @@ class HDSqliteTools {
             return
         }
         //批量插入
-        let insertRowString = "INSERT INTO hdlog(log, logType, time, debugContent, contentString) VALUES (?, ?, ?, ?, ?)"
+        let insertRowString = "INSERT INTO DDLog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         // 开启事务
         if sqlite3_exec(logDB, "BEGIN TRANSACTION", nil, nil, nil) == SQLITE_OK {
             for log in logs {
                 if sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil) == SQLITE_OK {
                     // 绑定每个字段的值
-                    sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-                    sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
-                    sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
-                    sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-                    sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_int(insertStatement, 1, Int32(log.mLogItemType.rawValue))
+                    sqlite3_bind_double(insertStatement, 2, Date().timeIntervalSince1970)
+                    sqlite3_bind_text(insertStatement, 3, log.mLogFile, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_text(insertStatement, 4, log.mLogLine, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_text(insertStatement, 5, log.mLogFunction, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+                    sqlite3_bind_text(insertStatement, 6, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
                     if sqlite3_step(insertStatement) != SQLITE_DONE {
                         print("Insert failed: \(String(cString: sqlite3_errmsg(logDB)))")
                     }
@@ -79,7 +102,8 @@ class HDSqliteTools {
             
             // 提交事务
             if sqlite3_exec(logDB, "COMMIT", nil, nil, nil) == SQLITE_OK {
-                print("Transaction committed successfully")
+//                print("Transaction committed successfully")
+                NotificationCenter.default.post(name: .DDLoggerSwiftDBUpdate, object: ["type": "insert"] as [String : Any])
             } else {
                 print("Commit failed: \(String(cString: sqlite3_errmsg(logDB)))")
                 // 如果提交失败，可以选择回滚事务
@@ -96,30 +120,38 @@ class HDSqliteTools {
     ///   - name: 数据库名称，格式 2022-01-01，默认为当天日志
     ///   - keyword: 指定关键字
     ///   - type: 过滤消息类型
-    ///   - pagination: 分页数据，page为页码，size为每页数量
+    ///   - startID: 查询开始的id，没有的话去最新数据
+    ///   - pageSize: 如果分页的话，每页数量
     /// - Returns: 获取的日志
-    func getLogs(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil, pagination: (page: Int, size:Int)? = nil) -> [DDLoggerSwiftItem] {
+    func getLogs(name: String? = nil, keyword: String? = nil, type: DDLogType? = nil, startID: Int? = nil, pageSize: Int? = nil) -> [DDLoggerSwiftItem] {
         let databasePath = self._getDataBasePath(name: name)
         guard FileManager.default.fileExists(atPath: databasePath.path) else {
             //数据库文件不存在
             return []
         }
         let queryDB = self._openDatabase(name: name)
-        var queryString = "SELECT * FROM hdlog"
+        var queryString = "SELECT * FROM DDLog"
+        //查询条件
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
-            whereClauses.append("log LIKE '%\(keyword)%'")
+            whereClauses.append("content LIKE '%\(keyword)%'")
         }
         if let type = type {
             whereClauses.append("logType == \(type.rawValue)")
         }
+        if let startID = startID {
+            whereClauses.append("id < \(startID)")
+        }
         // 如果有条件，拼接 WHERE 子句
         if !whereClauses.isEmpty {
-            queryString += " WHERE " + whereClauses.joined(separator: " AND ")
+            queryString += " WHERE " + whereClauses.joined(separator: " AND ") + " ORDER BY id DESC"
+        } else {
+            queryString = queryString + " ORDER BY id DESC"
         }
-        if let pagination = pagination {
-            queryString = queryString + " LIMIT \(pagination.size) OFFSET \((pagination.page - 1) * pagination.size)"
+        if let pageSize = pageSize {
+            queryString = queryString + " LIMIT \(pageSize)"
         }
+        
         var queryStatement: OpaquePointer?
         //第一步
         var logList = [DDLoggerSwiftItem]()
@@ -129,13 +161,15 @@ class HDSqliteTools {
                 //第三步
                 let item = DDLoggerSwiftItem()
                 item.databaseID = Int(sqlite3_column_int(queryStatement, 0))
-                item.mLogItemType = DDLogType.init(rawValue: Int(sqlite3_column_int(queryStatement, 2)))
-                item.mLogDebugContent = String(cString: sqlite3_column_text(queryStatement, 4))
-                //更新内容
-                item.mLogContent = String(cString: sqlite3_column_text(queryStatement, 5))
+                item.mLogItemType = DDLogType.init(rawValue: Int(sqlite3_column_int(queryStatement, 1)))
                 //时间
-                let time = sqlite3_column_double(queryStatement, 3)
+                let time = sqlite3_column_double(queryStatement, 2)
                 item.mCreateDate = Date(timeIntervalSince1970: time)
+                item.mLogFile = String(cString: sqlite3_column_text(queryStatement, 3))
+                item.mLogLine = String(cString: sqlite3_column_text(queryStatement, 4))
+                item.mLogFunction = String(cString: sqlite3_column_text(queryStatement, 5))
+                //更新内容
+                item.mLogContent = String(cString: sqlite3_column_text(queryStatement, 6))
                 logList.append(item)
             }
         }
@@ -183,7 +217,7 @@ private extension HDSqliteTools {
     
     //创建日志表
     func _createTable() {
-        let createTableString = "create table if not exists 'hdlog' ('id' integer primary key autoincrement not null,'log' text,'logType' integer,'time' double, 'debugContent' text, 'contentString' text)"
+        let createTableString = "create table if not exists 'DDLog' ('id' integer primary key autoincrement not null, 'logType' integer,'time' double, 'logFile' text, 'logLine' text, 'logFunction' text, 'content' text)"
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(logDB, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 第二步
@@ -207,10 +241,10 @@ private extension HDSqliteTools {
             return count
         }
         let queryDB = self.logDB
-        var queryString = "SELECT COUNT(*) FROM hdlog"
+        var queryString = "SELECT COUNT(*) FROM DDLog"
         var whereClauses: [String] = []
         if let keyword = keyword, !keyword.isEmpty {
-            whereClauses.append("log LIKE '%\(keyword)%'")
+            whereClauses.append("content LIKE '%\(keyword)%'")
         }
         if let type = type {
             whereClauses.append("logType == \(type.rawValue)")
@@ -236,17 +270,18 @@ private extension HDSqliteTools {
     
     //插入数据
     func _insert(log: DDLoggerSwiftItem) {
-        let insertRowString = "INSERT INTO hdlog(log, logType, time, debugContent, contentString) VALUES (?, ?, ?, ?, ?)"
+        let insertRowString = "INSERT INTO DDLog(logType, time, logFile, logLine, logFunction, content) VALUES (?, ?, ?, ?, ?, ?)"
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(logDB, insertRowString, -1, &insertStatement, nil)
         if status == SQLITE_OK {
             //绑定
-            sqlite3_bind_text(insertStatement, 1, log.getFullContentString(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-            sqlite3_bind_int(insertStatement, 2, Int32(log.mLogItemType.rawValue))
-            sqlite3_bind_double(insertStatement, 3, Date().timeIntervalSince1970)
-            sqlite3_bind_text(insertStatement, 4, log.mLogDebugContent, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
-            sqlite3_bind_text(insertStatement, 5, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_int(insertStatement, 1, Int32(log.mLogItemType.rawValue))
+            sqlite3_bind_double(insertStatement, 2, Date().timeIntervalSince1970)
+            sqlite3_bind_text(insertStatement, 3, log.mLogFile, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(insertStatement, 4, log.mLogLine, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(insertStatement, 5, log.mLogFunction, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
+            sqlite3_bind_text(insertStatement, 6, log.getLogContent(), -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
             //第三步
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 //                print("插入数据成功")
@@ -262,7 +297,7 @@ private extension HDSqliteTools {
     }
     
     func _deleteLog(timeStamp: Double) {
-        let insertRowString = "DELETE FROM hdlog WHERE time < \(timeStamp) "
+        let insertRowString = "DELETE FROM DDLog WHERE time < \(timeStamp) "
         var insertStatement: OpaquePointer?
         //第一步
         let status = sqlite3_prepare_v2(self.logDB, insertRowString, -1, &insertStatement, nil)

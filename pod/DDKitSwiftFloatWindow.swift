@@ -9,31 +9,7 @@ import UIKit
 import DDUtils
 import DDLoggerSwift
 
-enum ZXFloatMenuButtonType {
-    case `default`
-    case info(config: DDKitSwiftButtonConfig, image: UIImage?)
-}
-
 class DDKitSwiftFloatWindow: UIWindow {
-    var menuButtonType: ZXFloatMenuButtonType = .default {
-        didSet {
-            switch menuButtonType {
-                case .default:
-                    mButton.setImage(UIImage(named: "zx_logo"), for: .normal)
-                    mButton.setTitle(nil, for: .normal)
-                    mButton.backgroundColor = DDKitSwift.UIConfig.floatButtonColor
-                case .info(let config, let image):
-                    mButton.setImage(image, for: .normal)
-                    mButton.setTitle(config.title, for: .normal)
-                    mButton.titleLabel?.font = config.titleFont
-                    mButton.setTitleColor(config.titleColor, for: .normal)
-                    mButton.backgroundColor = config.backgroundColor ?? DDKitSwift.UIConfig.floatButtonColor
-            }
-        }
-    }
-
-
-
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
@@ -51,12 +27,21 @@ class DDKitSwiftFloatWindow: UIWindow {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: UI
+    lazy var mLogoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImageHDBoundle(named: "zx_logo"))
+        imageView.isUserInteractionEnabled = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     lazy var mButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImageHDBoundle(named: "zx_logo"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = DDKitSwift.UIConfig.floatButtonColor
-        button.dd.addLayerShadow(color: UIColor.dd.color(hexValue: 0x333333), offset: CGSize(width: 2, height: 2), radius: 4, cornerRadius: 30)
+        button.dd.addLayerShadow(color: UIColor.dd.color(hexValue: 0x171619), offset: CGSize(width: 0, height: 0), radius: 5, cornerRadius: 30)
+        button.layer.borderColor = UIColor.dd.color(hexValue: 0xffffff, alpha: 0.9).cgColor
+        button.layer.borderWidth = 3.5
         button.addTarget(self, action: #selector(_clickFloatButton), for: .touchUpInside)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(_touchMove(p:)))
         button.addGestureRecognizer(pan)
@@ -80,6 +65,12 @@ private extension DDKitSwiftFloatWindow {
         mButton.centerYAnchor.constraint(equalTo: rootViewController.view.centerYAnchor).isActive = true
         mButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
         mButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        mButton.addSubview(mLogoImageView)
+        mLogoImageView.centerXAnchor.constraint(equalTo: mButton.centerXAnchor).isActive = true
+        mLogoImageView.centerYAnchor.constraint(equalTo: mButton.centerYAnchor).isActive = true
+        mLogoImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        mLogoImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
 
     @objc func _touchMove(p:UIPanGestureRecognizer) {

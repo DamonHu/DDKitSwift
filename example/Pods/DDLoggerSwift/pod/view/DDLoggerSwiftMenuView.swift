@@ -11,7 +11,6 @@ import UIKit
 class DDLoggerSwiftMenuView: UIView {
     var mCollectionList = [DDLoggerSwiftMenuCollectionViewCellModel]()
     var clickSubject: ((_ index: Int) -> Void)?
-    private(set) var isAutoScrollSwitch = true
     override init(frame: CGRect) {
         super.init(frame: frame)
         self._createUI()
@@ -45,7 +44,7 @@ private extension DDLoggerSwiftMenuView {
     func _createUI() {
         self.backgroundColor = UIColor.dd.color(hexValue: 0x272d55, alpha: 0.8)
         self.addSubview(mCollectionView)
-        mCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        mCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
         mCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         mCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         mCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
@@ -53,8 +52,8 @@ private extension DDLoggerSwiftMenuView {
 
     func _loadData() {
         mCollectionList.removeAll()
-        var titleList = ["Back".ZXLocaleString, "Hide".ZXLocaleString, "Exit".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "History".ZXLocaleString, "Auto scroll".ZXLocaleString, "Analyse".ZXLocaleString]
-        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_hide"), UIImageHDBoundle(named: "icon_exit"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_scroll"), UIImageHDBoundle(named: "icon_analyse")]
+        var titleList = ["Back".ZXLocaleString, "Share".ZXLocaleString, "Decrypt".ZXLocaleString, "History".ZXLocaleString, "Analyse".ZXLocaleString]
+        var imageList = [UIImageHDBoundle(named: "icon_back"), UIImageHDBoundle(named: "icon_share"), UIImageHDBoundle(named: "icon_decrypt"), UIImageHDBoundle(named: "icon_search"), UIImageHDBoundle(named: "icon_analyse")]
 
         if DDLoggerSwift.uploadComplete != nil {
             titleList.append("Upload".ZXLocaleString)
@@ -62,10 +61,7 @@ private extension DDLoggerSwiftMenuView {
         }
 
         for i in 0..<titleList.count {
-            var model = DDLoggerSwiftMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
-            if i == 6 {
-                model.isSwitchItem = true
-            }
+            let model = DDLoggerSwiftMenuCollectionViewCellModel(title: titleList[i], image: imageList[i])
             mCollectionList.append(model)
         }
         self.mCollectionView.reloadData()
@@ -83,15 +79,14 @@ extension DDLoggerSwiftMenuView: UICollectionViewDelegate,UICollectionViewDataSo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DDLoggerSwiftMenuCollectionViewCell", for: indexPath) as! DDLoggerSwiftMenuCollectionViewCell
         cell.updateUI(model: model)
         cell.tag = indexPath.item
-        cell.switchSubject = { [weak self] (tag, isOn) in
-            guard let self = self else { return }
-            self.isAutoScrollSwitch = isOn
+        cell.switchSubject = {  (tag, isOn) in
+            
         }
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.item != 6, let clickSubject = clickSubject {
+        if let clickSubject = clickSubject {
             clickSubject(indexPath.item)
         }
     }

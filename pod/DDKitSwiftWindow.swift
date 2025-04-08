@@ -7,13 +7,21 @@
 
 import UIKit
 
+public enum DDPluginItemConfig {
+    case `default`
+    case text(title: NSAttributedString, backgroundColor: UIColor)
+    case image(image: UIImage)
+}
+
 class DDKitSwiftWindow: UIWindow {
     var currentNavVC: UINavigationController?
+    var collectionList: [[(DDKitSwiftPluginProtocol, DDPluginItemConfig)]] = []
     
     @available(iOS 13.0, *)
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
         self._initVC()
+        self._loadData()
         self._createUI()
     }
 
@@ -53,20 +61,41 @@ extension DDKitSwiftWindow {
     func reloadData() {
         self.mCollectionView.reloadData()
     }
+    
+    func updateListItem(plugin: DDKitSwiftPluginProtocol, config: DDPluginItemConfig) {
+        var section = 0
+        switch plugin.pluginType {
+        case .ui:
+            section = 0
+        case .data:
+            section = 1
+        case .other:
+            section = 2
+        }
+        let list = self.collectionList[section]
+        if let index = list.firstIndex(where: { item in
+            return item.0.pluginIdentifier == plugin.pluginIdentifier
+        }) {
+            var item = list[index]
+            item.1 = config
+            self.collectionList[section][index] = item
+            self.mCollectionView.reloadItems(at: [IndexPath(item: index, section: section)])
+        }
+    }
 }
 
 extension DDKitSwiftWindow: UICollectionViewDelegate,UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return DDKitSwift.pluginList.count
+        return self.collectionList.count
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return DDKitSwift.pluginList[section].count
+        return self.collectionList[section].count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let plugin = DDKitSwift.pluginList[indexPath.section][indexPath.item]
+        let pluginItem = self.collectionList[indexPath.section][indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DDKitSwiftPluginCollectionViewCell", for: indexPath) as! DDKitSwiftPluginCollectionViewCell
-        cell.updateUI(plugin: plugin)
+        cell.updateUI(plugin: pluginItem.0, config: pluginItem.1)
         return cell
     }
 
@@ -136,6 +165,14 @@ private extension DDKitSwiftWindow {
     
     @objc func _closeBarItemClick() {
         DDKitSwift.close()
+    }
+    
+    func _loadData() {
+        self.collectionList = DDKitSwift.pluginList.map({ protocolList in
+            return protocolList.map { protocolItem in
+                return (protocolItem, .default)
+            }
+        })
     }
 
     func _createUI() {

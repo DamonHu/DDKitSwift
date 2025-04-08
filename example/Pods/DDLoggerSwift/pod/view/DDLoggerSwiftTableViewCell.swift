@@ -9,7 +9,6 @@
 import UIKit
 
 class DDLoggerSwiftTableViewCell: UITableViewCell {
-    
     private lazy var mContentLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,22 +48,39 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
     
     private func _createUI() -> Void {
         self.backgroundColor = UIColor.clear
+        
         self.contentView.addSubview(self.mContentLabel)
-        self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10).isActive = true
-        self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
-        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
-        self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2).isActive = true
+        self.mContentLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16).isActive = true
+        self.mContentLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16).isActive = true
+        self.mContentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 15).isActive = true
+        self.mContentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
         
         self.contentView.addSubview(self.mIDLabel)
-        self.mIDLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10).isActive = true
-        self.mIDLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
+        self.mIDLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16).isActive = true
+        self.mIDLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 3).isActive = true
     }
     
-    func updateWithLoggerItem(loggerItem:DDLoggerSwiftItem, highlightText:String) {
+    func updateWithLoggerItem(model:DDLoggerSwiftTableCellModel, highlightText:String) {
+        let loggerItem = model.logItem
         self.mIDLabel.text = "#\(loggerItem.databaseID)"
         self.mContentLabel.textColor = loggerItem.mLogItemType.textColor()
-        loggerItem.getHighlightAttributedString(highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
-            self.mContentLabel.attributedText = hightlightAttributedString
+        var contentString = loggerItem.getFullContentString()
+        if model.isCollapse {
+            contentString = contentString.dd.subString(rang: NSRange(location: 0, length: DDLoggerSwift.cellDisplayCount))
+        }
+        loggerItem.getHighlightAttributedString(contentString: contentString, highlightString: highlightText) { (hasHighlightStr, hightlightAttributedString) in
+            if model.isCollapse {
+                let read = NSAttributedString(string: "Read more", attributes: [NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue, .underlineColor: UIColor.dd.color(hexValue: 0xeeeeee), .foregroundColor: UIColor.dd.color(hexValue: 0xeeeeee)])
+                
+                let attri = NSMutableAttributedString()
+                attri.append(hightlightAttributedString)
+                attri.append(NSAttributedString(string: "……\n\n"))
+                attri.append(read)
+                self.mContentLabel.attributedText = attri
+            } else {
+                self.mContentLabel.attributedText = hightlightAttributedString
+            }
+            
 //            if hasHighlightStr {
 //                self.contentView.backgroundColor = UIColor.dd.color(hexValue: 0xe58e23)
 //            } else {
@@ -72,11 +88,5 @@ class DDLoggerSwiftTableViewCell: UITableViewCell {
 //            }
         }
         
-    }
-    
-    func update(content: String) {
-        self.contentView.backgroundColor = UIColor.clear
-        self.mContentLabel.textColor = UIColor(red: 80.0/255.0, green: 216.0/255.0, blue: 144.0/255.0, alpha: 1.0)
-        self.mContentLabel.text = content
     }
 }

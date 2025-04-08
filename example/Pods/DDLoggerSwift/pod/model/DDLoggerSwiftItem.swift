@@ -19,16 +19,48 @@ public class DDLoggerSwiftItem {
     let identifier = UUID()                                 //用于hash计算
     var databaseID: Int = 0                                 //存在database的id
     public var mLogItemType = DDLogType.debug             //log类型
-    public var mLogDebugContent: String = ""              //log输出的文件、行数、函数名
+    public var mLogFile: String = ""                        //log调用的文件
+    public var mLogLine: String = ""                        //log调用的行数
+    public var mLogFunction: String = ""                    //log调用的函数名
     public var mLogContent: Any? = "DDLoggerSwift: Click Log To Copy"  //log的内容
     public var mCreateDate = t                      //log日期
     
     private var mCurrentHighlightString = ""            //当前需要高亮的字符串
     private var mCacheHasHighlightString = false        //上次查询是否包含高亮的字符串
-    var mCacheHighlightCompleteString: NSMutableAttributedString?   //上次包含高亮支付的富文本
+    private var mCacheHighlightCompleteString = NSMutableAttributedString(string: "")   //上次包含高亮支付的富文本
 }
 
 public extension DDLoggerSwiftItem {
+    func icon() -> String {
+        switch mLogItemType {
+        case .info:
+            return "✅"
+        case .warn:
+            return "⚠️"
+        case .error:
+            return "❌"
+        case .privacy:
+            return "⛔️"
+        default:
+            return "💜"
+        }
+    }
+    
+    func level() -> String {
+        switch mLogItemType {
+        case .info:
+            return "INFO"
+        case .warn:
+            return "WARN"
+        case .error:
+            return "ERROR"
+        case .privacy:
+            return "PRIVACY"
+        default:
+            return "DEBUG"
+        }
+    }
+    
     //LogContent转字符串格式化
     func getLogContent() -> String {
         var contentString = ""
@@ -49,43 +81,14 @@ public extension DDLoggerSwiftItem {
      func getFullContentString() -> String {
         //日期
          let dateStr = DDLoggerSwift.dateFormatterISO8601.string(from: mCreateDate)
-        //内容
-        let contentString = self.getLogContent()
         //所有的内容
-        if DDLoggerSwift.isFullLogOut {
-            switch mLogItemType {
-                case .info:
-                    return dateStr + " ---- ✅✅ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                case .warn:
-                    return dateStr + " ---- ⚠️⚠️ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                case .error:
-                    return dateStr + " ---- ❌❌ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                case .privacy:
-                    return dateStr + " ---- ⛔️⛔️ ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-                default:
-                    return dateStr + " ---- 💜💜 ---- " +  mLogDebugContent + "\n" + contentString + "\n"
-            }
-        } else {
-            switch mLogItemType {
-                case .info:
-                    return dateStr + " ---- ✅✅ ---- " + "\n" + contentString + "\n"
-                case .warn:
-                    return dateStr + " ---- ⚠️⚠️ ---- " + "\n" + contentString + "\n"
-                case .error:
-                    return dateStr + " ---- ❌❌ ---- " + "\n" + contentString + "\n"
-                case .privacy:
-                    return dateStr + " ---- ⛔️⛔️ ---- " + "\n" + contentString + "\n"
-                default:
-                    return dateStr + " ---- 💜💜 ---- " + "\n" + contentString + "\n"
-            }
-        }
+         return "\(self.icon())" + " " + "[\(dateStr)]" + " " + "[\(self.level())]" + " " +  "File: \(mLogFile) | Line: \(mLogLine) | Function: \(mLogFunction) " + "\n---------------------------------\n" + self.getLogContent() + "\n"
     }
     
     //根据需要高亮内容查询组装高亮内容
-    func getHighlightAttributedString(highlightString: String, complete:(Bool, NSAttributedString?)->Void) -> Void {
+    func getHighlightAttributedString(contentString: String, highlightString: String, complete:(Bool, NSAttributedString)->Void) -> Void {
         if highlightString.isEmpty {
             //空的直接返回
-            let contentString = self.getFullContentString()
             let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
             self.mCacheHighlightCompleteString = newString
             self.mCacheHasHighlightString = false
@@ -95,7 +98,6 @@ public extension DDLoggerSwiftItem {
             complete(self.mCacheHasHighlightString, self.mCacheHighlightCompleteString)
         } else {
             self.mCurrentHighlightString = highlightString
-            let contentString = self.getFullContentString()
             let newString = NSMutableAttributedString(string: contentString, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 13)])
             let regx = try? NSRegularExpression(pattern: highlightString, options: NSRegularExpression.Options.caseInsensitive)
             if let searchRegx = regx {

@@ -112,15 +112,15 @@ public func printPrivacy(_ log:Any ..., file:String = #file, funcName:String = #
 ///log的输出
 public class DDLoggerSwift {
     public static let shared = DDLoggerSwift()
-    public static var isFullLogOut = true    //是否完整输出日志文件名等调试内容
     public static var isSyncConsole = true   //是否在xcode底部的调试栏同步输出内容
     public static var storageLevels: DDLogType = [.info, .warn, .error, .privacy]    //存储到数据库的级别
-    public static var logExpiryDay = 30        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为30天
+    public static var logExpiryDay = 90        //本地日志文件的有效期（天），超出有效期的本地日志会被删除，0为没有有效期，默认为90天
     public static var userID = "0"             //为不同用户创建的独立的日志库
     public static var DBParentFolder = DDUtils.shared.getFileDirectory(type: .documents)
     public static var uploadComplete: ((URL) ->Void)?   //点击上传日志的回调
     public static var throttleTime: TimeInterval = 2    //延迟写入数据库的时间，单位秒，频繁输出的话，通过该参数可批量写入提高运行和写入性能
-    public static var maxPageSize: Int = 0        //table展示的分页, 0为不分页
+    public static var maxPageSize: Int = 10000        //table展示的分页, 0为不分页
+    public static var cellDisplayCount: Int = 600     //tablecell展示的字数，太长布局会有效率问题
     /*隐私数据采用AESCBC加密
      *需要设置密码privacyLogPassword
      *初始向量privacyLogIv
@@ -130,16 +130,6 @@ public class DDLoggerSwift {
     public static var privacyLogIv = "abcdefghijklmnop"
     public static var privacyResultEncodeType = DDUtilsEncodeType.hex
     
-    /**
-     如果集成实时日志功能
-     */
-    #if canImport(CocoaAsyncSocket)
-    public static var isTCP: Bool = true //是否TCP链接，UDP在iOS14以后需要向App Store申请权限
-    public static var socketPort: UInt16 = 888 //连接的端口
-    public static var socketDomain: String = "local" //支持自定义
-    public static var socketType: String = "_DDLoggerSwift"//支持自定义
-    #endif
-
     //MARK: 内部
     static var fileSelectedComplete: ((URL, String) ->Void)?   //选择历史文件过滤回调
     static let dateFormatterISO8601 = ISO8601DateFormatter()
@@ -193,7 +183,9 @@ public class DDLoggerSwift {
         loggerItem.mLogItemType = logType
 
         let fileName = (file as NSString).lastPathComponent;
-        loggerItem.mLogDebugContent = "File: \(fileName) -- Line: \(lineNum) -- Function:\(fileName).\(funcName) ----"
+        loggerItem.mLogFile = fileName
+        loggerItem.mLogLine = "\(lineNum)"
+        loggerItem.mLogFunction = funcName
         loggerItem.mLogContent = log
 
         if self.isSyncConsole {
@@ -205,37 +197,13 @@ public class DDLoggerSwift {
                 //设置节流
                 let currentTime = Date().timeIntervalSince1970
                 if let lastUpdateTime = shared.lastUpdateTime, currentTime - lastUpdateTime > throttleTime {
-                    if shared.throttleTimer != nil {
-                        shared.throttleTimer?.invalidate()
-                        shared.throttleTimer = nil
-                    }
-                    let chunkList = shared.chunkList
-                    //写入文件
-                    if self.storageLevels.contains(logType) {
-                        self.shared._writeDB(logs: chunkList)
-                    }
-                    shared.chunkList.removeAll()
-                    shared.lastUpdateTime = nil
+                    self._flushLogs()
                 } else {
-                    shared.chunkList.append(loggerItem)
-                    if shared.lastUpdateTime == nil {
-                        shared.lastUpdateTime = Date().timeIntervalSince1970
+                    // 将日志添加到缓存列表中
+                    if self.storageLevels.contains(logType) {
+                        shared.chunkList.append(loggerItem)
                     }
-                    if shared.throttleTimer != nil {
-                        shared.throttleTimer?.invalidate()
-                        shared.throttleTimer = nil
-                    }
-                    shared.throttleTimer = Timer(timeInterval: throttleTime, repeats: false) { timer in
-                        timer.invalidate()
-                        let chunkList = shared.chunkList
-                        //写入文件
-                        if self.storageLevels.contains(logType) {
-                            self.shared._writeDB(logs: chunkList)
-                        }
-                        shared.chunkList.removeAll()
-                        shared.lastUpdateTime = nil
-                    }
-                    RunLoop.main.add(shared.throttleTimer!, forMode: .common)
+                    self._scheduleThrottle()
                 }
             } else {
                 //写入文件
@@ -243,15 +211,6 @@ public class DDLoggerSwift {
                     self.shared._writeDB(logs: [loggerItem])
                 }
             }
-            #if canImport(CocoaAsyncSocket)
-            DispatchQueue.global().async {
-                if DDLoggerSwift.isTCP {
-                    DDLoggerSwiftTCPSocketManager.shared.send(loggerItem: loggerItem)
-                } else {
-                    DDLoggerSwiftUDPSocketManager.shared.send(loggerItem: loggerItem)
-                }
-            }
-            #endif
         }
     }
     
@@ -262,7 +221,7 @@ public class DDLoggerSwift {
             let dateString = DDLoggerSwift.dateFormatter.string(from: date)
             name = dateString
         }
-        return HDSqliteTools.shared.getLogs(name: name, keyword: keyword, type: type, pagination: pagination)
+        return HDSqliteTools.shared.getLogs(name: name, keyword: keyword, type: type, startID: nil, pageSize: nil)
     }
 
     ///获取log日志的数据库
@@ -388,22 +347,39 @@ public class DDLoggerSwift {
         if DDLoggerSwift.logExpiryDay > 0 {
             self._checkValidity()
         }
-
-        #if canImport(CocoaAsyncSocket)
-        //发起服务
-        DDLoggerSwiftBonjour.shared.start()
-        if DDLoggerSwift.isTCP {
-            DDLoggerSwiftTCPSocketManager.shared.start()
-        } else {
-            DDLoggerSwiftUDPSocketManager.shared.start()
-        }
-        #endif
     }
 }
 
 private extension DDLoggerSwift {
     func _writeDB(logs: [DDLoggerSwiftItem]) -> Void {
         HDSqliteTools.shared.insert(logs: logs)
+    }
+    
+    // 计划节流机制
+    class func _scheduleThrottle() {
+        if shared.throttleTimer != nil {
+            shared.throttleTimer?.invalidate()
+        }
+        shared.throttleTimer = Timer(timeInterval: throttleTime, repeats: false) { _ in
+            self._flushLogs()
+        }
+        RunLoop.main.add(shared.throttleTimer!, forMode: .common)
+        // 更新最后一次操作时间
+        if shared.lastUpdateTime == nil {
+            shared.lastUpdateTime = Date().timeIntervalSince1970
+        }
+    }
+
+    // 刷新并写入缓存日志
+    class func _flushLogs() {
+        if shared.chunkList.isEmpty { return }
+
+        let chunkList = shared.chunkList
+        self.shared._writeDB(logs: chunkList)
+        shared.chunkList.removeAll()
+        shared.lastUpdateTime = nil
+        shared.throttleTimer?.invalidate()
+        shared.throttleTimer = nil
     }
     
     func _checkValidity() {

@@ -40,10 +40,11 @@ class DDLoggerSwiftWindow: UIWindow {
         super.init(frame: frame)
         self._init()
     }
-    private var mDisplayLogDataArray = [DDLoggerSwiftItem]()  //tableview显示的logger
+    private var mDisplayLogDataArray = [DDLoggerSwiftTableCellModel]()  //tableview显示的logger
     private var mCurrentSearchIndex = 0             //当前搜索到的索引
-    private var page: Int = 1   //第几页数据
-    private var totalCount: Int = 0 //数量
+    private var lastIndexID: Int? = nil   //最后索引的id
+    private var hasMore = true
+    private var totalCount: Int = 0//数量
     
     override var isHidden: Bool {
         willSet {
@@ -51,8 +52,7 @@ class DDLoggerSwiftWindow: UIWindow {
             if !newValue {
                 self.changeWindowFrame()
                 if self.mDisplayLogDataArray.isEmpty {
-                    self.page = 1
-                    self._reloadView()
+                    self._resetData()
                 }
             }
         }
@@ -60,8 +60,7 @@ class DDLoggerSwiftWindow: UIWindow {
 
     var filterType: DDLogType? {
         didSet {
-            self.page = 1
-            self._reloadView()
+            self._resetData()
         }
     }
 
@@ -120,8 +119,7 @@ class DDLoggerSwiftWindow: UIWindow {
             } else {
                 self.mTipLabel.text = dataBaseName
             }
-            self.page = 1
-            self._reloadView()
+            self._resetData()
         }
     }
 
@@ -135,10 +133,12 @@ class DDLoggerSwiftWindow: UIWindow {
     }()
 
     private lazy var mTableView: UITableView = {
-        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
+        let tableView = UITableView(frame: CGRect.zero, style: UITableView.Style.grouped)
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
+        tableView.contentInset = .zero
+        tableView.contentInsetAdjustmentBehavior = .never
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.scrollsToTop = true
         tableView.dataSource = self
@@ -151,6 +151,10 @@ class DDLoggerSwiftWindow: UIWindow {
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         tableView.register(DDLoggerSwiftTableViewCell.self, forCellReuseIdentifier: "DDLoggerSwiftTableViewCell")
+        //添加下拉刷新
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(_resetData), for: .valueChanged)
+        tableView.refreshControl = refreshControl
         return tableView
     }()
 
@@ -165,7 +169,25 @@ class DDLoggerSwiftWindow: UIWindow {
         let button = UIButton(type: .custom)
         button.tag = 0
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImageHDBoundle(named: "icon_scale"), for: .normal)
+        button.setImage(UIImageHDBoundle(named: "log_icon_scale"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var mCloseButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 3
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "log_icon_close"), for: .normal)
+        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var mHiddenButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tag = 4
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImageHDBoundle(named: "log_icon_subtract"), for: .normal)
         button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
         return button
     }()
@@ -188,14 +210,7 @@ class DDLoggerSwiftWindow: UIWindow {
         return button
     }()
     
-    lazy var mCloseButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.tag = 3
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImageHDBoundle(named: "icon_exit"), for: .normal)
-        button.addTarget(self, action: #selector(_bindClick(button:)), for: .touchUpInside)
-        return button
-    }()
+    
     
     private lazy var mMenuView: DDLoggerSwiftMenuView = {
         let tMenuView = DDLoggerSwiftMenuView()
@@ -207,22 +222,15 @@ class DDLoggerSwiftWindow: UIWindow {
                 case 0:
                     break
                 case 1:
-                    self._hide()
-                case 2:
-                    self._close()
-                case 3:
                     DDLoggerSwift.showShare(isCloseWhenComplete: false)
-                case 4:
+                case 2:
                     self.isDecryptViewHidden = false
-                case 5:
+                case 3:
                     DDLoggerSwift.fileSelectedComplete = { filePath, name in
                         self.dataBaseName = name
                     }
                     DDLoggerSwift.showFileFilter()
-                break
-                case 6:
-                    break
-                case 7:
+                case 4:
                     let folder = DDLoggerSwift.getDBFolder()
                     let size = DDUtils.shared.getFileDirectorySize(fileDirectoryPth: folder)
                     //数据库条数
@@ -251,7 +259,10 @@ class DDLoggerSwiftWindow: UIWindow {
                         📈 \("LogFile total size".ZXLocaleString): \(size/1024.0)kb
                     """
                     printWarn(info)
-                case 8:
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self._resetData()
+                    }
+                case 5:
                     DDLoggerSwift.showUpload(isCloseWhenComplete: false)
                 default:
                     break
@@ -365,8 +376,7 @@ extension DDLoggerSwiftWindow {
         //删除指定数据
         HDSqliteTools.shared.deleteLog(timeStamp: Date().timeIntervalSince1970)
         self.mDisplayLogDataArray.removeAll()
-        self.page = 1
-        self._reloadView()
+        self._resetData()
     }
 }
 
@@ -399,43 +409,52 @@ private extension DDLoggerSwiftWindow {
                 self.cleanLog()
             case 3:
                 DDLoggerSwift.close()
+            case 4:
+                DDLoggerSwift.hide()
             default:
                 break
         }
     }
 
     //过滤刷新
-    private func _reloadView() {
+    @objc private func _reloadView() {
         var dataArray = [DDLoggerSwiftItem]()
         self.totalCount = HDSqliteTools.shared.getItemCount(keyword: self.mSearchBar.text, type: self.filterType)
         if DDLoggerSwift.maxPageSize > 0 {
-            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, pagination: (self.page, DDLoggerSwift.maxPageSize))
-            if self.page == 1 {
-                self.mDisplayLogDataArray = dataArray
+            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, startID: self.lastIndexID, pageSize: DDLoggerSwift.maxPageSize)
+            if self.lastIndexID == nil {
+                self.mDisplayLogDataArray = dataArray.map({ item in
+                    return DDLoggerSwiftTableCellModel(model: item)
+                })
             } else {
-                self.mDisplayLogDataArray.append(contentsOf: dataArray)
+                self.mDisplayLogDataArray.append(contentsOf: dataArray.map({ item in
+                    return DDLoggerSwiftTableCellModel(model: item)
+                }))
+            }
+            self.lastIndexID = self.mDisplayLogDataArray.last?.logItem.databaseID
+            let minID = HDSqliteTools.shared.getMinLogID()
+            if minID == 0 || self.lastIndexID == nil {
+                self.hasMore = false
+            } else {
+                self.hasMore = self.lastIndexID != minID
             }
         } else {
             //不分页
-            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType)
-            self.mDisplayLogDataArray = dataArray
+            dataArray = HDSqliteTools.shared.getLogs(name: self.dataBaseName, keyword: self.mSearchBar.text, type: self.filterType, startID: nil, pageSize: nil)
+            self.mDisplayLogDataArray = dataArray.map({ item in
+                return DDLoggerSwiftTableCellModel(model: item)
+            })
+            self.hasMore = false
         }
         if self.mDisplayLogDataArray.isEmpty {
             //第一条信息
-            let loggerItem = DDLoggerSwiftItem()
-            self.mDisplayLogDataArray.append(loggerItem)
+            self.mDisplayLogDataArray.append(DDLoggerSwiftTableCellModel())
         }
         self.mNextButton.isEnabled = !self.mDisplayLogDataArray.isEmpty
         self.mSearchNumLabel.text = "\(self.mDisplayLogDataArray.count)"
         //全局刷新
         self.mTableView.reloadData()
-        if self.mMenuView.isAutoScrollSwitch {
-            guard self.mDisplayLogDataArray.count > 1 else { return }
-            DispatchQueue.main.async {
-                self.mTableView.updateFocusIfNeeded()
-                self.mTableView.scrollToRow(at: IndexPath(row: self.mDisplayLogDataArray.count - 1, section: 0), at: .bottom, animated: false)
-            }
-        }
+        self.mTableView.refreshControl?.endRefreshing()
     }
 
     @objc private func _showFilterPop() -> Void {
@@ -457,16 +476,8 @@ private extension DDLoggerSwiftWindow {
         self.isHidden = false
     }
     
-    @objc private func _loadMore() {
-        self.totalCount = HDSqliteTools.shared.getItemCount(keyword: self.mSearchBar.text, type: self.filterType)
-        if (DDLoggerSwift.maxPageSize > 0) {
-            let maxPage = self.totalCount / DDLoggerSwift.maxPageSize
-            if self.page >= maxPage {
-                self.page = maxPage
-            } else {
-                self.page = self.page + 1
-            }
-        }
+    @objc private func _resetData() {
+        self.lastIndexID = nil
         self._reloadView()
     }
 
@@ -516,30 +527,36 @@ private extension DDLoggerSwiftWindow {
         self.mNavigationBar.leftAnchor.constraint(equalTo: self.mContentBGView.leftAnchor).isActive = true
         self.mNavigationBar.rightAnchor.constraint(equalTo: self.mContentBGView.rightAnchor).isActive = true
         self.mNavigationBar.heightAnchor.constraint(equalToConstant: 40 + UIApplication.shared.statusBarFrame.height).isActive = true
-        //放大
-        self.mNavigationBar.addSubview(self.mScaleButton)
-        mScaleButton.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -10).isActive = true
-        mScaleButton.leftAnchor.constraint(equalTo: self.mNavigationBar.leftAnchor, constant: 20).isActive = true
-        mScaleButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        mScaleButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        //清除
-        self.mNavigationBar.addSubview(self.mDeleteButton)
-        mDeleteButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
-        mDeleteButton.leftAnchor.constraint(equalTo: self.mScaleButton.rightAnchor, constant: 25).isActive = true
-        mDeleteButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        mDeleteButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         //关闭
         self.mNavigationBar.addSubview(self.mCloseButton)
-        mCloseButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
-        mCloseButton.rightAnchor.constraint(equalTo: self.mNavigationBar.rightAnchor, constant: -20).isActive = true
-        mCloseButton.widthAnchor.constraint(equalToConstant: 23).isActive = true
-        mCloseButton.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        mCloseButton.bottomAnchor.constraint(equalTo: self.mNavigationBar.bottomAnchor, constant: -10).isActive = true
+        mCloseButton.leftAnchor.constraint(equalTo: self.mNavigationBar.leftAnchor, constant: 10).isActive = true
+        mCloseButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        mCloseButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        //隐藏
+        self.mNavigationBar.addSubview(self.mHiddenButton)
+        mHiddenButton.centerYAnchor.constraint(equalTo: self.mCloseButton.centerYAnchor).isActive = true
+        mHiddenButton.leftAnchor.constraint(equalTo: self.mCloseButton.rightAnchor, constant: 10).isActive = true
+        mHiddenButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        mHiddenButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        //放大
+        self.mNavigationBar.addSubview(self.mScaleButton)
+        mScaleButton.centerYAnchor.constraint(equalTo: self.mHiddenButton.centerYAnchor).isActive = true
+        mScaleButton.leftAnchor.constraint(equalTo: self.mHiddenButton.rightAnchor, constant: 10).isActive = true
+        mScaleButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        mScaleButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         //菜单
         self.mNavigationBar.addSubview(self.mMenuButton)
         mMenuButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
-        mMenuButton.rightAnchor.constraint(equalTo: self.mCloseButton.leftAnchor, constant: -25).isActive = true
+        mMenuButton.rightAnchor.constraint(equalTo: self.mNavigationBar.rightAnchor, constant: -20).isActive = true
         mMenuButton.widthAnchor.constraint(equalToConstant: 23).isActive = true
         mMenuButton.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        //清除
+        self.mNavigationBar.addSubview(self.mDeleteButton)
+        mDeleteButton.centerYAnchor.constraint(equalTo: self.mScaleButton.centerYAnchor).isActive = true
+        mDeleteButton.rightAnchor.constraint(equalTo: self.mMenuButton.leftAnchor, constant: -20).isActive = true
+        mDeleteButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        mDeleteButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         //标题
         self.mNavigationBar.addSubview(self.mTipLabel)
         self.mTipLabel.centerXAnchor.constraint(equalTo: self.mNavigationBar.centerXAnchor).isActive = true
@@ -626,20 +643,25 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
         let loggerCell = tableView.dequeueReusableCell(withIdentifier: "DDLoggerSwiftTableViewCell") as! DDLoggerSwiftTableViewCell
         loggerCell.backgroundColor = UIColor.clear
         loggerCell.selectionStyle = .none
-        loggerCell.updateWithLoggerItem(loggerItem: loggerItem, highlightText: self.mSearchBar.text ?? "")
+        loggerCell.updateWithLoggerItem(model: loggerItem, highlightText: self.mSearchBar.text ?? "")
         return loggerCell
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let loggerItem = self.mDisplayLogDataArray[indexPath.row]
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = loggerItem.getFullContentString()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss.SSS"
-        let dateStr = dateFormatter.string(from: loggerItem.mCreateDate)
-        let tipString = dateStr + " " + "Log has been copied".ZXLocaleString
-        printWarn(tipString)
+        let model = self.mDisplayLogDataArray[indexPath.row]
+        if model.isCollapse {
+            model.isCollapse = false
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        } else {
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = model.logItem.getFullContentString()
+            //提醒
+            let alert = UIAlertController(title: "copy success", message: "Log has been copied".ZXLocaleString, preferredStyle: .alert)
+            self.rootViewController?.present(alert, animated: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alert.dismiss(animated: true)
+            }
+        }
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -663,20 +685,22 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return 0.1
+        return self.hasMore ? 45 : 0.1
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 44
+        return self.hasMore ? 45 : 0.1
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let button = UIButton()
-        button.setTitle("🔄 Load More, 📊 (total count: \(self.totalCount))", for: .normal)
-        button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
-        button.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
-        button.addTarget(self, action: #selector(_loadMore), for: .touchUpInside)
+        if self.hasMore {
+            button.setTitle("🔄 Load More, 📊 (total count: \(self.totalCount))", for: .normal)
+            button.setTitleColor(UIColor.dd.color(hexValue: 0xffffff), for: .normal)
+            button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
+            button.backgroundColor = UIColor.dd.color(hexValue: 0x333333)
+            button.addTarget(self, action: #selector(_reloadView), for: .touchUpInside)
+        }
         return button
     }
 }
@@ -684,8 +708,7 @@ extension DDLoggerSwiftWindow: UITableViewDataSource, UITableViewDelegate {
 extension DDLoggerSwiftWindow: UISearchBarDelegate {
     //UISearchBarDelegate
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.page = 1
-        self._reloadView()
+        self._resetData()
     }
     
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

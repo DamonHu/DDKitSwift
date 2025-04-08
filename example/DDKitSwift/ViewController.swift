@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         button3.setTitle("change float button", for: .normal)
         button3.backgroundColor = UIColor.red
         self.view.addSubview(button3)
-        button3.addTarget(self, action: #selector(_updateFloatButton), for: .touchUpInside)
+        button3.addTarget(self, action: #selector(_updateItem), for: .touchUpInside)
 
     }
 
@@ -46,11 +46,9 @@ class ViewController: UIViewController {
         DDKitSwift.show()
     }
 
-    @objc func _updateFloatButton() {
-        for i in 0..<10 {
-            let config = DDKitSwiftButtonConfig(title: "test\(i)", titleColor: UIColor.white, titleFont: .systemFont(ofSize: 17), backgroundColor: nil)
-            DDKitSwift.updateFloatButton(config: config, plugin: PluginDemo())
-        }
+    @objc func _updateItem() {
+        let config = DDPluginItemConfig.text(title: NSAttributedString(string: "ttt"), backgroundColor: UIColor.white)
+        DDKitSwift.updateListItem(plugin: PluginDemo(), config: config)
     }
 }
 

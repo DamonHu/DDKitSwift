@@ -1,13 +1,13 @@
 PODS:
-  - DDLoggerSwift (5.1.1):
-    - DDLoggerSwift/core (= 5.1.1)
-  - DDLoggerSwift/core (5.1.1):
-    - DDUtils/ui (~> 5.0.0)
-    - DDUtils/utils (~> 5.0.0)
-  - DDUtils/core (5.0.2)
-  - DDUtils/ui (5.0.2):
+  - DDLoggerSwift (5.3.1):
+    - DDLoggerSwift/core (= 5.3.1)
+  - DDLoggerSwift/core (5.3.1):
+    - DDUtils/ui (~> 5)
+    - DDUtils/utils (~> 5)
+  - DDUtils/core (5.0.13)
+  - DDUtils/ui (5.0.13):
     - DDUtils/core
-  - DDUtils/utils (5.0.2):
+  - DDUtils/utils (5.0.13):
     - DDUtils/core
 
 DEPENDENCIES:
@@ -21,9 +21,9 @@ SPEC REPOS:
     - DDUtils
 
 SPEC CHECKSUMS:
-  DDLoggerSwift: adcd15af5a1813348b207c042749c063f3ed4b3c
-  DDUtils: 56b14d305b574751a3e5336717a6dfd56dd2c58c
+  DDLoggerSwift: c7c8776b2e56c741ef3c3de8cfaa3eadb2fcf813
+  DDUtils: 9d1dab6514cbe6687348bde7ea0f6f2187b55222
 
-PODFILE CHECKSUM: b6d9a193c3bc208c301128dfb6e635dee6de8018
+PODFILE CHECKSUM: 9adc178184525feb192ce1c94c0dd33c7c9b4ff9
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

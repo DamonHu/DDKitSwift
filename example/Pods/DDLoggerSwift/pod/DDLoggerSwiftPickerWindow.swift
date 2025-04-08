@@ -162,7 +162,7 @@ private extension DDLoggerSwiftPickerWindow {
 
         let closeBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(_closePicker))
         let fixBarItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let doneBarItem = UIBarButtonItem(title: "Done".ZXLocaleString, style:.plain, target: self, action: #selector(_confirmPicker))
+        let doneBarItem = UIBarButtonItem(title: "Confirm".ZXLocaleString, style:.plain, target: self, action: #selector(_confirmPicker))
         self.mToolBar.setItems([closeBarItem, fixBarItem, doneBarItem], animated: true)
 
         self.mPickerBGView.addSubview(self.mPickerView)
@@ -178,12 +178,15 @@ private extension DDLoggerSwiftPickerWindow {
     
     @objc private func _confirmPicker() {
         if self.pickerType == .share {
-            let dataList = HDSqliteTools.shared.getLogs(name: self.mShareFileName, keyword: nil).reversed().map { item in
+            let dataList = HDSqliteTools.shared.getLogs(name: self.mShareFileName, keyword: nil).map { item in
                 return item.getFullContentString()
             }
             //写入到text文件好解析
             //文件路径
-            let logFilePathURL = DDUtils.shared.getFileDirectory(type: .caches).appendingPathComponent("DDLoggerSwift.log", isDirectory: false)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd-HH_mm_ss_SSS"
+            let dateString = formatter.string(from: Date())
+            let logFilePathURL = DDUtils.shared.getFileDirectory(type: .tmp).appendingPathComponent("DDLoggerSwift-\(dateString).log", isDirectory: false)
             if FileManager.default.fileExists(atPath: logFilePathURL.path) {
                 try? FileManager.default.removeItem(at: logFilePathURL)
             }

@@ -24,9 +24,6 @@
 		E4AC94F326354CE9001FC322 /* DDKitSwiftFloatWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC94F226354CE9001FC322 /* DDKitSwiftFloatWindow.swift */; };
 		E4AC94FE26355664001FC322 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4AC950026355664001FC322 /* Localizable.strings */; };
 		E4AF3D3429E946C50015675E /* zx_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4AF3D3329E946C50015675E /* zx_logo@3x.png */; };
-		E4BB52C329DE9DC400DAACAA /* CircleMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BB52BF29DE9DC400DAACAA /* CircleMenuButton.swift */; };
-		E4BB52C429DE9DC400DAACAA /* CircleMenuLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BB52C129DE9DC400DAACAA /* CircleMenuLoader.swift */; };
-		E4BB52C529DE9DC400DAACAA /* CircleMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BB52C229DE9DC400DAACAA /* CircleMenu.swift */; };
 		E4BB52CF29DFBF6800DAACAA /* icon_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4BB52C829DFBF6800DAACAA /* icon_close@3x.png */; };
 		E4BB52D029DFBF6800DAACAA /* icon_search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4BB52C929DFBF6800DAACAA /* icon_search@3x.png */; };
 		E4BB52D129DFBF6800DAACAA /* icon_home@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4BB52CA29DFBF6800DAACAA /* icon_home@3x.png */; };
@@ -35,7 +32,6 @@
 		E4BB52D429DFBF6800DAACAA /* icon_notice@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4BB52CD29DFBF6800DAACAA /* icon_notice@3x.png */; };
 		E4BB52D529DFBF6800DAACAA /* icon_share@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4BB52CE29DFBF6800DAACAA /* icon_share@3x.png */; };
 		E4DB880E29E01BD800E5C800 /* logger_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4DB880D29E01BD800E5C800 /* logger_logo@3x.png */; };
-		E4E3E9E029E7DBED00A5CE40 /* CircleMenuMaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E3E9DF29E7DBED00A5CE40 /* CircleMenuMaskView.swift */; };
 		E4E783A129E6B06800C67D6F /* DDLoggerSwift+ddkit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E783A029E6B06800C67D6F /* DDLoggerSwift+ddkit.swift */; };
 		E4F9665E2DA39246002B0378 /* log_icon_scale.png in Resources */ = {isa = PBXBuildFile; fileRef = E4F9665C2DA39246002B0378 /* log_icon_scale.png */; };
 		E4F9665F2DA39246002B0378 /* log_icon_subtract.png in Resources */ = {isa = PBXBuildFile; fileRef = E4F9665D2DA39246002B0378 /* log_icon_subtract.png */; };
@@ -65,9 +61,6 @@
 		E4AC94FF26355664001FC322 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E4AC950226355680001FC322 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E4AF3D3329E946C50015675E /* zx_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zx_logo@3x.png"; sourceTree = "<group>"; };
-		E4BB52BF29DE9DC400DAACAA /* CircleMenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleMenuButton.swift; sourceTree = "<group>"; };
-		E4BB52C129DE9DC400DAACAA /* CircleMenuLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleMenuLoader.swift; sourceTree = "<group>"; };
-		E4BB52C229DE9DC400DAACAA /* CircleMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleMenu.swift; sourceTree = "<group>"; };
 		E4BB52C829DFBF6800DAACAA /* icon_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_close@3x.png"; sourceTree = "<group>"; };
 		E4BB52C929DFBF6800DAACAA /* icon_search@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search@3x.png"; sourceTree = "<group>"; };
 		E4BB52CA29DFBF6800DAACAA /* icon_home@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_home@3x.png"; sourceTree = "<group>"; };
@@ -76,7 +69,6 @@
 		E4BB52CD29DFBF6800DAACAA /* icon_notice@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_notice@3x.png"; sourceTree = "<group>"; };
 		E4BB52CE29DFBF6800DAACAA /* icon_share@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_share@3x.png"; sourceTree = "<group>"; };
 		E4DB880D29E01BD800E5C800 /* logger_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logger_logo@3x.png"; sourceTree = "<group>"; };
-		E4E3E9DF29E7DBED00A5CE40 /* CircleMenuMaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleMenuMaskView.swift; sourceTree = "<group>"; };
 		E4E783A029E6B06800C67D6F /* DDLoggerSwift+ddkit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DDLoggerSwift+ddkit.swift"; sourceTree = "<group>"; };
 		E4F9665B2DA39246002B0378 /* log_icon_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = log_icon_close.png; sourceTree = "<group>"; };
 		E4F9665C2DA39246002B0378 /* log_icon_scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = log_icon_scale.png; sourceTree = "<group>"; };
@@ -145,7 +137,6 @@
 			children = (
 				E4DB880F29E01BEF00E5C800 /* extend */,
 				E4BB52C629DFBF4300DAACAA /* assets */,
-				E4BB52AD29DE9D5600DAACAA /* menu */,
 				E4FB22A8288C479400CAFDD6 /* DDKitSwiftUIConfig.swift */,
 				E4AC94D42632AC8B001FC322 /* DDKitSwift.swift */,
 				E4AC94D82632AD4D001FC322 /* DDKitSwiftPluginProtocol.swift */,
@@ -164,33 +155,6 @@
 				E4AC950026355664001FC322 /* Localizable.strings */,
 			);
 			path = localizable;
-			sourceTree = "<group>";
-		};
-		E4BB52AD29DE9D5600DAACAA /* menu */ = {
-			isa = PBXGroup;
-			children = (
-				E4BB52C229DE9DC400DAACAA /* CircleMenu.swift */,
-				E4BB52BE29DE9DC400DAACAA /* CircleMenuButton */,
-				E4BB52C029DE9DC400DAACAA /* CircleMenuLoader */,
-				E4E3E9DF29E7DBED00A5CE40 /* CircleMenuMaskView.swift */,
-			);
-			path = menu;
-			sourceTree = "<group>";
-		};
-		E4BB52BE29DE9DC400DAACAA /* CircleMenuButton */ = {
-			isa = PBXGroup;
-			children = (
-				E4BB52BF29DE9DC400DAACAA /* CircleMenuButton.swift */,
-			);
-			path = CircleMenuButton;
-			sourceTree = "<group>";
-		};
-		E4BB52C029DE9DC400DAACAA /* CircleMenuLoader */ = {
-			isa = PBXGroup;
-			children = (
-				E4BB52C129DE9DC400DAACAA /* CircleMenuLoader.swift */,
-			);
-			path = CircleMenuLoader;
 			sourceTree = "<group>";
 		};
 		E4BB52C629DFBF4300DAACAA /* assets */ = {
@@ -366,18 +330,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4BB52C329DE9DC400DAACAA /* CircleMenuButton.swift in Sources */,
 				E4AC94E02632B881001FC322 /* DDKitSwiftPluginCollectionViewCell.swift in Sources */,
 				E4AC94F326354CE9001FC322 /* DDKitSwiftFloatWindow.swift in Sources */,
 				E4AC94DD2632B10F001FC322 /* DDKitSwiftWindow.swift in Sources */,
 				E4E783A129E6B06800C67D6F /* DDLoggerSwift+ddkit.swift in Sources */,
-				E4E3E9E029E7DBED00A5CE40 /* CircleMenuMaskView.swift in Sources */,
 				E4AC94D52632AC8B001FC322 /* DDKitSwift.swift in Sources */,
-				E4BB52C429DE9DC400DAACAA /* CircleMenuLoader.swift in Sources */,
 				E4AC94C126327E78001FC322 /* ViewController.swift in Sources */,
 				E4AC94D92632AD4D001FC322 /* DDKitSwiftPluginProtocol.swift in Sources */,
 				E4AC94E92632C242001FC322 /* DDKitSwiftCollectionViewHeaderView.swift in Sources */,
-				E4BB52C529DE9DC400DAACAA /* CircleMenu.swift in Sources */,
 				E4AC94EC2632C3C4001FC322 /* PluginDemo2.swift in Sources */,
 				E4FB22A9288C479400CAFDD6 /* DDKitSwiftUIConfig.swift in Sources */,
 				E4AC94BD26327E78001FC322 /* AppDelegate.swift in Sources */,
@@ -544,7 +504,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29LH9MSG5N;
 				INFOPLIST_FILE = DDKitSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -565,7 +525,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29LH9MSG5N;
 				INFOPLIST_FILE = DDKitSwift/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
