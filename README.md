@@ -8,6 +8,10 @@ The previous name was `ZXKitSwift`, inspired by the novel "Zhu Xian". Due to mai
 
 ### [中文文档](https://dongge.org/blog/1307.html)
 
+## Project Preview
+
+<img src="./preview.jpg" width=200 />
+
 ## Features List
 
 The following plugins are built-in and ready to use:
@@ -98,10 +102,6 @@ Advanced operations provide a way to integrate personalized plugins. The process
 ## Custom Plugin Integration
 
 `DDKitSwift` comes with a set of pre-installed default functions and supports custom plugin integration. Simply import the corresponding library and register it in the `AppDelegate` startup function.
-
-## Project Preview
-
-<img src="./preview.jpg" width=200 />
 
 ## Developing Custom Plugins
 
