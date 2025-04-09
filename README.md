@@ -10,7 +10,7 @@ The previous name was `ZXKitSwift`, inspired by the novel "Zhu Xian". Due to mai
 
 ## Project Preview
 
-<img src="./preview.jpg?v=1" width=400 />
+<img src="./preview_1.jpg" width=400 />
 
 ## Features List
 
