@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  DDKitSwift
+
+  Created by Damon on 2021/4/25.
+  
+*/
+"UI" = "Интерфейс";
+"Data" = "Данные";
+"Other" = "Другое";
+"App Log" = "Журнал приложения";
+

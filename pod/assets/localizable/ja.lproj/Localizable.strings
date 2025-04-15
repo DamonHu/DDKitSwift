@@ -6,6 +6,7 @@
   
 */
 "UI" = "UI";
-"Data" = "Data";
-"Other" = "Other";
-"App Log" = "App Log";
+"Data" = "データ";
+"Other" = "その他";
+"App Log" = "アプリログ";
+

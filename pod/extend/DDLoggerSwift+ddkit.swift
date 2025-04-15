@@ -20,7 +20,7 @@ extension DDLoggerSwift: DDKitSwiftPluginProtocol {
     }
 
     public var pluginTitle: String {
-        return "Logger".ZXLocaleString
+        return "App Log".ZXLocaleString
     }
 
     public var pluginType: DDKitSwiftPluginType {
